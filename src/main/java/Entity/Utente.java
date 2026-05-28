@@ -1,8 +1,13 @@
 package Entity;
+import java.util.UUID;
 
-public class Utente {
+public abstract class Utente {
 
-    //Da questa classe andranno ad ereditare cittadino e operatore
-    String nome;
-    String cognome;
+    protected String nome;
+    protected String cognome;
+    protected String email;
+    protected String recapitoTelefonico;
+    protected UUID idUtente;
+    protected Ruolo ruolo;
+
 }
