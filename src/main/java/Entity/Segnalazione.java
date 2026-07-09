@@ -82,15 +82,14 @@ public class Segnalazione {
         }
 
         //4. Salvo il cambiamento di stato
-        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato.getStato());
+        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
 
         //TODO NOTIFICA
 
         System.out.println("[Segnalazione "+this.idSegnalazione+"] Iniziata la gestione..\n" +
-                           "**Operatore:\t"+idOperatore+"\n" +
-                           "**Stato Corrente:\t"+this.stato.getStato()+"\n" +
-                           "**Data:\t"+LocalDateTime.now()
+                this.toString()
         );
+
 
         return true;
     }
@@ -113,11 +112,10 @@ public class Segnalazione {
         }
 
         //2. Salvo il cambiamento di stato
-        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato.getStato());
+        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
 
         System.out.println("[Segnalazione "+this.idSegnalazione+"] Aggiornato stato..\n" +
-                "**Stato Corrente:\t"+this.stato.getStato()+"\n" +
-                "**Data:\t"+LocalDateTime.now()
+                this.toString()
         );
 
         return true;
@@ -140,7 +138,7 @@ public class Segnalazione {
             this.stato.aggiornaStato(this, false);
 
             //1.2 Salvo il cambiamento di stato
-            elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato.getStato());
+            elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
 
             return true;//Modifica andata a buon fine
         } else {
@@ -159,16 +157,50 @@ public class Segnalazione {
                 this.stato.aggiornaStato(this, true);
 
                 //2.3 Salvo il cambiamento di stato
-                elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato.getStato());
+                elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
 
 
                 //TODO NOTIFICA
 
+                System.out.println("[Segnalazione "+this.idSegnalazione+"] Conclusa gestione..\n" +
+                        this.toString()
+                );
+
                 return true;
             }
         }
+
     }
 
+    @Override
+    public String toString() {
+        return "Segnalazione{" +
+                "idSegnalazione='" + idSegnalazione + '\'' +
+                ", titolo='" + titolo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", categoria=" + categoria +
+                ", posizione='" + posizione + '\'' +
+                ", idCittadino='" + idCittadino + '\'' +
+                ", stato=" + stato.getStatoToString() +
+                ", data=" + data.toString() +
+                ", urlImmagine='" + urlImmagine + '\'' +
+                '}';
+    }
+
+
+
+    public static void main(String[] args) {
+        System.out.println("[Segnalazione] MainTest avviato..");
+
+
+
+
+
+
+
+
+
+    }
 
 
 

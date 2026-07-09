@@ -13,14 +13,14 @@ public class StatoRisolta implements StatoSegnalazione {
     }
 
     @Override
-    public StatoRisolta getStato() {
-        System.out.println("[StatoRisolta] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoRisolta";
     }
 
     @Override
     public String toString() {
-        return "Stato: Risolta";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
-
 }

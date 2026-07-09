@@ -24,13 +24,14 @@ public class StatoInLavorazione implements StatoSegnalazione {
     }
 
     @Override
-    public StatoInLavorazione getStato() {
-        System.out.println("[StatoInLavorazione] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoInLavorazione";
     }
 
     @Override
     public String toString() {
-        return "Stato: InLavorazione";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
 }

@@ -25,14 +25,15 @@ public class StatoPresaInCarico implements StatoSegnalazione{
     }
 
     @Override
-    public StatoPresaInCarico getStato() {
-        System.out.println("[StatoPresaInCarico] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoPresaInCarico";
     }
 
     @Override
     public String toString() {
-        return "Stato: PresaInCarico";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
 
 

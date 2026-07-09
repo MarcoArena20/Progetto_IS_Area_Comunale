@@ -26,14 +26,15 @@ public class StatoInviata implements StatoSegnalazione {
     }
 
     @Override
-    public StatoInviata getStato() {
-        System.out.println("[StatoInviata] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoInviata";
     }
 
     @Override
     public String toString() {
-        return "Stato: Inviata";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
 
     public static void main(String[] args) {
@@ -41,7 +42,7 @@ public class StatoInviata implements StatoSegnalazione {
 
         StatoInviata statoTest = new StatoInviata();
 
-        System.out.println("[StatoInviata] getStato: "+ statoTest.getStato());
+        System.out.println("[StatoInviata] getStato: "+ statoTest.getStatoToString());
         System.out.println("[StatoInviata] toString: "+ statoTest.toString());
 
 
