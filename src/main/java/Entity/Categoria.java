@@ -1,9 +1,9 @@
 package Entity;
 
 public enum Categoria {
-    IlluminazioneGuasta,
-    StradaDissestata,
-    RifiutiAbbandonati,
-    PericoloGenerico,
-    ArredoUrbanoDanneggiato
+    ILLUMINAZIONE_GUASTA,
+    STRADA_DISSESTATA,
+    RIFIUTI_ABBANDONATI,
+    PERICOLO_GENERICO,
+    ARREDO_URBANO_DANNEGGIATO
 }

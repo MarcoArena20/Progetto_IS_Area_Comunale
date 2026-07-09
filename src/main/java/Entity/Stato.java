@@ -1,8 +1,8 @@
 package Entity;
 
 public enum Stato {
-    Inviata,
-    PresaInCarico,
-    InLavorazione,
-    Risolta
+    INVIATA,
+    PRESA_IN_CARICO,
+    IN_LAVORAZIONE,
+    RISOLTA
 }
