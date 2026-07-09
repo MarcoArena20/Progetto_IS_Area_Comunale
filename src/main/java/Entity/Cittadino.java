@@ -1,5 +1,11 @@
 package Entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Cittadino extends UtenteAutenticato {
 
     //Attributi
@@ -10,6 +16,8 @@ public class Cittadino extends UtenteAutenticato {
     protected String recapitoTelefonico;
     protected String passwordHash;
     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String idCittadino;
 
     //Costruttore

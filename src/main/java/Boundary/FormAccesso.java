@@ -10,6 +10,7 @@ public class FormAccesso {
     private JButton accessButton;
     private JTextField emailField;
     private JTextField passwordField;
+    private JComboBox ruoloAccesso;
 
     public FormAccesso() {
         accessButton.addActionListener(new ActionListener() {
@@ -18,6 +19,11 @@ public class FormAccesso {
                 Accedi();
             }
         });
+    }
+    private void printFormAccesso(){
+        System.out.println("Mail: "+ruoloAccesso.getSelectedItem());
+        System.out.println("Mail: "+emailField.getText());
+        System.out.println("Password: "+passwordField.getText());
     }
 
     public JFrame apriFormAccesso(){
@@ -36,7 +42,11 @@ public class FormAccesso {
     }
 
     private void Accedi(){
-
+        printFormRegistrazione();
+        boolean esitoFormatoRegistrazione = controlloFormatoDatiAccesso((String) ruoloBox.getSelectedItem(),
+                                                                                emailTextField.getText(),
+                                                                                passwordTextField.getText());
+        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
         System.out.println("TODO Implementation access");
 
     }

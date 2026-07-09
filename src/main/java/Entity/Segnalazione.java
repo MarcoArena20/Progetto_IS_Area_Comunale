@@ -1,16 +1,27 @@
 package Entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Segnalazione {
 
     //Attributi
-    private String idSegnalazione;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idSegnalazione;
+
+    @ManyToOne
+    @JoinColumn(name = "idCittadino")
+    private Cittadino cittadino;
+
     private String titolo;
     private String descrizione;
     private Categoria categoria;
     private String posizione;
-    private String idCittadino;
+
+    @Convert(converter = ConverterStato.class)
     private StatoSegnalazione stato;
     private LocalDateTime data;
     private String urlImmagine;
@@ -18,7 +29,7 @@ public class Segnalazione {
     private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
 
     //Costruttore
-    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String idCittadino, LocalDateTime data, String urlImmagine) {
+    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, Cittadino cittadino) {
         //TODO
         //Generare automaticamente idSegnalazione
 
@@ -34,7 +45,7 @@ public class Segnalazione {
             this.urlImmagine = null;
 
         this.stato = new StatoInviata(); //Stato iniziale segnalazione
-
+        this.cittadino = cittadino;
         //Essendo inizialmente la segnalazione nello stato "Inviata",
         //sicuramente l'elencoGestioni sarà null inizialmente
         this.elencoGestioniSegnalazione = null;
@@ -49,8 +60,7 @@ public class Segnalazione {
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
     public String getPosizione() { return posizione; }
     public void setPosizione(String posizione) { this.posizione = posizione; }
-    public String getIdCittadino() { return idCittadino; }
-    public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
+    public String getIdCittadino() { return cittadino.getIdCittadino(); }
     public StatoSegnalazione getStato() { return stato; }
     public void setStato(StatoSegnalazione stato) {this.stato = stato;}
     public LocalDateTime getData() { return data; }
