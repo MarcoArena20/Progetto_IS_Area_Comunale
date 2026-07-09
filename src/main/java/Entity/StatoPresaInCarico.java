@@ -31,8 +31,8 @@ public class StatoPresaInCarico implements StatoSegnalazione{
 
     @Override
     public String toString() {
-        return "Stato{" +
-                "statoCorrente='" + this.getStatoToString() + '\'' +
+        return "Stato{\n" +
+                "statoCorrente=" + this.getStatoToString() + '\n' +
                 '}';
     }
 
