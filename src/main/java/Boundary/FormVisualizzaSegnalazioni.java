@@ -1,12 +1,15 @@
 package Boundary;
 
 //import controller.GestoreSegnalazioni;
-//import entity.Segnalazione;
+import Entity.Segnalazione;
+import Entity.Categoria;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormVisualizzaSegnalazioni {
 
@@ -15,7 +18,7 @@ public class FormVisualizzaSegnalazioni {
     private JButton visualizzaDettaglioButton;
     private JTable tabellaSegnalazioni;
     private DefaultTableModel tableModel;
-    //private List<Segnalazione> listaSegnalazioniDati;
+    private List<Segnalazione> listaSegnalazioniDati;
     //private GestoreSegnalazioni controller;
 
     public FormVisualizzaSegnalazioni() {
@@ -38,6 +41,9 @@ public class FormVisualizzaSegnalazioni {
         //Carica i dati nella tabella tramite il controller
         //aggiornaTabella();
 
+        // 3. Carica i dati finti di appoggio (Metodo aggiornato sotto)
+        caricaDatiDiProva();
+
         visualizzaDettaglioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,8 +62,15 @@ public class FormVisualizzaSegnalazioni {
                 }
 
                 // Recuperiamo l'oggetto reale corrispondente alla riga cliccata
-                //Segnalazione segnalazioneSelezionata = listaSegnalazioniDati.get(rigaSelezionata);
-
+                Segnalazione segnalazioneSelezionata = listaSegnalazioniDati.get(rigaSelezionata);
+                JOptionPane.showMessageDialog(
+                        contentPanel,
+                        "Hai selezionato correttamente:\n" +
+                                "Titolo: " + segnalazioneSelezionata.getTitolo() + "\n" +
+                                "Descrizione: " + segnalazioneSelezionata.getDescrizione(),
+                        "Test Selezione",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
                 // Apriamo il form di dettaglio passandogli l'oggetto
                 //FormVisualizzaDettaglio dettaglioFrame = new FormVisualizzaDettaglio(segnalazioneSelezionata);
                 //dettaglioFrame.setVisible(true);
@@ -103,4 +116,41 @@ public class FormVisualizzaSegnalazioni {
     }
 
     */
+    // NUOVO METODO: Crea la lista di appoggio direttamente qui dentro
+    private void caricaDatiDiProva() {
+        listaSegnalazioniDati = new ArrayList<>();
+
+        // Creiamo 3 segnalazioni finte usando il costruttore della tua classe Entity
+        // (Adatta i parametri in base al costruttore esatto della tua classe Segnalazione)
+        Segnalazione s1 = new Segnalazione("Lampione spento", "Il lampione davanti al civico 12 non funziona da giorni.", Categoria.ILLUMINAZIONE_GUASTA, "Via Roma 12", java.time.LocalDateTime.now(), "CITZ_01");
+        Segnalazione s2 = new Segnalazione("Buca profonda", "C'è una voragine pericolosa per i motocicli al centro della carreggiata.", Categoria.STRADA_DISSESTATA, "Corso Italia", java.time.LocalDateTime.now(), "CITZ_02");
+        Segnalazione s3 = new Segnalazione("Rifiuti in strada", "Abbandono di materassi sul marciapiede vicino al cassonetto.", Categoria.RIFIUTI_ABBANDONATI, "Via Milano", java.time.LocalDateTime.now(),"CITZ_01");
+
+        // Riempiamo la lista di appoggio
+        listaSegnalazioniDati.add(s1);
+        listaSegnalazioniDati.add(s2);
+        listaSegnalazioniDati.add(s3);
+
+        // Puliamo e spingiamo i dati graficamente nella JTable
+        tableModel.setRowCount(0);
+        for (Segnalazione s : listaSegnalazioniDati) {
+            Object[] riga = {
+                    s.getTitolo(),
+                    s.getStato(), // Sarà "INVIATA" di default dal costruttore
+                    s.getData()
+            };
+            tableModel.addRow(riga);
+        }
+    }
+
+    public static void main(String[] args) {
+        // Avviamo l'interfaccia in sicurezza nel thread grafico di Swing
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                FormVisualizzaSegnalazioni interfaccia = new FormVisualizzaSegnalazioni();
+                interfaccia.apriFormVisualizzaSegnalazioni();
+            }
+        });
+    }
 }
