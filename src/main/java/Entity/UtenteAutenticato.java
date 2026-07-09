@@ -20,13 +20,8 @@ public abstract class UtenteAutenticato {
 
     // Getter e Setter
     public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
     public String getCognome() { return cognome; }
-    public void setCognome(String cognome) { this.cognome = cognome; }
     public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
     public String getRecapitoTelefonico() { return recapitoTelefonico; }
-    public void setRecapitoTelefonico(String recapitoTelefonico) { this.recapitoTelefonico = recapitoTelefonico; }
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    //Per privacy si toglie il get della password hash
 }

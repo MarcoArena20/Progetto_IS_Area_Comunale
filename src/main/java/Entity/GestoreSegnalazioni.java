@@ -17,12 +17,7 @@ public class GestoreSegnalazioni {
 
     //Metodi
     public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String urlImmagine, LocalDateTime data, String idCittadino) {
-        Segnalazione s = new Segnalazione(titolo, descrizione, categoria, posizione, idCittadino);
-        if (urlImmagine != null) s.setUrlImmagine(urlImmagine);
-        // Persisti la segnalazione
-
         //TODO
-
         return true;
     }
 
@@ -32,12 +27,28 @@ public class GestoreSegnalazioni {
         return null;
     }
 
-    public List<Segnalazione> cercaSegnalazioni(Categoria categoria, String posizione, String stato) {
+    public List<Segnalazione> cercaSegnalazioni(Stato stato, Categoria categoria, String posizione) {
         //TODO
         return null;
     }
 
-    public boolean aggiungiNotaDSegnalazione(String idSegnalazione, String titolo, String descrizioneNota) {
+    public Segnalazione cercaSegnalazione(String idSegnalazione) {
+        //TODO
+
+        return null;
+    }
+
+    public boolean aggiungiNota(String idSegnalazione, String titolo, String descrizioneNota) {
+        //TODO
+        return true;
+    }
+
+    public boolean iniziaGestioneSegnalazione(String idSegnalazione, String idOperatore) {
+        //TODO
+        return true;
+    }
+
+    public boolean concludiGestioneSegnalazione(String idSegnalazione, boolean esito) {
         //TODO
         return true;
     }
