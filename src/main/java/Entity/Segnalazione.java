@@ -41,6 +41,7 @@ public class Segnalazione {
     public void setPosizione(String posizione) { this.posizione = posizione; }
     public String getIdCittadino() { return idCittadino; }
     public StatoSegnalazione getStato() { return stato; }
+    public void setStato(StatoSegnalazione newState) {this.stato = newState;}
     public LocalDateTime getData() { return data; }
     public void setData(LocalDateTime data) { this.data = data; }
     public String getUrlImmagine() { return urlImmagine; }
