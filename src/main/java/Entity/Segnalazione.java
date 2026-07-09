@@ -17,7 +17,7 @@ public class Segnalazione {
     private String urlImmagine;
 
     //Costruttore
-    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String idCittadino, LocalDateTime data) {
+    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
         //TODO
         //Generare automaticamente idSegnalazione
 
@@ -25,9 +25,9 @@ public class Segnalazione {
         this.descrizione = descrizione;
         this.categoria = categoria;
         this.posizione = posizione;
-        this.idCittadino = idCittadino;
+        this.data = data;
+        this.urlImmagine = urlImmagine;
         this.stato = Stato.INVIATA; // Default
-        if (data != null) this.data = data;
     }
 
     // Getter e Setter
@@ -40,6 +40,7 @@ public class Segnalazione {
     public String getPosizione() { return posizione; }
     public void setPosizione(String posizione) { this.posizione = posizione; }
     public String getIdCittadino() { return idCittadino; }
+    public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
     public Stato getStato() { return stato; }
     public void setStato(Stato stato) { this.stato = stato; }
     public LocalDateTime getData() { return data; }

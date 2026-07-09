@@ -1,5 +1,7 @@
 package Boundary;
 
+import Controller.ControllerSegnalazioni;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,8 @@ public class FormCreazioneSegnalazione {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                creaSegnalazione();
 
             }
         });
@@ -39,7 +43,7 @@ public class FormCreazioneSegnalazione {
             System.out.println("Dati inseriti non validi");
         else{
 
-
+            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, urlImmagine, null);
 
         }
 
