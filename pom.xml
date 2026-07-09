@@ -33,5 +33,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>6.6.50.Final</version>
         </dependency>
+
     </dependencies>
 </project>
