@@ -7,7 +7,7 @@ public class StatoPresaInCarico implements StatoSegnalazione{
 
     //Metodi
     @Override
-    public void aggiornaStato(Segnalazione segnalazione, boolean esito) {
+    public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoPresaInCarico] Invocato aggiornaStato con esito: " + esito);
 
         if (esito == true) {
@@ -19,6 +19,8 @@ public class StatoPresaInCarico implements StatoSegnalazione{
             System.out.println("[StatoPresaInCarico] Reset stato..");
             segnalazione.setStato(new StatoInviata());
         }
+
+        return true;
 
     }
 

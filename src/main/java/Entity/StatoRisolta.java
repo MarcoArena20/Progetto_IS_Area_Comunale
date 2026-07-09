@@ -7,8 +7,9 @@ public class StatoRisolta implements StatoSegnalazione {
 
     //Metodi
     @Override
-    public void aggiornaStato(Segnalazione segnalazione, boolean esito) {
+    public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoRisolta] Impossibile modificare lo stato\n" + this.toString());
+        return false;
     }
 
     @Override

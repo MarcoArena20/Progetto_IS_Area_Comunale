@@ -24,11 +24,14 @@ public class ElencoGestioniSegnalazione {
     public void salvaOperatore(String idOperatore) {
         this.storicoOperatore.put(LocalDateTime.now(), idOperatore);
         System.out.println("[ElencoGestioniSegnalazione] Aggiunto operatore: "+idOperatore);
+
     }
+
 
     public void salvaCambiamentoStato(StatoSegnalazione stato) {
         this.storicoStato.put(LocalDateTime.now(), stato);
         System.out.println("[ElencoGestioniSegnalazione] Aggiunto cambiamento stato in: "+stato.toString());
+
     }
 
     public void salvaNota(String titolo, String descrizione) {

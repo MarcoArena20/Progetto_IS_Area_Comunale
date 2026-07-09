@@ -19,10 +19,9 @@ public class GestoreSegnalazioni {
     }
 
     //Metodi
-    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, String idCittadino) {
+    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String idCittadino, LocalDateTime data, String urlImmagine) {
 
-        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
-        segnalazione.setIdCittadino(idCittadino);
+        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, idCittadino, data, urlImmagine);
 
         // Metodo per andare a salvare sul database
         System.out.println("Salvataggio effettuato");

@@ -7,17 +7,21 @@ public class StatoInviata implements StatoSegnalazione {
 
     //Metodi
     @Override
-    public void aggiornaStato(Segnalazione segnalazione, boolean esito) {
+    public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoInviata] Invocato aggiornaStato con esito: " + esito);
 
         if (esito == true) {
             //Avanzo di stato..
             System.out.println("[StatoInviata] Avanzamento di stato..");
             segnalazione.setStato(new StatoPresaInCarico());
+            return true;
+
         } else {
             //Operazione non ha effetto
             System.out.println("[StatoInviata] Aggiornamento non ha effetto..");
+            return false;//Operazione non consentita anche se non ha effetto
         }
+
 
     }
 
