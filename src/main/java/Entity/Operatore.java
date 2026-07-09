@@ -22,5 +22,10 @@ public class Operatore extends UtenteAutenticato {
     //Getter
     public String getIdOperatore() { return idOperatore; }
 
-
+    //Metodi
+    @Override
+    public String getRuolo() {
+        //TODO
+        return "";
+    }
 }

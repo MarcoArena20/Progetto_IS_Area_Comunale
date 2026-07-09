@@ -11,7 +11,7 @@ public class Segnalazione {
     private Categoria categoria;
     private String posizione;
     private String idCittadino;
-    private Stato stato;
+    private StatoSegnalazione stato;
     private LocalDateTime data;
     private String urlImmagine;
 
@@ -26,7 +26,7 @@ public class Segnalazione {
         this.posizione = posizione;
         this.data = data;
         this.urlImmagine = urlImmagine;
-        this.stato = Stato.INVIATA; // Default
+        this.stato = new StatoInviata(); // Default
     }
 
     // Getter e Setter
@@ -40,8 +40,8 @@ public class Segnalazione {
     public void setPosizione(String posizione) { this.posizione = posizione; }
     public String getIdCittadino() { return idCittadino; }
     public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
-    public Stato getStato() { return stato; }
-    public void setStato(Stato stato) { this.stato = stato; }
+    public StatoSegnalazione getStato() { return stato; }
+    public void setStato(StatoSegnalazione newState) {this.stato = newState;}
     public LocalDateTime getData() { return data; }
     public void setData(LocalDateTime data) { this.data = data; }
     public String getUrlImmagine() { return urlImmagine; }
