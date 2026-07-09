@@ -4,12 +4,13 @@ import Entity.Categoria;
 
 //Façade
 public class ControllerSegnalazioni {
+
+    //Attributi
+    private static String idSegnalazioneCorrente;
+
+
+
+    //Metodi
     //TODO
 
-    // Metodo per andare a creare una segnalazione
-    public boolean creaSegnalazione(String titolo, String descrizione, Categoria categoria){
-
-        return true;
-
-    }
 }

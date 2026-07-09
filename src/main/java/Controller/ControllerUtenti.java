@@ -2,5 +2,9 @@ package Controller;
 
 //Façade
 public class ControllerUtenti {
-        //TODO
+
+    //Attributi
+    private static String idUtenteCorrente;
+
+    //TODO
 }

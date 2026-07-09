@@ -16,6 +16,8 @@ public class Segnalazione {
     private LocalDateTime data;
     private String urlImmagine;
 
+    private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
+
     //Costruttore
     public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String idCittadino, LocalDateTime data) {
         //TODO
@@ -28,6 +30,7 @@ public class Segnalazione {
         this.idCittadino = idCittadino;
         this.stato = new StatoInviata(); // Default
         if (data != null) this.data = data;
+
     }
 
     // Getter e Setter
@@ -49,7 +52,7 @@ public class Segnalazione {
 
     // Metodi
     public boolean aggiungiNota(String titoloNota, String descrizioneNota) {
-        //TODO
+        if ()
         return true;
     }
 
