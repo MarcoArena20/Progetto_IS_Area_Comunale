@@ -25,7 +25,7 @@ public class StatoInLavorazione implements StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return "StatoInLavorazione";
+        return StatoType.IN_LAVORAZIONE.toString();
     }
 
     @Override

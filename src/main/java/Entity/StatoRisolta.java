@@ -14,7 +14,7 @@ public class StatoRisolta implements StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return "StatoRisolta";
+        return StatoType.RISOLTA.toString();
     }
 
     @Override

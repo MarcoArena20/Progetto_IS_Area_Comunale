@@ -73,7 +73,7 @@ public class Segnalazione {
     public synchronized boolean iniziaGestione(String idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
 
         //0. Check se è possibile prenderla in carico
-        if (!this.stato.getStatoToString().equals("StatoInviata")) {
+        if (!this.stato.getStatoToString().equals(StatoType.INVIATA.toString())) {
             System.err.println("[Segnalazione] Impossibile prendere in carico una richiesta che è già in gestione!");
             return false;
         }
@@ -186,15 +186,15 @@ public class Segnalazione {
 
     @Override
     public String toString() {
-        return "Segnalazione{" +
-                "idSegnalazione='" + idSegnalazione + '\'' +
-                //", titolo='" + titolo + '\'' +
-                //", descrizione='" + descrizione + '\'' +
-                //", categoria=" + categoria +
-                //", posizione='" + posizione + '\'' +
-                ", stato=" + stato.getStatoToString() +
-                //", data=" + data.toString() +
-                //", urlImmagine='" + urlImmagine + '\'' +
+        return "Segnalazione{\n" +
+                "idSegnalazione=" + idSegnalazione + '\n' +
+                //", titolo=" + titolo + '\n' +
+                //", descrizione=" + descrizione + '\n' +
+                //", categoria=" + categoria + '\n\ +
+                //", posizione=" + posizione + '\n' +
+                ", stato=" + stato.getStatoToString() + '\n' +
+                //", data=" + data.toString() + '\n' +
+                //", urlImmagine=" + urlImmagine + '\n' +
                 '}';
     }
 

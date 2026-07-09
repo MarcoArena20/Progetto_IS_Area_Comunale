@@ -27,7 +27,7 @@ public class StatoInviata implements StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return "StatoInviata";
+        return StatoType.INVIATA.toString();
     }
 
     @Override
