@@ -191,7 +191,17 @@ public class Segnalazione {
     public static void main(String[] args) {
         System.out.println("[Segnalazione] MainTest avviato..");
 
+        Segnalazione s = new Segnalazione("Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
+                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", "1", null, "");
+        /*
+        Titolo: Discarica
+        Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
+        Categoria: Rifiuti abbandonati
+        Posizione: Viale delle mimose
+        */
 
+
+        System.out.println(s.toString());
 
 
 
