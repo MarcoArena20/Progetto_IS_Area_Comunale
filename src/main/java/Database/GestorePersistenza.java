@@ -1,6 +1,6 @@
 package Database;
 
-
+//Façade
 public class GestorePersistenza {
 
     //Attributi
@@ -17,6 +17,5 @@ public class GestorePersistenza {
     }
 
     // Metodi
-
     //TODO
 }
