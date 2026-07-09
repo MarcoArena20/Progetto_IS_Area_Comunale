@@ -64,6 +64,8 @@ public class FormVisualizzaSegnalazioni {
 
                 // Recuperiamo l'oggetto reale corrispondente alla riga cliccata
                 Segnalazione segnalazioneSelezionata = listaSegnalazioniDati.get(rigaSelezionata);
+
+                //mostro a schermo qualcosa prima di collegare il controller
                 JOptionPane.showMessageDialog(
                         contentPanel,
                         "Hai selezionato correttamente:\n" +
@@ -72,6 +74,7 @@ public class FormVisualizzaSegnalazioni {
                         "Test Selezione",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+
                 // Apriamo il form di dettaglio passandogli l'oggetto
                 //FormVisualizzaDettaglio dettaglioFrame = new FormVisualizzaDettaglio(segnalazioneSelezionata);
                 //dettaglioFrame.setVisible(true);
