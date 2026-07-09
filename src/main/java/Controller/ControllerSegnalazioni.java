@@ -26,34 +26,12 @@ public class ControllerSegnalazioni {
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String stato, String categoria, String area) {
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
 
+        // Assicurati che nel tuo GestoreSegnalazioni esista un metodo con questa firma
         List<Segnalazione> listaEntity = gestore.visualizzaSegnalazioniPerOperatore(stato, categoria, area);
 
-        List<String[]> righeTabella = new ArrayList<>();
 
-        if (listaEntity != null) {
-            for (Segnalazione s : listaEntity) {
 
-                String nomeStato = "";
-                if(s.getStato() != null) {
-                    nomeStato = s.getStato().getClass().getSimpleName().replace("Stato", "");
-                }
-
-                String[] riga = new String[] {
-                        s.getIdSegnalazione() != null ? s.getIdSegnalazione() : "ID_TEMP",
-                        s.getIdCittadino() != null ? s.getIdCittadino() : "Utente Sconosciuto",
-                        s.getData() != null ? s.getData().toString() : "",
-                        s.getDescrizione(),
-                        nomeStato,
-                        s.getCategoria() != null ? s.getCategoria().name() : "",
-                        s.getPosizione()
-                };
-
-                righeTabella.add(riga);
-            }
-        }
-
-        return righeTabella;
-    }
+    //Metodi
     //TODO
 
     public static Long getIdSegnalazioneCorrente(){
