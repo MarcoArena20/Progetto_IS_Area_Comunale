@@ -27,7 +27,7 @@ public class GestoreSegnalazioni {
         return null;
     }
 
-    public List<Segnalazione> cercaSegnalazioni(Stato stato, Categoria categoria, String posizione) {
+    public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String posizione) {
         //TODO
         return null;
     }

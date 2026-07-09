@@ -21,4 +21,12 @@ public class Cittadino extends UtenteAutenticato {
 
     //Getter
     public String getIdCittadino() { return idCittadino; }
+
+    //Metodi
+    @Override
+    public String getRuolo() {
+        //TODO
+        return "";
+    }
+
 }
