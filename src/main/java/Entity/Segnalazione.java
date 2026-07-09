@@ -42,6 +42,7 @@ public class Segnalazione {
     public String getIdCittadino() { return idCittadino; }
     public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
     public StatoSegnalazione getStato() { return stato; }
+    public void setStato(StatoSegnalazione newState) {this.stato = newState;}
     public LocalDateTime getData() { return data; }
     public void setData(LocalDateTime data) { this.data = data; }
     public String getUrlImmagine() { return urlImmagine; }
