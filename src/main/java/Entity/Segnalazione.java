@@ -26,6 +26,7 @@ public class Segnalazione {
     private LocalDateTime data;
     private String urlImmagine;
 
+    @OneToOne
     private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
 
     //Costruttore

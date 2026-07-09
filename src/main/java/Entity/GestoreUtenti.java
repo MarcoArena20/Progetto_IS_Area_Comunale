@@ -21,4 +21,10 @@ public class GestoreUtenti {
         //TODO
         return true;
     }
+
+    public Cittadino cercaUtente(String idCittadino) {
+
+        //return gestorePersistenza.cercaPerCampo(Cittadino.class, "idCittadino", idCittadino);
+        return null;
+    }
 }

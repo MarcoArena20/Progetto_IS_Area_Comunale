@@ -6,5 +6,5 @@ public class ControllerUtenti {
     //Attributi
     private static String idUtenteCorrente;
 
-    //TODO
+    public static String getIdUtenteCoorrente(){return idUtenteCorrente; }
 }
