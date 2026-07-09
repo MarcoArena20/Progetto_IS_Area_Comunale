@@ -12,12 +12,21 @@ public class GestoreSegnalazioni {
     //Attributi
     private GestorePersistenza gestorePersistenza;
 
-    //Costruttore
-    //TODO
+    public GestoreSegnalazioni(){
+
+        gestorePersistenza = new GestorePersistenza();
+
+    }
 
     //Metodi
-    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String urlImmagine, LocalDateTime data, String idCittadino) {
-        //TODO
+    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, String idCittadino) {
+
+        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+        segnalazione.setIdCittadino(idCittadino);
+
+        // Metodo per andare a salvare sul database
+        System.out.println("Salvataggio effettuato");
+
         return true;
     }
 

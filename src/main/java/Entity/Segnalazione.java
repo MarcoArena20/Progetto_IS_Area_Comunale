@@ -27,10 +27,9 @@ public class Segnalazione {
         this.descrizione = descrizione;
         this.categoria = categoria;
         this.posizione = posizione;
-        this.idCittadino = idCittadino;
+        this.data = data;
+        this.urlImmagine = urlImmagine;
         this.stato = new StatoInviata(); // Default
-        if (data != null) this.data = data;
-
     }
 
     // Getter e Setter
@@ -43,8 +42,8 @@ public class Segnalazione {
     public String getPosizione() { return posizione; }
     public void setPosizione(String posizione) { this.posizione = posizione; }
     public String getIdCittadino() { return idCittadino; }
+    public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
     public StatoSegnalazione getStato() { return stato; }
-    public void setStato(StatoSegnalazione newState) {this.stato = newState;}
     public LocalDateTime getData() { return data; }
     public void setData(LocalDateTime data) { this.data = data; }
     public String getUrlImmagine() { return urlImmagine; }
@@ -52,7 +51,7 @@ public class Segnalazione {
 
     // Metodi
     public boolean aggiungiNota(String titoloNota, String descrizioneNota) {
-        if ()
+        //TODO
         return true;
     }
 
