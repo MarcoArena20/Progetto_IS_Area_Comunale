@@ -1,22 +1,33 @@
 package Entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Segnalazione {
 
     //Attributi
-    private String idSegnalazione;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idSegnalazione;
+
+    @ManyToOne
+    @JoinColumn(name = "idCittadino")
+    private Cittadino cittadino;
+
     private String titolo;
     private String descrizione;
     private Categoria categoria;
     private String posizione;
-    private String idCittadino;
+
+    @Convert(converter = ConverterStato.class)
     private StatoSegnalazione stato;
     private LocalDateTime data;
     private String urlImmagine;
 
     //Costruttore
-    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
+    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, Cittadino cittadino) {
         //TODO
         //Generare automaticamente idSegnalazione
 
@@ -26,6 +37,7 @@ public class Segnalazione {
         this.posizione = posizione;
         this.data = data;
         this.urlImmagine = urlImmagine;
+        this.cittadino = cittadino;
         this.stato = new StatoInviata(); // Default
     }
 
@@ -38,8 +50,7 @@ public class Segnalazione {
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
     public String getPosizione() { return posizione; }
     public void setPosizione(String posizione) { this.posizione = posizione; }
-    public String getIdCittadino() { return idCittadino; }
-    public void setIdCittadino(String idCittadino){ this.idCittadino = idCittadino; }
+    public String getIdCittadino() { return cittadino.getIdCittadino(); }
     public StatoSegnalazione getStato() { return stato; }
     public void setStato(StatoSegnalazione newState) {this.stato = newState;}
     public LocalDateTime getData() { return data; }

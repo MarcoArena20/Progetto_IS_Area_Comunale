@@ -21,13 +21,9 @@ public class GestoreSegnalazioni {
     //Metodi
     public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, String idCittadino) {
 
-        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
-        segnalazione.setIdCittadino(idCittadino);
+        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine, null);
 
-        // Metodo per andare a salvare sul database
-        System.out.println("Salvataggio effettuato");
-
-        return true;
+        return gestorePersistenza.salva(segnalazione);
     }
 
     public List<Segnalazione> cercaSegnalazioni(String idCittadino) {
