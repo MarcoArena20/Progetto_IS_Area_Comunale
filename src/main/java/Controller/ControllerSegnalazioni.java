@@ -2,6 +2,11 @@ package Controller;
 
 import Entity.Categoria;
 import Entity.GestoreSegnalazioni;
+import Entity.Segnalazione;
+
+import java.util.ArrayList;
+import java.util.List;
+import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
 import java.io.IOException;
@@ -15,6 +20,39 @@ import java.util.List;
 
 //Façade
 public class ControllerSegnalazioni {
+
+    public static List<String[]> visualizzaSegnalazioniPerOperatore(String stato, String categoria, String area) {
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        List<Segnalazione> listaEntity = gestore.visualizzaSegnalazioniPerOperatore(stato, categoria, area);
+
+        List<String[]> righeTabella = new ArrayList<>();
+
+        if (listaEntity != null) {
+            for (Segnalazione s : listaEntity) {
+
+                String nomeStato = "";
+                if(s.getStato() != null) {
+                    nomeStato = s.getStato().getClass().getSimpleName().replace("Stato", "");
+                }
+
+                String[] riga = new String[] {
+                        s.getIdSegnalazione() != null ? s.getIdSegnalazione() : "ID_TEMP",
+                        s.getIdCittadino() != null ? s.getIdCittadino() : "Utente Sconosciuto",
+                        s.getData() != null ? s.getData().toString() : "",
+                        s.getDescrizione(),
+                        nomeStato,
+                        s.getCategoria() != null ? s.getCategoria().name() : "",
+                        s.getPosizione()
+                };
+
+                righeTabella.add(riga);
+            }
+        }
+
+        return righeTabella;
+    }
+    //TODO
 
     public static Long getIdSegnalazioneCorrente(){
 

@@ -60,6 +60,8 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     public void setData(LocalDateTime data) { this.data = data; }
     public String getUrlImmagine() { return urlImmagine; }
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
+    public String getIdSegnalazione() {return idSegnalazione;}
+
 
     // Metodi
     /*
@@ -237,7 +239,5 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         s.aggiornaStato(false);
 
     }
-
-
 
 }
