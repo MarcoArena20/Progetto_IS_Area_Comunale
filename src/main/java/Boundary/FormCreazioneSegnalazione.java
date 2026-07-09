@@ -1,10 +1,14 @@
 package Boundary;
 
 import Controller.ControllerSegnalazioni;
+import Entity.Categoria;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FormCreazioneSegnalazione {
 
@@ -15,6 +19,7 @@ public class FormCreazioneSegnalazione {
     private JComboBox categoriaBox;
     private JTextField posizioneField;
     private JTextField urlImmagineField;
+    private JTextField dataField;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
@@ -45,23 +50,34 @@ public class FormCreazioneSegnalazione {
 
     private void creaSegnalazione(){
 
+        // Caratteristiche obbligatorie che ogni segnalazione deve avere
         String titolo = titoloField.getText();
         String descrizione = descrizioneField.getText();
         String categoria = (String) categoriaBox.getSelectedItem();
         String posizione = posizioneField.getText();
+
+        // Caratteristiche opzionali che una segnalazione può avere
         String urlImmagine = urlImmagineField.getText();
+        String data = dataField.getText();
 
-        if (!verificaDatiInseriti(titolo, descrizione, posizione))
+        if (urlImmagine.equalsIgnoreCase(""))
+            urlImmagine = null;
+
+        if(data.equalsIgnoreCase(""))
+            data = null;
+
+        if (verificaCampiObbligatori(titolo, descrizione, posizione, categoria) && verificaCampiOpzionali(urlImmagine, data))
             System.out.println("Dati inseriti non validi");
-        else{
+        else
+        {
 
-            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, "", null, urlImmagine);
+            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
 
         }
 
     }
 
-    private boolean verificaDatiInseriti(String titolo, String descrizione, String posizione){
+    private boolean verificaCampiObbligatori(String titolo, String descrizione, String posizione, String categoria){
 
         if (titolo.length() < 5 || titolo.length() > 15){
 
@@ -70,18 +86,53 @@ public class FormCreazioneSegnalazione {
 
         }
 
-        if (descrizione.length() < 50 || descrizione.length() > 200){
+        if (descrizione.length() < 50 || descrizione.length() > 200) {
 
             System.out.println("Errore nella descrizione");
             return false;
 
         }
 
-        // La verifica della categoria è inutile dato che essa è bloccata dal comboBox
-
         if (posizione.length() < 10 || posizione.length() > 20){
 
             System.out.println("Errore nella posizione");
+            return false;
+
+        }
+
+        try{
+
+            Categoria.valueOf(categoria);
+
+        }catch (IllegalArgumentException e){
+
+            System.out.println("Errore nella categoria");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private boolean verificaCampiOpzionali(String urlImmagine, String data){
+
+        if (urlImmagine != null && (urlImmagine.length() < 10 || urlImmagine.length() > 50)){
+
+            System.out.println("Errore nell'url");
+            return false;
+
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        try{
+
+            if(data != null)
+                LocalDateTime.parse(data, formatter);
+
+        }catch(DateTimeException e){
+
+            System.out.println("Errore nella data");
             return false;
 
         }

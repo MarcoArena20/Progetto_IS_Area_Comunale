@@ -26,6 +26,7 @@ public class Segnalazione {
     private LocalDateTime data;
     private String urlImmagine;
 
+    @OneToOne
     private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
 
     //Costruttore
@@ -189,7 +190,7 @@ public class Segnalazione {
                 ", descrizione='" + descrizione + '\'' +
                 ", categoria=" + categoria +
                 ", posizione='" + posizione + '\'' +
-                ", idCittadino='" + idCittadino + '\'' +
+                ", idCittadino='" + getIdCittadino() + '\'' +
                 ", stato=" + stato.getStatoToString() +
                 ", data=" + data.toString() +
                 ", urlImmagine='" + urlImmagine + '\'' +
@@ -202,7 +203,7 @@ public class Segnalazione {
         System.out.println("[Segnalazione] MainTest avviato..");
 
         Segnalazione s = new Segnalazione("Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
-                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", "1", null, "");
+                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", null, null, null);
         /*
         Titolo: Discarica
         Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
