@@ -19,7 +19,7 @@ public class GestoreSegnalazioni {
     }
 
     //Metodi
-    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, String idCittadino) {
+    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, String idCittadino, LocalDateTime data, String urlImmagine) {
 
         Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine, null);
 

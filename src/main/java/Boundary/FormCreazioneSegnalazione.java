@@ -55,7 +55,7 @@ public class FormCreazioneSegnalazione {
             System.out.println("Dati inseriti non validi");
         else{
 
-            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, urlImmagine, null);
+            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, "", null, urlImmagine);
 
         }
 
