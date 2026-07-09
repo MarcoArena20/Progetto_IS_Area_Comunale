@@ -24,4 +24,7 @@ public abstract class UtenteAutenticato {
     public String getEmail() { return email; }
     public String getRecapitoTelefonico() { return recapitoTelefonico; }
     //Per privacy si toglie il get della password hash
+
+    //Metodi
+    public abstract String getRuolo();
 }
