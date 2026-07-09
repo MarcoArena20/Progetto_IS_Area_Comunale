@@ -83,17 +83,17 @@
         </constraints>
         <properties/>
       </component>
-      <component id="e021a" class="javax.swing.JComboBox" binding="categoriaBox" custom-create="true">
+      <component id="e021a" class="javax.swing.JComboBox" binding="categoriaBox">
         <constraints>
           <grid row="2" column="5" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <model>
-            <item value="Illuminazione guasta"/>
-            <item value="Strada dissestata"/>
-            <item value="Rifiuti abbandonati"/>
-            <item value="Pericolo geenrico"/>
-            <item value="Arredo urbano danneggiato"/>
+            <item value="ILLUMINAZIONE_GUASTA"/>
+            <item value="STRADA_DISSESTATA"/>
+            <item value="RIFIUTI_ABBANDONATI"/>
+            <item value="PERICOLO_GENERICO"/>
+            <item value="ARREDO_URBANO_DANNEGGIATO"/>
           </model>
         </properties>
       </component>

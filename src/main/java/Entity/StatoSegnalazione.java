@@ -1,5 +1,7 @@
 package Entity;
 
+import jakarta.persistence.Entity;
+
 public interface StatoSegnalazione {
 
     //Metodi

@@ -27,8 +27,20 @@ public class FormCreazioneSegnalazione {
         });
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    public JFrame apriCreazioneFrame(){
+
+        JFrame frame = new JFrame();
+        frame.setTitle("CreazioneFrame");
+        frame.setContentPane(contentPanel);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        return frame;
+
     }
 
     private void creaSegnalazione(){
@@ -51,16 +63,28 @@ public class FormCreazioneSegnalazione {
 
     private boolean verificaDatiInseriti(String titolo, String descrizione, String posizione){
 
-        if (titolo.length() < 5 || titolo.length() > 15)
+        if (titolo.length() < 5 || titolo.length() > 15){
+
+            System.out.println("Errore nel titolo");
             return false;
 
-        if (descrizione.length() < 50 || descrizione.length() > 200)
+        }
+
+        if (descrizione.length() < 50 || descrizione.length() > 200){
+
+            System.out.println("Errore nella descrizione");
             return false;
+
+        }
 
         // La verifica della categoria è inutile dato che essa è bloccata dal comboBox
 
-        if (posizione.length() < 10 || posizione.length() > 20)
+        if (posizione.length() < 10 || posizione.length() > 20){
+
+            System.out.println("Errore nella posizione");
             return false;
+
+        }
 
         return true;
 
