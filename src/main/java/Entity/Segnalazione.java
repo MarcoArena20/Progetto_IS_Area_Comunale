@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+
 public class Segnalazione {
 
     //Attributi
@@ -39,10 +39,7 @@ public class Segnalazione {
         this.posizione = posizione;
         this.data = data;
 
-        if (!urlImmagine.isEmpty())
-            this.urlImmagine = urlImmagine;
-        else
-            this.urlImmagine = null;
+        this.urlImmagine = urlImmagine;
 
         this.stato = new StatoInviata(); //Stato iniziale segnalazione
         this.cittadino = cittadino;
@@ -74,6 +71,12 @@ public class Segnalazione {
     }
 
     public synchronized boolean iniziaGestione(String idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
+
+        //0. Check se è possibile prenderla in carico
+        if (!this.stato.getStatoToString().equals("StatoInviata")) {
+            System.err.println("[Segnalazione] Impossibile prendere in carico una richiesta che è già in gestione!");
+            return false;
+        }
 
         //1. Controllo se è la prima gestione
         if (elencoGestioniSegnalazione == null) {
@@ -185,14 +188,13 @@ public class Segnalazione {
     public String toString() {
         return "Segnalazione{" +
                 "idSegnalazione='" + idSegnalazione + '\'' +
-                ", titolo='" + titolo + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", categoria=" + categoria +
-                ", posizione='" + posizione + '\'' +
-                ", idCittadino='" + idCittadino + '\'' +
+                //", titolo='" + titolo + '\'' +
+                //", descrizione='" + descrizione + '\'' +
+                //", categoria=" + categoria +
+                //", posizione='" + posizione + '\'' +
                 ", stato=" + stato.getStatoToString() +
-                ", data=" + data.toString() +
-                ", urlImmagine='" + urlImmagine + '\'' +
+                //", data=" + data.toString() +
+                //", urlImmagine='" + urlImmagine + '\'' +
                 '}';
     }
 
@@ -202,7 +204,7 @@ public class Segnalazione {
         System.out.println("[Segnalazione] MainTest avviato..");
 
         Segnalazione s = new Segnalazione("Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
-                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", "1", null, "");
+                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", null, null, null);
         /*
         Titolo: Discarica
         Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
@@ -213,11 +215,16 @@ public class Segnalazione {
 
         System.out.println(s.toString());
 
+        s.iniziaGestione("Operatore1");
 
+        //s.concludiGestione(false);
 
+        //s.iniziaGestione("Operatore1");
+        //s.concludiGestione(true);
 
+        s.aggiornaStato();
 
-
+        s.concludiGestione(true);
 
     }
 
