@@ -1,6 +1,6 @@
 package Entity;
 
 public enum Ruolo {
-    CITTADINO,
-    OPERATORE
+    Cittadino,
+    Operatore
 }
