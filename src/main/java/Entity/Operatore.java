@@ -1,13 +1,26 @@
 package Entity;
 
 public class Operatore extends UtenteAutenticato {
+
+    //Attributi
+    /*
+    protected String nome;
+    protected String cognome;
+    protected String email;
+    protected String recapitoTelefonico;
+    protected String passwordHash;
+    */
     private String idOperatore;
 
-    public Operatore(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash, String idOperatore) {
+    //Costruttore
+    public Operatore(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         super(nome, cognome, email, recapitoTelefonico, passwordHash);
-        this.idOperatore = idOperatore;
+        //TODO
+        //Generare automaticamente l'idOperatore
     }
 
+    //Getter
     public String getIdOperatore() { return idOperatore; }
-    public void setIdOperatore(String idOperatore) { this.idOperatore = idOperatore; }
+
+
 }
