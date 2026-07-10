@@ -1,5 +1,11 @@
 package Entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Operatore extends UtenteAutenticato {
 
     //Attributi
@@ -10,17 +16,17 @@ public class Operatore extends UtenteAutenticato {
     protected String recapitoTelefonico;
     protected String passwordHash;
     */
-    private String idOperatore;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idOperatore;
 
     //Costruttore
     public Operatore(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         super(nome, cognome, email, recapitoTelefonico, passwordHash);
-        //TODO
-        //Generare automaticamente l'idOperatore
     }
 
     //Getter
-    public String getIdOperatore() { return idOperatore; }
+    public Long getIdOperatore() { return idOperatore; }
 
     //Metodi
     @Override

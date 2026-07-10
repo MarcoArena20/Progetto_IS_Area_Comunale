@@ -18,17 +18,19 @@ public class Cittadino extends UtenteAutenticato {
     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String idCittadino;
+    private Long idCittadino;
+
+    public Cittadino(){
+        super();
+    }
 
     //Costruttore
     public Cittadino(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         super(nome, cognome, email, recapitoTelefonico, passwordHash);
-        //TODO
-        //Generare automaticamente l'idCittadino
     }
 
     //Getter
-    public String getIdCittadino() { return idCittadino; }
+    public Long getIdCittadino() { return idCittadino; }
 
     //Metodi
     @Override
