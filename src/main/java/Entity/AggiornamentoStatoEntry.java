@@ -33,9 +33,8 @@ public class AggiornamentoStatoEntry {
     public AggiornamentoStatoEntry() {
     }
 
-    public AggiornamentoStatoEntry(Long idAggiornamento, LocalDateTime data, Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore, NotaInternaEntry notaInternaEntry) {
-        this.idAggiornamento = idAggiornamento;
-        this.data = data;
+    public AggiornamentoStatoEntry(Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore, NotaInternaEntry notaInternaEntry) {
+        this.data = LocalDateTime.now();
         this.segnalazione = segnalazione;
         this.stato = stato;
         this.operatore = operatore;
