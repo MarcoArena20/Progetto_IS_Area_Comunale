@@ -133,15 +133,11 @@ public class ControllerSegnalazioni {
     public static void main(String[] args) {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
-        /*
-        Titolo: Discarica
-        Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
-        Categoria: Rifiuti abbandonati
-        Posizione: Viale delle mimose
-        */
+        setIdSegnalazioneCorrente(1L);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
-        boolean esito = ControllerSegnalazioni.creaSegnalazione("Discarica", "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
-                                                "RIFIUTI_ABBANDONATI", "Viale delle mimose", null, null);
+        boolean esito = ControllerSegnalazioni.iniziaGestioneSegnalazione();
+
 
 
 
