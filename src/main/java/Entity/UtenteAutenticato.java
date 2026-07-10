@@ -1,5 +1,8 @@
 package Entity;
 
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class UtenteAutenticato {
 
     //Attributi
@@ -8,6 +11,10 @@ public abstract class UtenteAutenticato {
     protected String email;
     protected String recapitoTelefonico;
     protected String passwordHash;
+
+    public UtenteAutenticato(){
+
+    }
 
     //Costruttore
     public UtenteAutenticato(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {

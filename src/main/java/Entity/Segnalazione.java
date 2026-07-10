@@ -26,30 +26,19 @@ public class Segnalazione {
     private LocalDateTime data;
     private String urlImmagine;
 
-    @OneToOne
-    private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
+    //private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
 
-    //Costruttore
-    public Segnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, Cittadino cittadino) {
-        //TODO
-        //Generare automaticamente idSegnalazione
+    //Costruttore avente solo i paramatri obbligatori
 
+    public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
+
+        this.cittadino = cittadino;
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.categoria = categoria;
         this.posizione = posizione;
-        this.data = data;
+        this.stato = new StatoInviata();
 
-        if (!urlImmagine.isEmpty())
-            this.urlImmagine = urlImmagine;
-        else
-            this.urlImmagine = null;
-
-        this.stato = new StatoInviata(); //Stato iniziale segnalazione
-        this.cittadino = cittadino;
-        //Essendo inizialmente la segnalazione nello stato "Inviata",
-        //sicuramente l'elencoGestioni sarà null inizialmente
-        this.elencoGestioniSegnalazione = null;
     }
 
     // Getter e Setter
@@ -61,7 +50,7 @@ public class Segnalazione {
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
     public String getPosizione() { return posizione; }
     public void setPosizione(String posizione) { this.posizione = posizione; }
-    public String getIdCittadino() { return cittadino.getIdCittadino(); }
+    public Long getIdCittadino() { return (cittadino != null) ? cittadino.getIdCittadino(): null; }
     public StatoSegnalazione getStato() { return stato; }
     public void setStato(StatoSegnalazione stato) {this.stato = stato;}
     public LocalDateTime getData() { return data; }
@@ -71,10 +60,10 @@ public class Segnalazione {
 
     // Metodi
     public void aggiungiNota(String titoloNota, String descrizioneNota) {
-        elencoGestioniSegnalazione.salvaNota(titoloNota, descrizioneNota);
+        //elencoGestioniSegnalazione.salvaNota(titoloNota, descrizioneNota);
     }
 
-    public synchronized boolean iniziaGestione(String idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
+    /* public synchronized boolean iniziaGestione(String idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
 
         //1. Controllo se è la prima gestione
         if (elencoGestioniSegnalazione == null) {
@@ -180,7 +169,7 @@ public class Segnalazione {
             }
         }
 
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -202,8 +191,8 @@ public class Segnalazione {
     public static void main(String[] args) {
         System.out.println("[Segnalazione] MainTest avviato..");
 
-        Segnalazione s = new Segnalazione("Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
-                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose", null, null, null);
+        Segnalazione s = new Segnalazione(null, "Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
+                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose");
         /*
         Titolo: Discarica
         Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
