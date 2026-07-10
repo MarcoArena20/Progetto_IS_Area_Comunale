@@ -3,18 +3,77 @@ package Controller;
 import Entity.Categoria;
 import Entity.GestoreSegnalazioni;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 //Façade
 public class ControllerSegnalazioni {
 
-    private String getIdSegnalazioneCorrente(){
+    public Long getIdSegnalazioneCorrente(){
 
-        // Metodo di lettura su file per ottenere la segnalazione corrente
+        Path path = Path.of("configuration/config.txt");
 
-        return null;
+        try {
+            if (!Files.exists(path)) {
+
+                return null;
+
+            }else{
+
+                List<String> lines = Files.readAllLines(path);
+                return Long.parseLong(lines.get(2).split(":")[1]);
+
+            }
+
+
+        }catch(IOException e){
+
+            e.printStackTrace();
+            return null;
+
+        }
     }
+
+    public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
+
+        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
+        // di default, ovvero
+        // idUtente:
+        // ruolo:
+        // idSegnalazione:
+
+        Path path = Path.of("configuration/config.txt");
+
+        try {
+            if (!Files.exists(path)) {
+
+                Files.createFile(path);
+                Files.writeString(path, "idUtente:\nruolo:\nidSegnalazione:" + idSegnalazioneCorrente + "\n", StandardOpenOption.APPEND);
+
+            }else{
+
+                List<String> lines = Files.readAllLines(path);
+                lines.set(2, "idSegnalazione:" + idSegnalazioneCorrente);
+
+                Files.write(path, lines);
+
+            }
+
+
+        }catch(IOException e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
 
     // Metodo per creare una segnalazione
     public static final boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
