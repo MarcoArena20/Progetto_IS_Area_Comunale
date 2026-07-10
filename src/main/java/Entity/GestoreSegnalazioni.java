@@ -12,10 +12,13 @@ public class GestoreSegnalazioni {
 
     //Attributi
     private GestorePersistenza gestorePersistenza;
+    private Observer observerSegnalazione;
 
     public GestoreSegnalazioni(){
 
-        gestorePersistenza = new GestorePersistenza();
+        this.gestorePersistenza = new GestorePersistenza();
+
+        this.observerSegnalazione = new ConcreteObserver("observerSegnalazione");
 
     }
 
@@ -78,18 +81,19 @@ public class GestoreSegnalazioni {
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
 
 
-        synchronized (segnalazione) { //accesso in mutua esclusione alla segnalazione
-            //TODO impostare limite di attesa
-            StatoSegnalazione statoSegnalazione = segnalazione.getStato();
+        StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
-            if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())) {
-                //Impossibile iniziare la gestione
-                System.err.println("[GestoreSegnalazioni] Segnalazione già in gestione..");
-                return false;
-            } else {
-                segnalazione.aggiornaStato(true);
-            }
+        if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())) {
+            //Impossibile iniziare la gestione
+            System.err.println("[GestoreSegnalazioni] Segnalazione già in gestione..");
+            return false;
+        } else {
+
+            segnalazione.attach(this.observerSegnalazione);
+
+            segnalazione.aggiornaStato(true);
         }
+
         //Posso uscire dal blocco synchronized poiché è conclusa la sezione critica
 
         System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
