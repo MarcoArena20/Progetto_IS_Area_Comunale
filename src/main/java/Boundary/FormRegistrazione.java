@@ -1,5 +1,7 @@
 package Boundary;
 
+import Controller.ControllerUtenti;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -139,15 +141,25 @@ public class FormRegistrazione {
     }
 
     private void Registra(){
+        String ruoloStringa = (String) ruoloBox.getSelectedItem();
+        String cognome = nomeTextField.getText();
+        String nome = nomeTextField.getText();
+        String recapitoTelefonico =recapitoTelefonicoTextField.getText();
+        String email= emailTextField.getText();
+        String password = passwordTextField.getText();
+
         printFormRegistrazione();
+        boolean esitoRegistrazione=false;
         boolean esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione((String) ruoloBox.getSelectedItem(),
                                                                                 nomeTextField.getText(),
                                                                                 cognomeTextField.getText(),
                                                                                 recapitoTelefonicoTextField.getText(),
                                                                                 emailTextField.getText(),
                                                                                 passwordTextField.getText());
+
+        esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome,cognome,recapitoTelefonico,email,password);
         System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
-        System.out.println("TODO Implementation register");
+        System.out.println("Esito Registrazione: "+esitoRegistrazione);
 
     }
 
