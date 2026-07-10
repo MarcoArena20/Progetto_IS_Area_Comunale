@@ -97,4 +97,16 @@ public class GestoreSegnalazioni {
         //TODO
         return true;
     }
+
+    public Segnalazione.Dettaglio visualizzaDettaglioSegnalazione(Long idSegnalazione){
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+
+        Segnalazione.Dettaglio dettaglio = segnalazione.getDettaglioSegnalazione();
+
+        return dettaglio;
+    }
+
+    public Segnalazione.InfoAnteprima visualizzaSegnalazioniPerCittadino(idCittadino){
+
+    }
 }
