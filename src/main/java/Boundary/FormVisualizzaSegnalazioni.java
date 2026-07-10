@@ -18,7 +18,8 @@ public class FormVisualizzaSegnalazioni extends JFrame {
     private JTable tableSegnalazioni;
     private JButton btnVisualizzaDettaglio;
     private JButton btnPrendiInCarico;
-
+    private JScrollPane scrollPane;
+    private JScrollPane scrollPaneTable;
 
     public FormVisualizzaSegnalazioni() {
         setTitle("Pannello Operatore - Visualizza Segnalazioni");
