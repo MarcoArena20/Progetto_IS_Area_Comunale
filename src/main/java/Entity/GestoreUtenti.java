@@ -13,7 +13,7 @@ public class GestoreUtenti {
 
     //Metodi
     public String registraUtente(Ruolo ruolo, String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
-        return ;
+        return "GestoreUtentiTODO";
         //TODO
     }
 

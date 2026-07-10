@@ -40,7 +40,7 @@ public class GestorePersistenza {
 
     }
 
-    public boolean cercaUtenteNelDB(String email, String passwordHash, Ruolo ruolo) {
+   /* public boolean cercaUtenteNelDB(String email, String passwordHash, Ruolo ruolo) {
 
         Map<String, Object> criteriRicerca = Map.of( "email", email,
                 "password",passwordHash,
@@ -80,6 +80,8 @@ public class GestorePersistenza {
             }
         }
     }
+
+    */
 
 
 }
