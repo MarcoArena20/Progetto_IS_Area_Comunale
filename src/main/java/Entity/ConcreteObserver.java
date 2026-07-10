@@ -11,13 +11,15 @@ public class ConcreteObserver implements Observer {
     }
 
     @Override
-    public boolean update(Long idSegnalazione, StatoSegnalazione newStato) {
-        System.out.println("["+this.nameObserver+"] Stato aggiornato:\nSegnalazione: "+idSegnalazione+"\tStato: "+newStato);
+    public boolean update(Segnalazione segnalazione, StatoSegnalazione newStato) {
+        System.out.println("["+this.nameObserver+"] Stato aggiornato:\n"+segnalazione.toString());
         System.out.println("["+this.nameObserver+"] Contatto db..");
 
-        //TODO
+        GestoreAggiornamento gestoreAggiornamento = new GestoreAggiornamento();
+        boolean esito = gestoreAggiornamento.aggiornaStato(segnalazione, newStato);
 
-        return true;
+
+        return esito;
     }
 
 

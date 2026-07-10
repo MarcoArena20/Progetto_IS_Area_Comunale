@@ -105,7 +105,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             }
 
             //1.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
+            esito = notifyObserver(this, this.stato);
             if (esito == false) {
                 System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
                 return false;
@@ -129,7 +129,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             }
 
             //2.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
+            esito = notifyObserver(this, this.stato);
             if (esito == false) {
                 System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
                 return false;
