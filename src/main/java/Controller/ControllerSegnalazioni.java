@@ -95,7 +95,7 @@ public class ControllerSegnalazioni {
         }
 
         // Otteniamo l'id del cittadino per poter verificare la sua esistenza
-        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
+        Long idCittadino = ControllerUtenti.getIdUtenteCoorrente();
 
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
         boolean esito = gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
