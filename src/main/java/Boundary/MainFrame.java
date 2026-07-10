@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 public class MainFrame {
 
+    private JFrame mainFrame;
     private JPanel mainPanel;
     private JButton accediButton;
     private JButton registratiButton;
@@ -45,11 +46,15 @@ public class MainFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        mainFrame = frame;
+
         return frame;
 
     }
 
     private void SchermataAccesso(){
+
+        mainFrame.dispose();
 
         // Metodo per la visualizzazione del form di accesso
         accediFrame = new FormAccesso().apriFormAccesso();
@@ -59,6 +64,8 @@ public class MainFrame {
     }
 
     private void SchermataRegistrazione(){
+
+        mainFrame.dispose();
 
         registraFrame = new FormRegistrazione().apriFormRegistrazione();
         registraFrame.toFront();
@@ -70,7 +77,7 @@ public class MainFrame {
 
         System.out.println("Avvio dell'applicazione e creazione dell'oggetto MainFrame");
 
-        JFrame frame = new MainFrame().apriMainFrame();
+        new MainFrame().apriMainFrame();
 
     }
 }
