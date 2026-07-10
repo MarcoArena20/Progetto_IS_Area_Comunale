@@ -4,6 +4,7 @@ package Entity;
 import Database.GestorePersistenza;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 //Façade
@@ -42,9 +43,12 @@ public class GestoreSegnalazioni {
     }
 
     public List<Segnalazione> cercaSegnalazioni(Long idCittadino) {
-        //TODO
 
-        return null;
+        return gestorePersistenza.cercaPerCampo(
+                Segnalazione.class,
+                "Cittadino.id",
+                idCittadino
+        );
     }
 
     public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String posizione) {
@@ -106,7 +110,15 @@ public class GestoreSegnalazioni {
         return dettaglio;
     }
 
-    public Segnalazione.InfoAnteprima visualizzaSegnalazioniPerCittadino(Long idCittadino){
+    public List<Segnalazione.InfoAnteprima> visualizzaSegnalazioniPerCittadino(Long idCittadino) {
+        List<Segnalazione> segnalazioni = cercaSegnalazioni(idCittadino);
+        List<Segnalazione.InfoAnteprima> anteprime = new ArrayList<>();
 
+        for (Segnalazione segnalazione : segnalazioni) {
+            Segnalazione.InfoAnteprima anteprima = segnalazione.getInfoAnteprima();
+            anteprime.add(anteprima);
+        }
+
+        return anteprime;
     }
 }
