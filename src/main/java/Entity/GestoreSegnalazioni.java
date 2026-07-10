@@ -97,8 +97,4 @@ public class GestoreSegnalazioni {
         //TODO
         return true;
     }
-
-    public List<Segnalazione> visualizzaSegnalazioniPerOperatore(String stato, String categoria, String area) {
-        
-    }
 }
