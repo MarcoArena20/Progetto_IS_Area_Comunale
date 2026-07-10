@@ -36,10 +36,12 @@ public class GestoreSegnalazioni {
         if (urlImmagine != null)
            segnalazione.setUrlImmagine(urlImmagine);
 
+        System.out.println("[GestoreSegnalazioni] Inserita nuova segnalazione:\n"+segnalazione.toString());
+
         return gestorePersistenza.salva(segnalazione);
     }
 
-    public List<Segnalazione> cercaSegnalazioni(String idCittadino) {
+    public List<Segnalazione> cercaSegnalazioni(Long idCittadino) {
         //TODO
 
         return null;
@@ -50,19 +52,44 @@ public class GestoreSegnalazioni {
         return null;
     }
 
-    public Segnalazione cercaSegnalazione(String idSegnalazione) {
-        //TODO
+    public Segnalazione cercaSegnalazione(Long idSegnalazione) {
+        Segnalazione segnalazione = gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
 
-        return null;
+        return segnalazione;
     }
 
-    public boolean aggiungiNota(String idSegnalazione, String titolo, String descrizioneNota) {
+    public boolean aggiungiNota(Long idSegnalazione, String titolo, String descrizioneNota) {
         //TODO
         return true;
     }
 
-    public boolean iniziaGestioneSegnalazione(String idSegnalazione, String idOperatore) {
-        //TODO
+    public boolean iniziaGestioneSegnalazione(Long idSegnalazione, Long idOperatore) {
+        //Bisogna controllare che: 0. la segnalazione esiste, 1. accesso in mutua esclusione, 2. la segnalazione ha stato inviata
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+        if (segnalazione == null) {
+            System.err.println("[GestoreSegnalazioni] Nessuna segnalazione trovata..");
+            return false;
+        }
+
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+
+
+        synchronized (segnalazione) { //accesso in mutua esclusione alla segnalazione
+            //TODO impostare limite di attesa
+            StatoSegnalazione statoSegnalazione = segnalazione.getStato();
+
+            if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())) {
+                //Impossibile iniziare la gestione
+                System.err.println("[GestoreSegnalazioni] Segnalazione già in gestione..");
+                return false;
+            } else {
+                segnalazione.aggiornaStato(true);
+            }
+        }
+        //Posso uscire dal blocco synchronized poiché è conclusa la sezione critica
+
+        System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
+
         return true;
     }
 

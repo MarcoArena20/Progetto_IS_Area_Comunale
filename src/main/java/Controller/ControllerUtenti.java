@@ -55,7 +55,7 @@ public class ControllerUtenti {
             }
             return esitoregistrazione;
         }
-    public static Long getIdUtenteCoorrente(){
+    public static Long getIdUtenteCorrente(){
 
         Path path = Path.of("configuration/config.txt");
 
@@ -68,6 +68,32 @@ public class ControllerUtenti {
 
                 List<String> lines = Files.readAllLines(path);
                 return Long.parseLong(lines.get(0).split(":")[1]);
+
+            }
+
+
+        }catch(IOException e){
+
+            e.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    public static String getRuoloUtenteCorrente(){
+
+        Path path = Path.of("configuration/config.txt");
+
+        try {
+            if (!Files.exists(path)) {
+
+                return null;
+
+            }else{
+
+                List<String> lines = Files.readAllLines(path);
+                return lines.get(1).split(":")[1];
 
             }
 

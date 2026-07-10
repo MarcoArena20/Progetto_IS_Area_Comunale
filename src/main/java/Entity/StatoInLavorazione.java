@@ -1,6 +1,6 @@
 package Entity;
 
-public class StatoInLavorazione implements StatoSegnalazione {
+public class StatoInLavorazione extends StatoSegnalazione {
 
     //Costruttore
     public StatoInLavorazione() {}
@@ -25,13 +25,8 @@ public class StatoInLavorazione implements StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return "StatoInLavorazione";
+        return StatoType.IN_LAVORAZIONE.name();
     }
 
-    @Override
-    public String toString() {
-        return "Stato{" +
-                "statoCorrente='" + this.getStatoToString() + '\'' +
-                '}';
-    }
+
 }
