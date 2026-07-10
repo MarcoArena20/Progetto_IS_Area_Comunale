@@ -142,7 +142,7 @@ public class FormRegistrazione {
 
     private void Registra(){
         String ruoloStringa = (String) ruoloBox.getSelectedItem();
-        String cognome = nomeTextField.getText();
+        String cognome = cognomeTextField.getText();
         String nome = nomeTextField.getText();
         String recapitoTelefonico =recapitoTelefonicoTextField.getText();
         String email= emailTextField.getText();
