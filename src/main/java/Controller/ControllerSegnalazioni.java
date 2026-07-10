@@ -3,6 +3,7 @@ package Controller;
 import Entity.Categoria;
 import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
+import Entity.Segnalazione;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 //Façade
@@ -129,6 +131,54 @@ public class ControllerSegnalazioni {
 
     }
 
+    public static List<String[]> caricaSegnalazioni(){
+        /*
+         * Questo metodo svolge il ruolo di "adapter" tra:
+         *
+         * - il livello applicativo, che lavora con oggetti del dominio
+         *   come Imbarcazione;
+         *
+         * - la GUI, che invece non dovrebbe conoscere direttamente
+         *   le Entity del sistema.
+         *
+         * In altre parole, il metodo adatta una lista di oggetti
+         * Segnalazione.InfoAnteprima in una lista di array di String, cioè in un formato
+         * semplice e già pronto per essere visualizzato in una JTable.
+         */
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        //Recuperiamo l'id del cittadino
+        Long id = ControllerUtenti.getIdUtenteCorrente();
+
+        // Recuperiamo le segnalazioni associate al cittadino.
+        List<Segnalazione.InfoAnteprima> anteprime =
+                gestore.visualizzaSegnalazioniPerCittadino(id);
+
+        /*
+         * Questa sarà la lista da restituire alla GUI.
+         * Ogni elemento della lista rappresenta una riga della JTable.
+         */
+        List<String[]> righe = new ArrayList<>();
+
+        /*
+         * Convertiamo ogni oggetto Segnalazione.InfoAnteprima in un array di String.
+         * In questo modo la GUI riceverà solo dati testuali,
+         * non oggetti Entity.
+         */
+        for (Segnalazione.InfoAnteprima anteprima : anteprime) {
+
+            String[] riga = new String[]{
+                    anteprima.categoria().toString(),
+                    anteprima.data().toString(),
+                    anteprima.posizione().toString(),
+                    anteprima.stato().toString(),
+            };
+
+            righe.add(riga);
+        }
+
+        return righe;
+    }
 
     public static void main(String[] args) {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");

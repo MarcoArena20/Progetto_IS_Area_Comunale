@@ -37,7 +37,7 @@ public class FormVisualizzaSegnalazioni {
         tabellaSegnalazioni.setRowSelectionAllowed(true);
         tabellaSegnalazioni.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        List<String[]> righe = ControllerSegnalazioni.caricaSegnalazioni(id);
+        List<String[]> righe = ControllerSegnalazioni.caricaSegnalazioni();
 
         for(String[] riga : righe){
             tableModel.addRow(riga);

@@ -207,7 +207,8 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     }
 
     //record usato per tornare in modo pulito i dettagli
-    public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, String idCittadino, Map<LocalDateTime, StatoSegnalazione> evoluzione_stato) {}
+    //[ATTENZIONE] public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, Long idCittadino, Map<LocalDateTime, StatoSegnalazione> evoluzione_stato) {}
+    public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, Long idCittadino) {}
 
     public Dettaglio getDettaglioSegnalazione(){
         if(verificaPresenzaImmagine()){
@@ -217,7 +218,9 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             LocalDateTime date = getData();
         }
 
-        return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino(), this.elencoGestioniSegnalazione.getStoricoStato());
+        //manca il dettaglio dello storico delle segnalazioni
+        //[ATTENZIONE] return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino(), this.elencoGestioniSegnalazione.getStoricoStato());
+        return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino());
     }
 
     private boolean verificaPresenzaImmagine(){
