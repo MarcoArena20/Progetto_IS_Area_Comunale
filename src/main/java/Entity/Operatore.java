@@ -21,6 +21,8 @@ public class Operatore extends UtenteAutenticato {
     private Long idOperatore;
 
     //Costruttore
+    public Operatore() {}
+
     public Operatore(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         super(nome, cognome, email, recapitoTelefonico, passwordHash);
     }
