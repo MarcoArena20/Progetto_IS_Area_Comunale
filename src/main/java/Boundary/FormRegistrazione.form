@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <preferredSize width="500" height="500"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="753ce" class="javax.swing.JButton" binding="registratiButton" default-binding="true">
@@ -23,8 +25,8 @@
         <properties>
           <model>
             <item value="-"/>
-            <item value="Cittadino"/>
-            <item value="Operatore Comunale"/>
+            <item value="CITTADINO"/>
+            <item value="OPERATORE"/>
           </model>
         </properties>
       </component>
