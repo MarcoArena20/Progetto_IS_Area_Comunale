@@ -1,6 +1,6 @@
 package Entity;
 
-public class StatoInviata implements StatoSegnalazione {
+public class StatoInviata extends StatoSegnalazione {
 
     //Costruttore
     public StatoInviata() {}
@@ -13,7 +13,10 @@ public class StatoInviata implements StatoSegnalazione {
         if (esito == true) {
             //Avanzo di stato..
             System.out.println("[StatoInviata] Avanzamento di stato..");
+
+            //Aggiorno stato
             segnalazione.setStato(new StatoPresaInCarico());
+
             return true;
 
         } else {
@@ -27,15 +30,9 @@ public class StatoInviata implements StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return "StatoInviata";
+        return StatoType.INVIATA.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Stato{" +
-                "statoCorrente='" + this.getStatoToString() + '\'' +
-                '}';
-    }
 
     public static void main(String[] args) {
         System.out.println("[StatoInviata] MainTest avviato..");
