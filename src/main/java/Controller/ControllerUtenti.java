@@ -3,8 +3,11 @@ package Controller;
 //Façade
 public class ControllerUtenti {
 
-    //Attributi
-    private static String idUtenteCorrente;
+    public static Long getIdUtenteCoorrente(){
 
-    public static String getIdUtenteCoorrente(){return idUtenteCorrente; }
+        // Metodo di lettura su file per ottenere l'utente corrente
+
+        return 1L;
+
+    }
 }

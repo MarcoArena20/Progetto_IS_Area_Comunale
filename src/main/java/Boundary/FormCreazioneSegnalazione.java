@@ -20,6 +20,8 @@ public class FormCreazioneSegnalazione {
     private JTextField posizioneField;
     private JTextField urlImmagineField;
     private JTextField dataField;
+    private JPanel labelPanel;
+    private JPanel insertPanel;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
@@ -48,13 +50,19 @@ public class FormCreazioneSegnalazione {
 
     }
 
-    private void creaSegnalazione(){
+    private boolean creaSegnalazione(){
 
         // Caratteristiche obbligatorie che ogni segnalazione deve avere
         String titolo = titoloField.getText();
         String descrizione = descrizioneField.getText();
         String categoria = (String) categoriaBox.getSelectedItem();
         String posizione = posizioneField.getText();
+
+        if(!verificaCampiObbligatori(titolo, descrizione, posizione, categoria)){
+
+            return false;
+
+        }
 
         // Caratteristiche opzionali che una segnalazione può avere
         String urlImmagine = urlImmagineField.getText();
@@ -66,13 +74,13 @@ public class FormCreazioneSegnalazione {
         if(data.equalsIgnoreCase(""))
             data = null;
 
-        if (verificaCampiObbligatori(titolo, descrizione, posizione, categoria) && verificaCampiOpzionali(urlImmagine, data))
-            System.out.println("Dati inseriti non validi");
+        if (!verificaCampiOpzionali(urlImmagine, data)){
+            return false;
+        }
         else
         {
-
-            ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
-
+            boolean esito = ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+            return esito;
         }
 
     }

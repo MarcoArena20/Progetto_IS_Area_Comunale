@@ -8,8 +8,11 @@ public class GestoreUtenti {
     //Attributi
     private GestorePersistenza gestorePersistenza;
 
-    //Costruttore
-    //TODO
+    public GestoreUtenti(){
+
+        this.gestorePersistenza = new GestorePersistenza();
+
+    }
 
     //Metodi
     public String registraUtente(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
@@ -22,9 +25,8 @@ public class GestoreUtenti {
         return true;
     }
 
-    public Cittadino cercaUtente(String idCittadino) {
+    public Cittadino cercaUtente(Long idCittadino) {
 
-        //return gestorePersistenza.cercaPerCampo(Cittadino.class, "idCittadino", idCittadino);
-        return null;
+        return gestorePersistenza.trovaPerId(Cittadino.class, idCittadino);
     }
 }

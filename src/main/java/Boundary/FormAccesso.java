@@ -16,7 +16,7 @@ public class FormAccesso {
         accessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Accedi();
+                Acccedi();
             }
         });
     }
