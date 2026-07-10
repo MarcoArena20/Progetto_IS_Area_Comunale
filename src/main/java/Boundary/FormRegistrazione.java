@@ -40,7 +40,7 @@ public class FormRegistrazione {
     private boolean controlloFormatoDatiRegistrazione (String ruolo, String nome, String cognome, String recapitoTelefonico, String email, String password){
         try {
             // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-            if (!"Cittadino".equals(ruolo) && !"Operatore Comunale".equals(ruolo)) {
+            if (!ruolo.equals("CITTADINO") && !ruolo.equals("OPERATORE")) {
                 throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
             }
 

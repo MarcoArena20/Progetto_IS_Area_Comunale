@@ -5,6 +5,7 @@ import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -50,7 +51,11 @@ public class ControllerSegnalazioni {
 
         Path path = Path.of("configuration/config.txt");
 
+
         try {
+
+            Files.createDirectories(Path.of("configuration"));
+
             if (!Files.exists(path)) {
 
                 Files.createFile(path);
