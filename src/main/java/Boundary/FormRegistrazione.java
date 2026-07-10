@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import Controller.ControllerUtenti;
-import Entity.Ruolo;
 
 public class FormRegistrazione {
 
@@ -31,17 +30,7 @@ public class FormRegistrazione {
     }
 
 
-    private Ruolo stringaToRuolo(String ruoloStringa) throws IllegalArgumentException{
-        if (ruoloStringa == null){
-            throw new IllegalArgumentException("Ruolo non specificato.");
-        }
-        else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
-            return Ruolo.CITTADINO;
-        } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore Comunale")) {
-            return Ruolo.OPERATORECOMUNALE;
-        }
-        else{throw new IllegalArgumentException("Ruolo non specificato.");}
-    }
+
 
     private boolean controlloFormatoDatiRegistrazione (String ruolo, String cognome, String nome, String recapitoTelefonico, String email, String password){
         try {
@@ -154,12 +143,12 @@ public class FormRegistrazione {
         boolean esitoSalvataggioUtente=false;
         if (controlloFormatoDatiRegistrazione((String)ruoloBox.getSelectedItem(),cognomeTextField.getText(),nomeTextField.getText(),recapitoTelefonicoTextField.getText(),emailTextField.getText(),passwordTextField.getText())){
             try{
-                Ruolo ruolo = stringaToRuolo((String) ruoloBox.getSelectedItem());
+                String ruoloStringa = (String) ruoloBox.getSelectedItem();
                 String cognome = cognomeTextField.getText();    String nome= nomeTextField.getText();
                 String recapitoTelefonico = recapitoTelefonicoTextField.getText();
                 String email = emailTextField.getText();
                 String password = passwordTextField.getText();
-                esitoSalvataggioUtente = ControllerUtenti.salvaUtente(ruolo, cognome,nome,recapitoTelefonico,email, password);
+                esitoSalvataggioUtente = ControllerUtenti.salvaUtente(ruoloStringa, cognome,nome,recapitoTelefonico,email, password);
                 System.out.println("Esito: "+esitoSalvataggioUtente);
             }
             catch (IllegalArgumentException e){
