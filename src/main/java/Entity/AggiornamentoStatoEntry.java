@@ -9,7 +9,7 @@ public class AggiornamentoStatoEntry {
     //Attributi
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAggiornamento;
+    private Long idAggiornamento;
 
     private LocalDateTime data;
 
@@ -33,7 +33,7 @@ public class AggiornamentoStatoEntry {
     public AggiornamentoStatoEntry() {
     }
 
-    public AggiornamentoStatoEntry(long idAggiornamento, LocalDateTime data, Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore, NotaInternaEntry notaInternaEntry) {
+    public AggiornamentoStatoEntry(Long idAggiornamento, LocalDateTime data, Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore, NotaInternaEntry notaInternaEntry) {
         this.idAggiornamento = idAggiornamento;
         this.data = data;
         this.segnalazione = segnalazione;
@@ -43,10 +43,10 @@ public class AggiornamentoStatoEntry {
     }
 
     //Getter e Setter
-    public long getIdAggiornamento() {
+    public Long getIdAggiornamento() {
         return idAggiornamento;
     }
-    public void setIdAggiornamento(long idAggiornamento) {
+    public void setIdAggiornamento(Long idAggiornamento) {
         this.idAggiornamento = idAggiornamento;
     }
 

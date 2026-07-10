@@ -8,7 +8,7 @@ public class NotaInternaEntry {
     //Attributi
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idNotaInterna;
+    private Long idNotaInterna;
     private String titolo;
     private String descrizione;
 
@@ -23,10 +23,10 @@ public class NotaInternaEntry {
     }
 
     //Getter e Setter
-    public long getIdNotaInterna() {
+    public Long getIdNotaInterna() {
         return idNotaInterna;
     }
-    public void setIdNotaInterna(long idNotaInterna) {
+    public void setIdNotaInterna(Long idNotaInterna) {
         this.idNotaInterna = idNotaInterna;
     }
 

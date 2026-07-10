@@ -2,6 +2,7 @@ package Controller;
 
 import Entity.Categoria;
 import Entity.GestoreSegnalazioni;
+import Entity.Ruolo;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +15,7 @@ import java.util.List;
 //Façade
 public class ControllerSegnalazioni {
 
-    public Long getIdSegnalazioneCorrente(){
+    public static Long getIdSegnalazioneCorrente(){
 
         Path path = Path.of("configuration/config.txt");
 
@@ -95,7 +96,7 @@ public class ControllerSegnalazioni {
         }
 
         // Otteniamo l'id del cittadino per poter verificare la sua esistenza
-        Long idCittadino = ControllerUtenti.getIdUtenteCoorrente();
+        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
 
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
         boolean esito = gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
@@ -103,4 +104,43 @@ public class ControllerSegnalazioni {
         return esito;
 
     }
+
+    public static boolean iniziaGestioneSegnalazione () {
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
+        if (ruoloUtente.equals(Ruolo.CITTADINO.name())) {
+            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
+            return false;
+        }
+
+        Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
+        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+
+        boolean esito = gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente, idOperatore);
+
+        return esito;
+
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println("[ControllerSegnalazioni] MainTest avviato..");
+
+        /*
+        Titolo: Discarica
+        Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
+        Categoria: Rifiuti abbandonati
+        Posizione: Viale delle mimose
+        */
+
+        boolean esito = ControllerSegnalazioni.creaSegnalazione("Discarica", "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
+                                                "RIFIUTI_ABBANDONATI", "Viale delle mimose", null, null);
+
+
+
+
+    }
+
 }
