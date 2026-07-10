@@ -30,7 +30,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
 
     //Costruttori
     public Segnalazione(){
-
+        this.attach(ConcreteObserver.getInstance());
     }
 
     public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
@@ -42,6 +42,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         this.posizione = posizione;
         this.stato = new StatoInviata();
 
+        this.attach(ConcreteObserver.getInstance());
     }
 
     // Getter e Setter
@@ -226,7 +227,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         Posizione: Viale delle mimose
         */
 
-        s.attach(new ConcreteObserver("ObserverCambioStato"));
+        s.attach(ConcreteObserver.getInstance());
 
         System.out.println(s.toString());
 

@@ -1,12 +1,10 @@
 package Controller;
 
 import Entity.Categoria;
-import Entity.GestoreAggiornamento;
 import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -114,7 +112,7 @@ public class ControllerSegnalazioni {
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
+        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();//Controllo superfluo
         if (ruoloUtente.equals(Ruolo.CITTADINO.name())) {
             System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
             return false;
@@ -127,7 +125,34 @@ public class ControllerSegnalazioni {
         boolean esito = gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente, idOperatore);
 
         return esito;
+    }
 
+    public static boolean aggiornaStatoSegnalazione() {
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+
+        Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
+        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+        boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
+
+        return esitoAggiornamento;
+    }
+
+    public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+
+        Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
+        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+        boolean esitoConclusione = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
+
+        //TODO inserire nota
+
+        return esitoConclusione;
     }
 
 
@@ -137,8 +162,11 @@ public class ControllerSegnalazioni {
         setIdSegnalazioneCorrente(1L);
         ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
-        boolean esito = ControllerSegnalazioni.iniziaGestioneSegnalazione();
+        ControllerSegnalazioni.iniziaGestioneSegnalazione();
 
+        ControllerSegnalazioni.aggiornaStatoSegnalazione();
+
+        ControllerSegnalazioni.concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
 
     }
 
