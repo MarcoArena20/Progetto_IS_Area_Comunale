@@ -3,7 +3,7 @@ package Boundary;
 public class CheckDatiForm {
     public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String recapitoTelefonico, String email, String password) throws  IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-        if (!"Cittadino".equals(ruoloStringa) && !"Operatore Comunale".equals(ruoloStringa)) {
+        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
             throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
         }
 

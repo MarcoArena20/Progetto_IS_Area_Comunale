@@ -20,7 +20,7 @@ public class ControllerUtenti {
                     throw new IllegalArgumentException("Ruolo non specificato.");
                 } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
                     return Ruolo.CITTADINO;
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore Comunale")) {
+                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
                     return Ruolo.OPERATORE;
                 } else {
                     throw new IllegalArgumentException("Ruolo non specificato.");
@@ -42,37 +42,31 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
-        public static boolean salvaUtente(String ruoloStringa, String cognome, String nome, String recapitoTelefonico, String email,String password){
+        public static boolean salvaUtente(String ruoloStringa, String cognome, String nome, String recapitoTelefonico, String email,String password) {
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
-            boolean esitoRegistrazione=false;
-            try{
+            boolean esitoRegistrazione = false;
+            try {
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
-                String passwordHash =hashPassword(password);
+                String passwordHash = hashPassword(password);
 
                 String idUtente = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash);
 
-                if (idUtente!=null){
-                    esitoregistrazione=true;
+                if (idUtente != null) {
+                    esitoRegistrazione = true;
                     setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
-                if (gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash)!=null){
-                    esitoRegistrazione=true;
                 }
-                else{
-                    esitoRegistrazione=false;
-                }
-            }
-            catch (NoSuchAlgorithmException e){
-
+                esitoRegistrazione = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash) != null;
+            } catch (NoSuchAlgorithmException e) {
                 //TODO
                 e.printStackTrace();
             }
             return esitoRegistrazione;
         }
 
+
         public static boolean accessoUtente(String ruoloStringa, String email, String password){
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoAccesso=false;
-
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password);
@@ -86,97 +80,71 @@ public class ControllerUtenti {
                 return esitoAccesso;
             }
             return esitoAccesso;
-
         }
-        public static Long getIdUtenteCoorrente(){
+
     public static Long getIdUtenteCorrente(){
-
         Path path = Path.of("configuration/config.txt");
-
         try {
             if (!Files.exists(path)) {
 
                 return null;
 
             }else{
-
                 List<String> lines = Files.readAllLines(path);
                 return Long.parseLong(lines.get(0).split(":")[1]);
-
             }
-
-
         }catch(IOException e){
 
             e.printStackTrace();
             return null;
-
         }
-
     }
-
     public static String getRuoloUtenteCorrente(){
-
         Path path = Path.of("configuration/config.txt");
-
         try {
             if (!Files.exists(path)) {
-
                 return null;
-
             }else{
-
                 List<String> lines = Files.readAllLines(path);
                 return lines.get(1).split(":")[1];
-
             }
-
-
         }catch(IOException e){
-
             e.printStackTrace();
             return null;
-
         }
-
     }
 
     public static void setIdUtenteCorrente(Long idUtenteCorrente, String ruolo){
+            // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
+                // di default, ovvero
+                    // idUtente:
+                    // ruolo:
+                    // idSegnalazione:
 
-        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-        // di default, ovvero
-        // idUtente:
-        // ruolo:
-        // idSegnalazione:
+                    Path path = Path.of("configuration/config.txt");
 
-        Path path = Path.of("configuration/config.txt");
+                    try {
+                        Files.createDirectories(Path.of("configuration"));
 
-        try {
-            Files.createDirectories(Path.of("configuration"));
+                        if (!Files.exists(path)) {
 
-            if (!Files.exists(path)) {
+                            Files.createFile(path);
+                            Files.writeString(path, "idUtente:" + idUtenteCorrente + "\nruolo:" + ruolo + "\nidSegnalazione:\n", StandardOpenOption.APPEND);
 
-                Files.createFile(path);
-                Files.writeString(path, "idUtente:" + idUtenteCorrente + "\nruolo:" + ruolo + "\nidSegnalazione:\n", StandardOpenOption.APPEND);
+                        } else {
 
-            }else{
+                            List<String> lines = Files.readAllLines(path);
+                            lines.set(0, "idUtente:" + idUtenteCorrente);
+                            lines.set(1, "ruolo:" + ruolo);
 
-                List<String> lines = Files.readAllLines(path);
-                lines.set(0, "idUtente:" +idUtenteCorrente );
-                lines.set(1, "ruolo:" + ruolo);
+                            Files.write(path, lines);
 
-                Files.write(path, lines);
-
-            }
+                        }
 
 
-        }catch(IOException e){
+                    } catch (IOException e) {
 
-            e.printStackTrace();
-
+                        e.printStackTrace();
+                    }
         }
-
-
-
     }
-}
