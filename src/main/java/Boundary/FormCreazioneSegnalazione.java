@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class FormCreazioneSegnalazione {
 
+    private JFrame creazioneFrame;
     private JPanel contentPanel;
     private JButton creaSegnalazioneButton;
     private JTextField titoloField;
@@ -20,16 +21,25 @@ public class FormCreazioneSegnalazione {
     private JTextField posizioneField;
     private JTextField urlImmagineField;
     private JTextField dataField;
-    private JPanel labelPanel;
     private JPanel insertPanel;
+    private JPanel labelPanel;
+    private JLabel l;
+    private JPanel titoloPanel;
+    private JPanel descrizionePanel;
+    private JPanel categoriaPanel;
+    private JPanel posizionePanel;
+    private JPanel dataPanel;
+    private JPanel immaginePanel;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                creaSegnalazione();
-
+                if(creaSegnalazione()) {
+                    creazioneFrame.dispose();
+                    new FormAreaPersonaleCittadino().apriAreaPersonale();
+                }
             }
         });
     }
@@ -45,6 +55,8 @@ public class FormCreazioneSegnalazione {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        creazioneFrame = frame;
 
         return frame;
 
@@ -146,6 +158,12 @@ public class FormCreazioneSegnalazione {
         }
 
         return true;
+
+    }
+
+    public static void main(String[] args){
+
+        new FormCreazioneSegnalazione().apriCreazioneFrame();
 
     }
 }
