@@ -73,6 +73,9 @@ public class ControllerUtenti {
         Path path = Path.of("configuration/config.txt");
 
         try {
+
+            Files.createDirectories(Path.of("configuration"));
+
             if (!Files.exists(path)) {
 
                 Files.createFile(path);

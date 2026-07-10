@@ -18,6 +18,8 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
 
     private String titolo;
     private String descrizione;
+
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
     private String posizione;
 
