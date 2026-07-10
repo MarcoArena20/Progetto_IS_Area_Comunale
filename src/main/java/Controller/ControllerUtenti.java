@@ -14,16 +14,21 @@ import Entity.GestoreUtenti;
 //Façade
 public class ControllerUtenti {
 
-        private static Ruolo stringaToRuolo(String ruoloStringa) throws IllegalArgumentException{
-            if (ruoloStringa == null){
-                throw new IllegalArgumentException("Ruolo non specificato.");
+        private static Ruolo stringaToRuolo(String ruoloStringa){
+            try {
+                if (ruoloStringa == null) {
+                    throw new IllegalArgumentException("Ruolo non specificato.");
+                } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
+                    return Ruolo.CITTADINO;
+                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore Comunale")) {
+                    return Ruolo.OPERATORE;
+                } else {
+                    throw new IllegalArgumentException("Ruolo non specificato.");
+                }
+            }catch (IllegalArgumentException e){
+                e.getMessage();
+                return null;
             }
-            else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
-                return Ruolo.CITTADINO;
-            } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore Comunale")) {
-                return Ruolo.OPERATORE;
-            }
-            else{throw new IllegalArgumentException("Ruolo non specificato.");}
         }
 
         private static String hashPassword(String password) throws NoSuchAlgorithmException {
@@ -39,7 +44,7 @@ public class ControllerUtenti {
         }
         public static boolean salvaUtente(String ruoloStringa, String cognome, String nome, String recapitoTelefonico, String email,String password){
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
-            boolean esitoregistrazione=false;
+            boolean esitoRegistrazione=false;
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password);
@@ -49,6 +54,11 @@ public class ControllerUtenti {
                 if (idUtente!=null){
                     esitoregistrazione=true;
                     setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
+                if (gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash)!=null){
+                    esitoRegistrazione=true;
+                }
+                else{
+                    esitoRegistrazione=false;
                 }
             }
             catch (NoSuchAlgorithmException e){
@@ -56,8 +66,29 @@ public class ControllerUtenti {
                 //TODO
                 e.printStackTrace();
             }
-            return esitoregistrazione;
+            return esitoRegistrazione;
         }
+
+        public static boolean accessoUtente(String ruoloStringa, String email, String password){
+            GestoreUtenti gestoreUtenti = new GestoreUtenti();
+            boolean esitoAccesso=false;
+
+            try{
+                Ruolo ruolo = stringaToRuolo(ruoloStringa);
+                String passwordHash =hashPassword(password);
+
+                if (gestoreUtenti.accessoUtente(ruolo, email, passwordHash)!=null){
+                    esitoAccesso=true;
+                }
+            }
+            catch (NoSuchAlgorithmException e){
+                e.printStackTrace();
+                return esitoAccesso;
+            }
+            return esitoAccesso;
+
+        }
+        public static Long getIdUtenteCoorrente(){
     public static Long getIdUtenteCorrente(){
 
         Path path = Path.of("configuration/config.txt");
