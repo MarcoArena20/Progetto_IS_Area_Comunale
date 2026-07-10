@@ -1,6 +1,7 @@
 package Controller;
 
 import Entity.Categoria;
+import Entity.GestoreAggiornamento;
 import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
@@ -137,9 +138,6 @@ public class ControllerSegnalazioni {
         ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
         boolean esito = ControllerSegnalazioni.iniziaGestioneSegnalazione();
-
-
-
 
 
     }

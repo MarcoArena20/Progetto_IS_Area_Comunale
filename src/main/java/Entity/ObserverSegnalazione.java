@@ -15,10 +15,10 @@ public abstract class ObserverSegnalazione {
         this.observer = null;
     }
 
-    protected boolean notifyObserver(Long idSegnalazione, StatoSegnalazione newState) {
+    protected boolean notifyObserver(Segnalazione segnalazione, StatoSegnalazione newState) {
         if (this.observer != null) {
 
-            this.observer.update(idSegnalazione, newState);
+            this.observer.update(segnalazione, newState);
             return true;
 
         } else {
