@@ -26,7 +26,6 @@ public class ControllerSegnalazioni {
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String stato, String categoria, String area) {
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
 
-        // Assicurati che nel tuo GestoreSegnalazioni esista un metodo con questa firma
         List<Segnalazione> listaEntity = gestore.visualizzaSegnalazioniPerOperatore(stato, categoria, area);
 
 
