@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class ElencoGestioniSegnalazione {
 
+    /*
     //Attributi
     private Segnalazione segnalazione;
     private Map<LocalDateTime, NotaInterna> storicoNote;
@@ -43,6 +44,6 @@ public class ElencoGestioniSegnalazione {
     }
 
 
-
+    */
 }
 
