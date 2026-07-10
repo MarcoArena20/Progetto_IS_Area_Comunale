@@ -42,11 +42,11 @@ public class FormAccesso {
     }
 
     private void Accedi(){
-        printFormRegistrazione();
-        boolean esitoFormatoRegistrazione = controlloFormatoDatiAccesso((String) ruoloBox.getSelectedItem(),
-                                                                                emailTextField.getText(),
-                                                                                passwordTextField.getText());
-        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
+        //printFormRegistrazione();
+        //boolean esitoFormatoRegistrazione = controlloFormatoDatiAccesso((String) ruoloBox.getSelectedItem(),
+                                                                                //emailTextField.getText(),
+                                                                                //passwordTextField.getText());
+        //System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
         System.out.println("TODO Implementation access");
 
     }

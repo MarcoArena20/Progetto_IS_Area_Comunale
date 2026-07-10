@@ -21,7 +21,7 @@ public class Segnalazione {
     private Categoria categoria;
     private String posizione;
 
-    @Convert(converter = ConverterStato.class)
+    //@Convert(converter = ConverterStato.class)
     private StatoSegnalazione stato;
     private LocalDateTime data;
     private String urlImmagine;
