@@ -46,6 +46,10 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     }
 
     // Getter e Setter
+    public Long getIdSegnalazione() {
+        return idSegnalazione;
+    }
+    public void setIdSegnalazione(Long idSegnalazione) { this.idSegnalazione = idSegnalazione;}
     public String getTitolo() { return titolo; }
     public void setTitolo(String titolo) { this.titolo = titolo; }
     public String getDescrizione() { return descrizione; }

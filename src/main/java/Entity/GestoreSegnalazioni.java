@@ -58,8 +58,37 @@ public class GestoreSegnalazioni {
         return segnalazione;
     }
 
-    public boolean aggiungiNota(Long idSegnalazione, String titolo, String descrizioneNota) {
-        //TODO
+    public boolean aggiungiNota(Long idSegnalazione, Long idOperatore, String titolo, String descrizione) {
+        //Bisogna controllare che: 0. la segnalazione esiste, 1. lo stato sia Inviata o Risolta
+
+
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+        if (segnalazione == null) {
+            System.err.println("[GestoreSegnalazioni] Nessuna segnalazione trovata..");
+            return false;
+        }
+
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+
+
+        StatoSegnalazione statoSegnalazione = segnalazione.getStato();
+
+        if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())
+                && !statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
+
+            //Impossibile aggiungere nota
+            System.err.println("[GestoreSegnalazioni] Nota non aggiungibile..\n"+segnalazione.toString());
+            return false;
+        } else {
+            GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
+
+            Operatore operatore = this.gestorePersistenza.trovaPerId(Operatore.class, idOperatore);
+
+            gestoreAggiornamentoStato.aggiungiNota(operatore, segnalazione, titolo, descrizione);
+        }
+
+        System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
+
         return true;
     }
 

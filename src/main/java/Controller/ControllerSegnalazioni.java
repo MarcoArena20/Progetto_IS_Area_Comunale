@@ -1,6 +1,7 @@
 package Controller;
 
 import Entity.Categoria;
+import Entity.GestoreAggiornamentoStato;
 import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
@@ -148,11 +149,17 @@ public class ControllerSegnalazioni {
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
         Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
 
-        boolean esitoConclusione = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
+        boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
+        boolean esitoAggiuntaNota = false;
 
-        //TODO inserire nota
+        if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
+            //TODO controllo nel boundary per fare in modo tale da avere o titolo e descrizione null o che rispettano i vincoli
 
-        return esitoConclusione;
+            esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
+        }
+
+
+        return esitoAggiuntaNota;
     }
 
 

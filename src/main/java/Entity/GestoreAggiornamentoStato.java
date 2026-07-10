@@ -3,6 +3,10 @@ package Entity;
 import Controller.ControllerUtenti;
 import Database.GestorePersistenza;
 
+import java.util.List;
+import java.util.Map;
+
+
 public class GestoreAggiornamentoStato {
 
     //Attributi
@@ -14,7 +18,7 @@ public class GestoreAggiornamentoStato {
     }
 
     //Metodi
-    public boolean salvaOperatore(Operatore operatore, Segnalazione segnalazione) {
+    private boolean salvaOperatore(Operatore operatore, Segnalazione segnalazione) {
         System.out.println("[GestoreAggiornamentoStato] Invocato metodo di salva operatore");
 
         GestioneOperatoreEntry gestioneOperatoreEntry = new GestioneOperatoreEntry(operatore, segnalazione, true, null, null);
@@ -24,7 +28,7 @@ public class GestoreAggiornamentoStato {
         System.out.println("[GestoreAggiornamentoStato] Salvato operatore:\n"+ operatore.toString());
 
 
-        return true;
+        return esito;
     }
 
     public boolean aggiornaStato(Segnalazione segnalazione, StatoSegnalazione statoSegnalazione) {
@@ -46,13 +50,64 @@ public class GestoreAggiornamentoStato {
         boolean esito2 = false;
         if (statoSegnalazione.getStatoToString().equals(StatoType.PRESA_IN_CARICO.name()))
             esito2 = salvaOperatore(operatore, segnalazione);
+        else if (statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())
+                    || statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name()))
+            esito2 = concludiGestione(operatore, segnalazione);
 
 
         return esito1 && esito2;
     }
 
-    public boolean concludiGestione(boolean esito, String titolo, String descrizione) {
+    private boolean concludiGestione(Operatore operatore, Segnalazione segnalazione) {
+        System.out.println("[GestoreAggiornamentoStato] Invocato metodo di concludi gestione");
 
+        Map<String, Object> filter = Map.of(
+                "attiva", true,
+                "operatore", operatore,
+                "segnalazione", segnalazione
+        );
+
+        List<GestioneOperatoreEntry> listaGestioni = this.gestorePersistenza.cercaPerCampi(GestioneOperatoreEntry.class, filter);
+
+        if (listaGestioni == null) {
+            System.err.println("[GestoreAggiornamentoStato] Errore nella chiusura della gestione!");
+            return false;
+        }
+
+        for (GestioneOperatoreEntry gestioneOperatoreEntry: listaGestioni) {
+            gestioneOperatoreEntry.setAttiva(false);
+
+            this.gestorePersistenza.aggiorna(gestioneOperatoreEntry);
+        }
+
+        System.out.println("[GestoreAggiornamentoStato] Salvato operatore:\n"+ operatore.toString());
+
+
+        return true;
+    }
+
+    public boolean aggiungiNota(Operatore operatore, Segnalazione segnalazione, String titolo, String descrizione) {
+        System.out.println("[GestoreAggiornamentoStato] Invocato metodo di aggiungi nota");
+
+        Map<String, Object> filter = Map.of(
+                "operatore", operatore,
+                "segnalazione", segnalazione
+        );
+
+        List<GestioneOperatoreEntry> listaGestioni = this.gestorePersistenza.cercaPerCampi(GestioneOperatoreEntry.class, filter);
+
+        if (listaGestioni == null) {
+            System.err.println("[GestoreAggiornamentoStato] Errore nell'aggiunta della nota!");
+            return false;
+        }
+
+        GestioneOperatoreEntry gestioneOperatoreEntry = listaGestioni.get(listaGestioni.size()-1);
+        gestioneOperatoreEntry.setTitolo(titolo);
+        gestioneOperatoreEntry.setDescrizione(descrizione);
+
+        this.gestorePersistenza.aggiorna(gestioneOperatoreEntry);
+
+        System.out.println("[GestoreAggiornamentoStato] Salvato operatore:\n"+ operatore.toString());
         return true;
     }
 
