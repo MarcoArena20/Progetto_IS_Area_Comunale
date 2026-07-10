@@ -25,7 +25,7 @@ public class StatoInLavorazione extends StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return StatoType.IN_LAVORAZIONE.toString();
+        return StatoType.IN_LAVORAZIONE.name();
     }
 
 

@@ -30,7 +30,7 @@ public class StatoInviata extends StatoSegnalazione {
 
     @Override
     public String getStatoToString() {
-        return StatoType.INVIATA.toString();
+        return StatoType.INVIATA.name();
     }
 
 

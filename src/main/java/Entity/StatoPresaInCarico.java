@@ -26,7 +26,7 @@ public class StatoPresaInCarico extends StatoSegnalazione{
 
     @Override
     public String getStatoToString() {
-        return StatoType.PRESA_IN_CARICO.toString();
+        return StatoType.PRESA_IN_CARICO.name();
     }
 
 }
