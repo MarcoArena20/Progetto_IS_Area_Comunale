@@ -44,8 +44,11 @@ public class ControllerUtenti {
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password);
 
-                if (gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash)!=null){
+                String idUtente = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash);
+
+                if (idUtente!=null){
                     esitoregistrazione=true;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
                 }
             }
             catch (NoSuchAlgorithmException e){
@@ -118,6 +121,8 @@ public class ControllerUtenti {
         Path path = Path.of("configuration/config.txt");
 
         try {
+            Files.createDirectories(Path.of("configuration"));
+
             if (!Files.exists(path)) {
 
                 Files.createFile(path);
