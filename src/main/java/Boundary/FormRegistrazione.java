@@ -1,5 +1,7 @@
 package Boundary;
 
+import Controller.ControllerUtenti;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +40,7 @@ public class FormRegistrazione {
     private boolean controlloFormatoDatiRegistrazione (String ruolo, String nome, String cognome, String recapitoTelefonico, String email, String password){
         try {
             // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-            if (!"Cittadino".equals(ruolo) && !"Operatore Comunale".equals(ruolo)) {
+            if (!ruolo.equals("CITTADINO") && !ruolo.equals("OPERATORE")) {
                 throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
             }
 
@@ -139,15 +141,25 @@ public class FormRegistrazione {
     }
 
     private void Registra(){
+        String ruoloStringa = (String) ruoloBox.getSelectedItem();
+        String cognome = cognomeTextField.getText();
+        String nome = nomeTextField.getText();
+        String recapitoTelefonico =recapitoTelefonicoTextField.getText();
+        String email= emailTextField.getText();
+        String password = passwordTextField.getText();
+
         printFormRegistrazione();
+        boolean esitoRegistrazione=false;
         boolean esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione((String) ruoloBox.getSelectedItem(),
                                                                                 nomeTextField.getText(),
                                                                                 cognomeTextField.getText(),
                                                                                 recapitoTelefonicoTextField.getText(),
                                                                                 emailTextField.getText(),
                                                                                 passwordTextField.getText());
+
+        esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome,cognome,recapitoTelefonico,email,password);
         System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
-        System.out.println("TODO Implementation register");
+        System.out.println("Esito Registrazione: "+esitoRegistrazione);
 
     }
 
