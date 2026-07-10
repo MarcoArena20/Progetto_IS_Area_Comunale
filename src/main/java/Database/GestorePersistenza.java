@@ -1,9 +1,7 @@
 package Database;
 
-import Entity.Cittadino;
-import Entity.Operatore;
-import Entity.Ruolo;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Map;
@@ -40,48 +38,156 @@ public class GestorePersistenza {
 
     }
 
-   /* public boolean cercaUtenteNelDB(String email, String passwordHash, Ruolo ruolo) {
+    public <T> T trovaPerId(Class<T> classe, Long id) {
 
-        Map<String, Object> criteriRicerca = Map.of( "email", email,
-                "password",passwordHash,
-                "ruolo", ruolo);
-
-        if (ruolo == Ruolo.CITTADINO){
-            List<Cittadino> query = GestorePersistenza.cercaPerCampi(Cittadino.class, criteriRicerca);
-            return !query.isEmpty();
-        }
-        // aggiungo un else if per verficare che ruolo sia proprio operatore comunale??
-        else{
-            List<Operatore> query = GestorePersistenza.cercaPerCampi(Operatore.class, criteriRicerca);
-            return  !query.isEmpty();
-        }
-
-    }
-    private List<T> cercaPerCampi(Class<T> classe, Map<String, Object> criteri){
         EntityManager em = JpaUtil.getInstance().getEntityManager();
-        try{
+
+        try {
+            /*
+             * find cerca nel database una riga della tabella associata
+             * alla classe indicata, usando l'id come chiave primaria.
+             */
+            return em.find(classe, id);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public <T> List<T> cercaPerCampo(Class<T> classe,
+                                     String nomeCampo,
+                                     Object valore) {
+
+        return cercaPerCampi(
+                classe,
+                Map.of(nomeCampo, valore)
+        );
+    }
+
+    public <T> List<T> cercaPerCampi(Class<T> classe, Map<String, Object> campi) {
+
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+
+        try {
             StringBuilder jpql = new StringBuilder();
-            jpql.append("SELECT u FROM").append(classe.getSimpleName()).append(" u");
 
-            if (!criteri.isEmpty()){
+            jpql.append("SELECT e FROM ")
+                    .append(classe.getSimpleName())
+                    .append(" e");
+
+            if (!campi.isEmpty()) {
                 jpql.append(" WHERE ");
-                int count =0;
 
-                for (String nomeCampo: criteri.keySet()){
-                    if (count>0){
+                int contatore = 0;
+
+                for (String nomeCampo : campi.keySet()) {
+                    if (contatore > 0) {
                         jpql.append(" AND ");
                     }
-                    String nomeParametro = nomeCampo.replace(".","-");
 
-                    jpql.append("u.").append(nomeCampo).append(" = :").append(nomeParametro);
-                    count++;
+                    String nomeParametro = nomeCampo.replace(".", "_");
+
+                    jpql.append("e.")
+                            .append(nomeCampo)
+                            .append(" = :")
+                            .append(nomeParametro);
+
+                    contatore++;
                 }
-                //query generata SELECT e FROM Cittadino e WHERE e.email = :email AND e.password = :password
             }
+
+            TypedQuery<T> query = em.createQuery(
+                    jpql.toString(),
+                    classe
+            );
+
+            for (String nomeCampo : campi.keySet()) {
+                String nomeParametro = nomeCampo.replace(".", "_");
+                query.setParameter(nomeParametro, campi.get(nomeCampo));
+            }
+
+            return query.getResultList();
+
+        } finally {
+            em.close();
         }
     }
 
-    */
+    public <T> T cercaPrimoPerCampi(Class<T> classe,
+                                    Map<String, Object> campi) {
 
+        List<T> risultati = cercaPerCampi(classe, campi);
+
+        if (risultati.isEmpty()) {
+            return null;
+        }
+
+        return risultati.get(0);
+    }
+
+
+    public <T> T aggiorna(T oggetto) {
+
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            T oggettoAggiornato = em.merge(oggetto);
+
+            em.getTransaction().commit();
+
+            return oggettoAggiornato;
+
+        } catch (RuntimeException e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            throw e;
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public <T> boolean elimina(Class<T> classe, Long id) {
+
+        EntityManager em = JpaUtil.getInstance().getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+
+            /*
+             * Cerchiamo nel database l'oggetto da eliminare,
+             * usando la sua classe e il suo id.
+             */
+
+            T oggetto = em.find(classe, id);
+
+            //se l'oggetto esiste, lo eliminiamo
+            if (oggetto != null) {
+                em.remove(oggetto);
+                em.getTransaction().commit();
+                return true;
+            }
+
+            em.getTransaction().commit();
+            return false;
+
+        } catch (RuntimeException e) {
+
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            em.close();
+        }
+    }
 
 }

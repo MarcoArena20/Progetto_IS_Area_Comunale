@@ -19,9 +19,22 @@ public class GestoreSegnalazioni {
     }
 
     //Metodi
-    public boolean inserisciSegnalazione(String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine, String idCittadino) {
+    public boolean inserisciSegnalazione(Long idCittadino, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
 
-        Segnalazione segnalazione = new Segnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine, null);
+        // Bisogna trovare il cittadino corrispondente
+        Cittadino cittadino = new GestoreUtenti().cercaUtente(idCittadino);
+
+        //if(cittadino == null)
+            //return false;
+
+
+        Segnalazione segnalazione = new Segnalazione(cittadino, titolo, descrizione, categoria, posizione);
+
+        if(data != null)
+            segnalazione.setData(data);
+
+        if (urlImmagine != null)
+           segnalazione.setUrlImmagine(urlImmagine);
 
         return gestorePersistenza.salva(segnalazione);
     }

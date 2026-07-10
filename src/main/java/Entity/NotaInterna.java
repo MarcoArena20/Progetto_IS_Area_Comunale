@@ -15,4 +15,10 @@ public class NotaInterna {
     //Getter
     public String getTitolo() { return titolo; }
     public String getDescrizione() { return descrizione; }
+
+    //Metodi
+    @Override
+    public String toString() {
+        return "Titolo:\t"+this.titolo +"\nDescrizione:\t" + this.descrizione;
+    }
 }

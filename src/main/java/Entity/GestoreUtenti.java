@@ -9,17 +9,16 @@ public class GestoreUtenti {
     private GestorePersistenza gestorePersistenza;
 
     //Costruttore
-
+    //TODO
 
     //Metodi
-    public String registraUtente(Ruolo ruolo, String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
-        return "GestoreUtentiTODO";
+    public String registraUtente(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         //TODO
+        return null;
     }
 
-
     public boolean cercaUtente(String email, String password) {
-        return (email.contains("Ciao"));
         //TODO
+        return true;
     }
 }

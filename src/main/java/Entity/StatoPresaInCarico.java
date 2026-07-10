@@ -7,7 +7,7 @@ public class StatoPresaInCarico implements StatoSegnalazione{
 
     //Metodi
     @Override
-    public void aggiornaStato(Segnalazione segnalazione, boolean esito) {
+    public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoPresaInCarico] Invocato aggiornaStato con esito: " + esito);
 
         if (esito == true) {
@@ -20,17 +20,20 @@ public class StatoPresaInCarico implements StatoSegnalazione{
             segnalazione.setStato(new StatoInviata());
         }
 
+        return true;
+
     }
 
     @Override
-    public StatoPresaInCarico getStato() {
-        System.out.println("[StatoPresaInCarico] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoPresaInCarico";
     }
 
     @Override
     public String toString() {
-        return "Stato: PresaInCarico";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
 
 

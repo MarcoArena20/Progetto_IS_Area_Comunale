@@ -7,7 +7,7 @@ public class StatoInLavorazione implements StatoSegnalazione {
 
     //Metodi
     @Override
-    public void aggiornaStato(Segnalazione segnalazione, boolean esito) {
+    public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoInLavorazione] Invocato aggiornaStato con esito: " + esito);
 
         if (esito == true) {
@@ -20,16 +20,18 @@ public class StatoInLavorazione implements StatoSegnalazione {
             segnalazione.setStato(new StatoInviata());
         }
 
+        return true;
     }
 
     @Override
-    public StatoInLavorazione getStato() {
-        System.out.println("[StatoInLavorazione] " + this.toString());
-        return this;
+    public String getStatoToString() {
+        return "StatoInLavorazione";
     }
 
     @Override
     public String toString() {
-        return "Stato: InLavorazione";
+        return "Stato{" +
+                "statoCorrente='" + this.getStatoToString() + '\'' +
+                '}';
     }
 }
