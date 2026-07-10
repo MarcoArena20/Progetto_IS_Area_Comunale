@@ -16,7 +16,7 @@ public class FormAccesso {
         accessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Accedi();
+                //Accedi();
             }
         });
     }
@@ -41,15 +41,16 @@ public class FormAccesso {
         return frame;
     }
 
+    /*
     private void Accedi(){
-        //printFormRegistrazione();
-        //boolean esitoFormatoRegistrazione = controlloFormatoDatiAccesso((String) ruoloBox.getSelectedItem(),
-                                                                                //emailTextField.getText(),
-                                                                                //passwordTextField.getText());
-        //System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
+        printFormRegistrazione();
+        boolean esitoFormatoRegistrazione = controlloFormatoDatiAccesso((String) ruoloBox.getSelectedItem(),
+                                                                                emailTextField.getText(),
+                                                                                passwordTextField.getText());
+        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
         System.out.println("TODO Implementation access");
 
-    }
+    }*/
 
      */
 

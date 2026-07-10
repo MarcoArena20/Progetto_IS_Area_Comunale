@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import Controller.ControllerUtenti;
-
 public class FormRegistrazione {
 
     private JPanel contentPanel;
@@ -16,7 +14,6 @@ public class FormRegistrazione {
     private JTextField recapitoTelefonicoTextField;
     private JTextField passwordTextField;
     private JTextField emailTextField;
-
 
     public FormRegistrazione() {
         registratiButton.addActionListener(new ActionListener() {
@@ -29,15 +26,17 @@ public class FormRegistrazione {
         });
     }
 
+    private void printFormRegistrazione(){
+        System.out.println("Ruolo: "+ruoloBox.getSelectedItem());
+        System.out.println("Nome: "+nomeTextField.getText());
+        System.out.println("Cognome: "+cognomeTextField.getText());
+        System.out.println("Recapito Telefonico: "+recapitoTelefonicoTextField.getText());
+        System.out.println("Email: "+emailTextField.getText());
+        System.out.println("Password: "+passwordTextField.getText());
+    }
 
-
-
-    private boolean controlloFormatoDatiRegistrazione (String ruolo, String cognome, String nome, String recapitoTelefonico, String email, String password){
+    private boolean controlloFormatoDatiRegistrazione (String ruolo, String nome, String cognome, String recapitoTelefonico, String email, String password){
         try {
-            //Verifico che il Ruolo non sia null
-            if (ruolo == null) {
-                throw new IllegalArgumentException("Errore, scegliere un campo in Ruolo.");
-            }
             // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
             if (!"Cittadino".equals(ruolo) && !"Operatore Comunale".equals(ruolo)) {
                 throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
@@ -82,7 +81,7 @@ public class FormRegistrazione {
                 if (c == '@') chiocciole++;
             }
             if (chiocciole != 1 || !email.contains(".")) {
-                throw new IllegalArgumentException("L'email contiene più di una chiocciola '@' o manca del punto identificativo del dominio.");
+                throw new IllegalArgumentException("L'email non contiene una chiocciola '@' o manca del punto identificativo del dominio.");
             }
 
             // Controllo password: Lunghezza 8-25, almeno 1 Maiuscola, 1 Minuscola, 1 Numero, 1 Speciale [!?-@%]
@@ -139,21 +138,17 @@ public class FormRegistrazione {
         return frame;
     }
 
-    private void Registra() {
-        boolean esitoSalvataggioUtente=false;
-        if (controlloFormatoDatiRegistrazione((String)ruoloBox.getSelectedItem(),cognomeTextField.getText(),nomeTextField.getText(),recapitoTelefonicoTextField.getText(),emailTextField.getText(),passwordTextField.getText())){
-            try{
-                String ruoloStringa = (String) ruoloBox.getSelectedItem();
-                String cognome = cognomeTextField.getText();    String nome= nomeTextField.getText();
-                String recapitoTelefonico = recapitoTelefonicoTextField.getText();
-                String email = emailTextField.getText();
-                String password = passwordTextField.getText();
-                esitoSalvataggioUtente = ControllerUtenti.salvaUtente(ruoloStringa, cognome,nome,recapitoTelefonico,email, password);
-                System.out.println("Esito: "+esitoSalvataggioUtente);
-            }
-            catch (IllegalArgumentException e){
-                System.out.println("Registrazione fallita: "+e.getMessage());
-            }
-        }
+    private void Registra(){
+        printFormRegistrazione();
+        boolean esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione((String) ruoloBox.getSelectedItem(),
+                                                                                nomeTextField.getText(),
+                                                                                cognomeTextField.getText(),
+                                                                                recapitoTelefonicoTextField.getText(),
+                                                                                emailTextField.getText(),
+                                                                                passwordTextField.getText());
+        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
+        System.out.println("TODO Implementation register");
+
     }
+
 }
