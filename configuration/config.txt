@@ -1,0 +1,3 @@
+idUtente:12
+ruolo:CITTADINO
+idSegnalazione: 5

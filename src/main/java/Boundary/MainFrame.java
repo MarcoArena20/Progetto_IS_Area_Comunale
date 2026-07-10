@@ -65,8 +65,6 @@ public class MainFrame {
 
     private void SchermataRegistrazione(){
 
-        mainFrame.dispose();
-
         registraFrame = new FormRegistrazione().apriFormRegistrazione();
         registraFrame.toFront();
         registraFrame.requestFocus();
