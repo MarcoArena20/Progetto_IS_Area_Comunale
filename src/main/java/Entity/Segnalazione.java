@@ -3,6 +3,7 @@ package Entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il subject che notifica i cambiamenti di stato(push model)
@@ -197,6 +198,38 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
 
     }
     */
+
+    //record usato per tornare in modo pulito l'anteprima
+    public record InfoAnteprima(Categoria categoria, LocalDateTime data, String posizione, StatoSegnalazione stato) {}
+
+    public InfoAnteprima getInfoAnteprima(){
+        return new InfoAnteprima(this.categoria, this.data, this.posizione, this.stato);
+    }
+
+    //record usato per tornare in modo pulito i dettagli
+    public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, String idCittadino, Map<LocalDateTime, StatoSegnalazione> evoluzione_stato) {}
+
+    public Dettaglio getDettaglioSegnalazione(){
+        if(verificaPresenzaImmagine()){
+            String url = getUrlImmagine();
+        }
+        if(verificaPresenzaData()){
+            LocalDateTime date = getData();
+        }
+
+        return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino(), this.elencoGestioniSegnalazione.getStoricoStato());
+    }
+
+    private boolean verificaPresenzaImmagine(){
+        return !(this.urlImmagine.isEmpty());
+    }
+
+    private boolean verificaPresenzaData(){
+        if(this.data == null){
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
