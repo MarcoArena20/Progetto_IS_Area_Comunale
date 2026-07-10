@@ -1,6 +1,6 @@
 package Entity;
 
-public class StatoRisolta implements StatoSegnalazione {
+public class StatoRisolta extends StatoSegnalazione {
 
     //Costruttore
     public StatoRisolta() {}
@@ -17,10 +17,4 @@ public class StatoRisolta implements StatoSegnalazione {
         return StatoType.RISOLTA.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Stato{\n" +
-                "statoCorrente=" + this.getStatoToString() + '\n' +
-                '}';
-    }
 }

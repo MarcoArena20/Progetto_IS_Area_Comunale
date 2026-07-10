@@ -1,6 +1,6 @@
 package Entity;
 
-public class StatoPresaInCarico implements StatoSegnalazione{
+public class StatoPresaInCarico extends StatoSegnalazione{
 
     //Costruttore
     public StatoPresaInCarico() {}
@@ -28,13 +28,5 @@ public class StatoPresaInCarico implements StatoSegnalazione{
     public String getStatoToString() {
         return StatoType.PRESA_IN_CARICO.toString();
     }
-
-    @Override
-    public String toString() {
-        return "Stato{\n" +
-                "statoCorrente=" + this.getStatoToString() + '\n' +
-                '}';
-    }
-
 
 }

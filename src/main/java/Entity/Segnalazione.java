@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Segnalazione {
+public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il subject che notifica i cambiamenti di stato(push model)
 
     //Attributi
     @Id
@@ -26,9 +26,10 @@ public class Segnalazione {
     private LocalDateTime data;
     private String urlImmagine;
 
-    //private ElencoGestioniSegnalazione elencoGestioniSegnalazione;
+    //Costruttori
+    public Segnalazione(){
 
-    //Costruttore avente solo i paramatri obbligatori
+    }
 
     public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
 
@@ -59,29 +60,22 @@ public class Segnalazione {
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
     // Metodi
-    public void aggiungiNota(String titoloNota, String descrizioneNota) {
-        //elencoGestioniSegnalazione.salvaNota(titoloNota, descrizioneNota);
-    }
+    /*
+    public synchronized boolean iniziaGestione(Long idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
 
-    /* public synchronized boolean iniziaGestione(String idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
-
-        //1. Controllo se è la prima gestione
-        if (elencoGestioniSegnalazione == null) {
-            elencoGestioniSegnalazione = new ElencoGestioniSegnalazione(this);//TODO verificare se è necessario il riferimento o se basta l'id
-        }
-
-        //2. Salvo operatore che inizia la gestione
-        elencoGestioniSegnalazione.salvaOperatore(idOperatore);
-
-        //3. Aggiorno lo stato
+        //1. Aggiorno lo stato
         boolean esito = this.stato.aggiornaStato(this, true);
         if (esito == false) {
-            System.err.println("[Segnalazione] Operazione di aggiornaStato non consentito!");
+            System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
             return false;
         }
 
-        //4. Salvo il cambiamento di stato
-        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
+        //2. Notifico observer, segnalando il nuovo stato
+        esito = notifyObserver(this.idSegnalazione, this.stato);
+        if (esito == false) {
+            System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
+            return false;
+        }
 
         //TODO NOTIFICA
 
@@ -92,96 +86,127 @@ public class Segnalazione {
 
         return true;
     }
+    */
 
-    //Per l'aggiornamento stato e per la conclusione della gestione sicuramente sarà in mutua esclusione per i controlli effettuati in precedenza
-    public boolean aggiornaStato() {
+    public synchronized boolean aggiornaStato(boolean avanzamento) {
 
-        //0. Check preliminare ammissibilità operazione
-        if (elencoGestioniSegnalazione == null) {
-            System.err.println("[Segnalazione] Riferimento a elencoGestioniSegnalazione non esistente!");
-            return false;
+        //1. Distinguo i due aggiornamenti
+
+        if (!avanzamento) {
+            //aggiornamento con esito false
+
+            //1.1 aggiorno stato con esito false
+            boolean esito = this.stato.aggiornaStato(this, false);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
+                return false;
+            }
+
+            //1.2 Notifico observer, segnalando il nuovo stato
+            esito = notifyObserver(this.idSegnalazione, this.stato);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
+                return false;
+            }
+
+            System.out.println("[Segnalazione "+this.idSegnalazione+"] Regressione stato..\n" +
+                    this.toString()
+            );
+
+            return true;//Modifica andata a buon fine
+
+
+        } else {
+            //avanzamento positivo
+
+            //2.1 aggiorno stato con esito true
+            boolean esito = this.stato.aggiornaStato(this, true);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
+                return false;
+            }
+
+            //2.2 Notifico observer, segnalando il nuovo stato
+            esito = notifyObserver(this.idSegnalazione, this.stato);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
+                return false;
+            }
+
+            //TODO NOTIFICA
+
+            System.out.println("[Segnalazione "+this.idSegnalazione+"] Avanzamento stato..\n" +
+                    this.toString()
+            );
+
+            return true;
         }
-
-
-        //1. Aggiorno lo stato
-        boolean esito = this.stato.aggiornaStato(this,true);
-        if (esito == false) {
-            System.err.println("[Segnalazione] Operazione di aggiornaStato non consentito!");
-            return false;
-        }
-
-        //2. Salvo il cambiamento di stato
-        elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
-
-        System.out.println("[Segnalazione "+this.idSegnalazione+"] Aggiornato stato..\n" +
-                this.toString()
-        );
-
-        return true;
     }
 
-
+/*
     public boolean concludiGestione(boolean gestioneRisolutiva) {
-
-        //0. Check preliminare ammissibilità operazione
-        if (elencoGestioniSegnalazione == null) {
-            System.err.println("[Segnalazione] Riferimento a elencoGestioniSegnalazione non esistente!");
-            return false;
-        }
 
         //1. Distinguo le due terminazioni
         if (!gestioneRisolutiva) {
             //La gestione non è stata risolutiva
 
             //1.1 aggiorno stato con esito false
-            this.stato.aggiornaStato(this, false);
+            boolean esito = this.stato.aggiornaStato(this, false);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
+                return false;
+            }
 
-            //1.2 Salvo il cambiamento di stato
-            elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
+            //1.2 Notifico observer, segnalando il nuovo stato
+            esito = notifyObserver(this.idSegnalazione, this.stato);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
+                return false;
+            }
 
             return true;//Modifica andata a buon fine
+
+
         } else {
             //La gestione è stata risolutiva
 
-            //2.1 controllo se è ammissibile l'operazione
-            if (!( this.stato instanceof StatoInLavorazione )){
-                //Operazione non consentita
-                System.err.println("[Segnalazione] Impossibile concludere la gestione della segnalazione!");
-
+            //2.1 aggiorno stato con esito true
+            boolean esito = this.stato.aggiornaStato(this, true);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
                 return false;
-
-            } else{
-
-                //2.2 aggiorno stato con esito false
-                this.stato.aggiornaStato(this, true);
-
-                //2.3 Salvo il cambiamento di stato
-                elencoGestioniSegnalazione.salvaCambiamentoStato(this.stato);
-
-
-                //TODO NOTIFICA
-
-                System.out.println("[Segnalazione "+this.idSegnalazione+"] Conclusa gestione..\n" +
-                        this.toString()
-                );
-
-                return true;
             }
+
+            //2.2 Notifico observer, segnalando il nuovo stato
+            esito = notifyObserver(this.idSegnalazione, this.stato);
+            if (esito == false) {
+                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
+                return false;
+            }
+
+            //TODO NOTIFICA
+
+            System.out.println("[Segnalazione "+this.idSegnalazione+"] Conclusa gestione..\n" +
+                    this.toString()
+            );
+
+            return true;
         }
 
-    }*/
+    }
+    */
 
     @Override
     public String toString() {
-        return "Segnalazione{\n" +
-                "idSegnalazione=" + idSegnalazione + '\n' +
-                //", titolo=" + titolo + '\n' +
-                //", descrizione=" + descrizione + '\n' +
-                //", categoria=" + categoria + '\n\ +
-                //", posizione=" + posizione + '\n' +
-                ", stato=" + stato.getStatoToString() + '\n' +
-                //", data=" + data.toString() + '\n' +
-                //", urlImmagine=" + urlImmagine + '\n' +
+        return "Segnalazione {\n" +
+                "*\tidSegnalazione=" + idSegnalazione + ",\n" +
+                //"*\ttitolo=" + titolo + ",\n" +
+                //"*\tdescrizione=" + descrizione + ",\n" +
+                //"*\tcategoria=" + categoria + ",\n" +
+                //"*\tposizione=" + posizione + ",\n" +
+                "*\tstato=" + stato.getStatoToString() + ",\n" +
+                //"*\tdata=" + data.toString() + ",\n" +
+                //"*\turlImmagine=" + urlImmagine + ",\n" +
                 '}';
     }
 
@@ -199,19 +224,15 @@ public class Segnalazione {
         Posizione: Viale delle mimose
         */
 
+        s.attach(new ConcreteObserver("ObserverCambioStato"));
 
         System.out.println(s.toString());
 
-        //s.iniziaGestione("Operatore1");
+        s.aggiornaStato(true);
 
-        //s.concludiGestione(false);
+        s.aggiornaStato(true);
 
-        //s.iniziaGestione("Operatore1");
-        //s.concludiGestione(true);
-
-        //s.aggiornaStato();
-
-        //s.concludiGestione(true);
+        s.aggiornaStato(false);
 
     }
 
