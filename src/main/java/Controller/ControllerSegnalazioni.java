@@ -128,6 +128,9 @@ public class ControllerSegnalazioni {
     public static void main(String[] args) {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
+        setIdSegnalazioneCorrente(1L);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+
         boolean esito = ControllerSegnalazioni.iniziaGestioneSegnalazione();
 
 
