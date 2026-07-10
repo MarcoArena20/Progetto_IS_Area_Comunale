@@ -17,14 +17,14 @@ public class FormVisualizzaDettaglioSegnalazione {
     private JTextArea textAreaDettagli;
 
 
-    public FormVisualizzaDettaglioSegnalazione(Segnalazione segnalazione){
-        // 1. Mettiamo in sicurezza tutte le JTextArea (Sola Lettura e testo a capo automatico)
+    public FormVisualizzaDettaglioSegnalazione(){
+        //Mettiamo in sicurezza tutte le JTextArea (Sola Lettura e testo a capo automatico)
         configuraTextArea(textAreaDettagli);
         configuraTextArea(textAreaDescrizione);
         configuraTextArea(texAreaStato);
 
-        // 2. Popoliamo le aree di testo e l'immagine con i dati reali dell'Entity
-        popolaInterfaccia(segnalazione);
+        //Popoliamo le aree di testo e l'immagine con i dati reali dell'Entity
+        //popolaInterfaccia(segnalazione);
     }
 
     private void configuraTextArea(JTextArea textArea) {
@@ -36,46 +36,17 @@ public class FormVisualizzaDettaglioSegnalazione {
         }
     }
 
+
     private void popolaInterfaccia(Segnalazione s) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        //POPOLIAMO L'AREA DEI DETTAGLI GENERALI (Formato scheda tecnica) ---
-        StringBuilder dettagli = new StringBuilder();
-        dettagli.append("DATI GENERALI SEGNALAZIONE\n");
-        dettagli.append("====================================\n");
-        dettagli.append("TITOLO: ").append(s.getTitolo()).append("\n");
-        dettagli.append("CATEGORIA: ").append(s.getCategoria()).append("\n");
-        dettagli.append("DATA INVIO: ").append(s.getData().format(formatter)).append("\n");
-        dettagli.append("POSIZIONE: ").append(s.getPosizione()).append("\n");
-
-        if (s.getCittadino() != null) {
-            dettagli.append("CITTADINO (Email): ").append(s.getCittadino().getEmail()).append("\n");
-        } else {
-            dettagli.append("CITTADINO: Anonimo / Non Disponibile\n");
-        }
-        dettagli.append("====================================\n");
-        dettagli.append("STATO ATTUALE: ").append(s.getStato());
-
-        textAreaDettagli.setText(dettagli.toString());
-
-        // --- 2. POPOLIAMO LA DESCRIZIONE ---
-        textAreaDescrizione.setText(s.getDescrizione());
-
-        // --- 3. POPOLIAMO LA CRONOLOGIA STATI ---
-        StringBuilder logStati = new StringBuilder();
-        logStati.append(" • [").append(s.getData().format(formatter)).append("] - STATO: INVIATA\n");
-        logStati.append("   -> Segnalazione inserita a sistema dal cittadino.\n");
-
-        if (s.getStato() != Stato.INVIATA) {
-            logStati.append("\n • [").append(s.getData().plusMinutes(45).format(formatter)).append("] - STATO: ").append(s.getStato()).append("\n");
-            logStati.append("   -> Aggiornamento registrato a sistema.");
-        }
-        texAreaStato.setText(logStati.toString());
-
+        /*
         // --- 4. POPOLIAMO LA IMAGE LABEL (Gestione URL foto) ---
         gestisciImmagineAllegata(s.getUrlImmagine());
+        */
     }
 
+/*
     private void gestisciImmagineAllegata(String urlOPath) {
         if (urlOPath == null || urlOPath.isEmpty()) {
             imageLabel.setIcon(null);
@@ -126,18 +97,24 @@ public class FormVisualizzaDettaglioSegnalazione {
             imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         }
     }
+         */
 
     public JFrame apriFormVisualizzaDettaglioSegnalazioni(){
 
-        JFrame frame = new JFrame();
-        frame.setTitle("VisualizzaFrame");
-        frame.setContentPane(contentPanel);
+        JFrame frame = new JFrame("Visualizza dettaglio segnalazione");
+        FormVisualizzaDettaglioSegnalazione form = new FormVisualizzaDettaglioSegnalazione();
+        frame.setContentPane(form.contentPanel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        /*
+         * DISPOSE_ON_CLOSE chiude solo questa finestra,
+         * senza terminare tutta l'applicazione.
+         */
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setResizable(false);
 
         return frame;
     }

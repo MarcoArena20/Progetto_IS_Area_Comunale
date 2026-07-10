@@ -67,7 +67,7 @@ public class FormVisualizzaSegnalazioni {
                 Segnalazione segnalazioneSelezionata = listaSegnalazioniDati.get(rigaSelezionata);
 
                 // Apriamo il form di dettaglio passandogli l'oggetto
-                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione(segnalazioneSelezionata);
+                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione();
                 dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni();
 
             }
@@ -77,15 +77,20 @@ public class FormVisualizzaSegnalazioni {
 
     public JFrame apriFormVisualizzaSegnalazioni(){
 
-        JFrame frame = new JFrame();
-        frame.setTitle("VisualizzaFrame");
-        frame.setContentPane(contentPanel);
+        JFrame frame = new JFrame("Visualizza dettaglio segnalazione");
+        FormVisualizzaSegnalazioni form = new FormVisualizzaSegnalazioni();
+        frame.setContentPane(form.contentPanel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        /*
+         * DISPOSE_ON_CLOSE chiude solo questa finestra,
+         * senza terminare tutta l'applicazione.
+         */
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setResizable(false);
 
         return frame;
     }

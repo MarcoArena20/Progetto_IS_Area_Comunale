@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class ElencoGestioniSegnalazione {
 
+    /*
     //Attributi
     private Segnalazione segnalazione;
     private Map<LocalDateTime, NotaInterna> storicoNote;
@@ -34,6 +35,7 @@ public class ElencoGestioniSegnalazione {
 
     }
 
+
     public void salvaNota(String titolo, String descrizione) {
         NotaInterna nota = new NotaInterna(titolo, descrizione);
 
@@ -41,6 +43,6 @@ public class ElencoGestioniSegnalazione {
         System.out.println("[ElencoGestioniSegnalazione] Aggiunto stato: "+nota.toString());
 
     }
-
+    */
 }
 
