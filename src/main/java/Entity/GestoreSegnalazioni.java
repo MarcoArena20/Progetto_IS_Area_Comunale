@@ -106,7 +106,7 @@ public class GestoreSegnalazioni {
         return dettaglio;
     }
 
-    public Segnalazione.InfoAnteprima visualizzaSegnalazioniPerCittadino(idCittadino){
+    public Segnalazione.InfoAnteprima visualizzaSegnalazioniPerCittadino(Long idCittadino){
 
     }
 }

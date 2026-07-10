@@ -127,9 +127,9 @@ public class FormVisualizzaSegnalazioni {
         // Creiamo 3 segnalazioni finte usando il costruttore della tua classe Entity
         // (Adatta i parametri in base al costruttore esatto della tua classe Segnalazione)
         Cittadino cittadino = new Cittadino("aldo", "Arena", "aaaa@a", "3271715524", "aaaaa");
-        Segnalazione s1 = new Segnalazione("Lampione spento", "Il lampione davanti al civico 12 non funziona da giorni.", Categoria.ILLUMINAZIONE_GUASTA, "Via Roma 12", java.time.LocalDateTime.now(), "CITZ_01", cittadino);
-        Segnalazione s2 = new Segnalazione("Buca profonda", "C'è una voragine pericolosa per i motocicli al centro della carreggiata.", Categoria.STRADA_DISSESTATA, "Corso Italia", java.time.LocalDateTime.now(), "CITZ_02", cittadino);
-        Segnalazione s3 = new Segnalazione("Rifiuti in strada", "Abbandono di materassi sul marciapiede vicino al cassonetto.", Categoria.RIFIUTI_ABBANDONATI, "Via Milano", java.time.LocalDateTime.now(),"CITZ_01", cittadino);
+        Segnalazione s1 = new Segnalazione(cittadino, "Lampione spento", "Il lampione davanti al civico 12 non funziona da giorni.", Categoria.ILLUMINAZIONE_GUASTA, "Via Roma 12");
+        Segnalazione s2 = new Segnalazione(cittadino, "Buca profonda", "C'è una voragine pericolosa per i motocicli al centro della carreggiata.", Categoria.STRADA_DISSESTATA, "Corso Italia");
+        Segnalazione s3 = new Segnalazione(cittadino, "Rifiuti in strada", "Abbandono di materassi sul marciapiede vicino al cassonetto.", Categoria.RIFIUTI_ABBANDONATI, "Via Milano");
 
         // Riempiamo la lista di appoggio
         listaSegnalazioniDati.add(s1);
