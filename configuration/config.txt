@@ -1,3 +1,3 @@
-idUtente:1
-ruolo:OPERATORE
-idSegnalazione:5
+idUtente:5
+ruolo:CITTADINO
+idSegnalazione:1

@@ -14,22 +14,26 @@ import Entity.Gestori.GestoreUtenti;
 //Façade
 public class ControllerUtenti {
 
-        private static Ruolo stringaToRuolo(String ruoloStringa){
-            try {
-                if (ruoloStringa == null) {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
-                    return Ruolo.CITTADINO;
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
-                    return Ruolo.OPERATORE;
-                } else {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                }
-            }catch (IllegalArgumentException e){
-                e.getMessage();
-                return null;
+    private static String uniformaEmail(String email){
+        return email.toLowerCase();
+    }
+
+    private static Ruolo stringaToRuolo(String ruoloStringa){
+        try {
+            if (ruoloStringa == null) {
+                throw new IllegalArgumentException("Ruolo non specificato.");
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
+                return Ruolo.CITTADINO;
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
+                return Ruolo.OPERATORE;
+            } else {
+                throw new IllegalArgumentException("Ruolo non specificato.");
             }
+        }catch (IllegalArgumentException e){
+            e.getMessage();
+            return null;
         }
+    }
 
         private static String hashPassword(String password) throws NoSuchAlgorithmException {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -74,7 +78,6 @@ public class ControllerUtenti {
             }
             catch (NoSuchAlgorithmException e){
                 e.printStackTrace();
-                return esitoAccesso;
             }
             return esitoAccesso;
         }

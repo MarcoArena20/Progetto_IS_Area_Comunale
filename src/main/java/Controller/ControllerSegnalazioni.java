@@ -1,5 +1,6 @@
 package Controller;
 
+import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Segnalazione;
 import Entity.Enum.Ruolo;
 import Entity.Gestori.GestoreSegnalazioni;

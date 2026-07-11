@@ -43,8 +43,8 @@
         <properties>
           <model>
             <item value="-"/>
-            <item value="Cittadino"/>
-            <item value="Operatore Comunale"/>
+            <item value="CITTADINO"/>
+            <item value="OPERATORE"/>
           </model>
         </properties>
       </component>
