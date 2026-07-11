@@ -1,5 +1,6 @@
 package Controller;
 
+import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Segnalazione;
 import Entity.Enum.Ruolo;
@@ -217,7 +218,7 @@ public class ControllerSegnalazioni {
          * Segnalazione.InfoAnteprima in una lista di array di String, cioè in un formato
          * semplice e già pronto per essere visualizzato in una JTable.
          */
-        mapId = new HashMap<>();
+        bindingId = new HashMap<>();
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
 
         //Recuperiamo l'id del cittadino
@@ -250,7 +251,7 @@ public class ControllerSegnalazioni {
             };
 
             righe.add(riga);
-            mapId.put(indiceRiga, anteprima.idSegnalazione());
+            bindingId.put(indiceRiga, anteprima.idSegnalazione());
             indiceRiga++;
         }
 
@@ -260,7 +261,7 @@ public class ControllerSegnalazioni {
     public static List<String[]> caricaDettaglioSegnalazione(int indiceRiga){
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
-        Long idSegnalazione = mapId.get(indiceRiga);
+        Long idSegnalazione = bindingId.get(indiceRiga);
 
         // Recuperiamo le segnalazioni associate al cittadino.
         GestoreSegnalazioni.dettaglioCompleto dettaglioCompleto =
@@ -286,7 +287,7 @@ public class ControllerSegnalazioni {
     public static List<String[]> caricaStoricoStatiSegnalazione(int indiceRiga){
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
-        Long idSegnalazione = mapId.get(indiceRiga);
+        Long idSegnalazione = bindingId.get(indiceRiga);
 
         // Recuperiamo le segnalazioni associate al cittadino.
         GestoreSegnalazioni.dettaglioCompleto dettaglioCompleto =
@@ -311,7 +312,7 @@ public class ControllerSegnalazioni {
     public static String[] caricaDescrizioneEImmagineSegnalazione(int indiceRiga){
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
-        Long idSegnalazione = mapId.get(indiceRiga);
+        Long idSegnalazione = bindingId.get(indiceRiga);
 
         // Recuperiamo le segnalazioni associate al cittadino.
         GestoreSegnalazioni.dettaglioCompleto dettaglioCompleto =
@@ -376,7 +377,7 @@ public class ControllerSegnalazioni {
                 };
 
                 righeTabella.add(riga);
-                bindingId.put(idRow, s.getIdSegnalazione());
+                //bindingId.put(idRow, s.getIdSegnalazione());
                 idRow++;
             }
         }
