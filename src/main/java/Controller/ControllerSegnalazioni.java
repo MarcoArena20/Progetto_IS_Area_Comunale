@@ -1,85 +1,33 @@
 package Controller;
 
 import Entity.Segnalazione;
-import Entity.Categoria;
-import Entity.GestoreAggiornamentoStato;
-import Entity.GestoreSegnalazioni;
-import Entity.Ruolo;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import Entity.Enum.Ruolo;
+import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Enum.Categoria;
+import Entity.StateMachine.StatoInLavorazione;
+import Entity.StateMachine.StatoInviata;
+import Entity.StateMachine.StatoRisolta;
+import Entity.StateMachine.StatoSegnalazione;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+
 //Façade
 public class ControllerSegnalazioni {
 
+    private static Map<Long,Long> bindingId;
+    private static Long idSegnalazioneCorrente;
+
     public static Long getIdSegnalazioneCorrente(){
-
-        Path path = Path.of("configuration/config.txt");
-
-        try {
-            if (!Files.exists(path)) {
-
-                return null;
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                return Long.parseLong(lines.get(2).split(":")[1]);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-            return null;
-
-        }
+        return idSegnalazioneCorrente;
     }
 
     public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
-
-        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-        // di default, ovvero
-        // idUtente:
-        // ruolo:
-        // idSegnalazione:
-
-        Path path = Path.of("configuration/config.txt");
-
-
-        try {
-
-            Files.createDirectories(Path.of("configuration"));
-
-            if (!Files.exists(path)) {
-
-                Files.createFile(path);
-                Files.writeString(path, "idUtente:\nruolo:\nidSegnalazione:" + idSegnalazioneCorrente + "\n", StandardOpenOption.APPEND);
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                lines.set(2, "idSegnalazione:" + idSegnalazioneCorrente);
-
-                Files.write(path, lines);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-
-        }
-
+        ControllerSegnalazioni.idSegnalazioneCorrente = idSegnalazioneCorrente;
     }
 
 
@@ -290,6 +238,9 @@ public class ControllerSegnalazioni {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         if (listaEntity != null) {
+            Long idRow = 0L;
+            bindingId = new HashMap<>();
+
             for (Segnalazione s : listaEntity) {
 
                 String[] riga = new String[] {
@@ -303,16 +254,21 @@ public class ControllerSegnalazioni {
                 };
 
                 righeTabella.add(riga);
+                bindingId.put(idRow, s.getIdSegnalazione());
+                idRow++;
             }
         }
 
         return righeTabella;
     }
 
-    public static Map<String, String> getDettagliSegnalazione(Long idSegnalazione) {
+    public static Map<String, String> getDettagliSegnalazione(Long idRow) {
 
         //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        Long idSegnalazione = bindingId.get(idRow);
+        setIdSegnalazioneCorrente(idSegnalazione);
 
         //Ricerchiamo l'entity Segnalazione tramite il suo identificativo
         Segnalazione s = gestore.cercaSegnalazione(idSegnalazione);

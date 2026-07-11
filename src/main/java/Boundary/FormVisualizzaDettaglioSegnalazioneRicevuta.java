@@ -24,45 +24,45 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private JButton btnConcludiGestione;
     private JButton btnChiudi;
 
-    private final Long idSegnalazione;
 
-    public FormVisualizzaDettaglioSegnalazioneRicevuta(Long idSegnalazione) {
-        this.idSegnalazione = idSegnalazione;
-        ControllerSegnalazioni.setIdSegnalazioneCorrente(idSegnalazione);
+    public FormVisualizzaDettaglioSegnalazioneRicevuta(Long idRow) {
 
-        setTitle("Dettaglio Segnalazione #" + idSegnalazione);
+
+        setTitle("Dettaglio Segnalazione");
         setContentPane(contentPanel);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
 
         txtDescrizione.setEditable(false);
         txtDescrizione.setLineWrap(true);
+        setVisible(true);
 
         // Inizializzazione Listener
-        configuraAzioni();
-        caricaDettagliSegnalazione();
+        configuraAzioni(idRow);
+        caricaDettagliSegnalazione(idRow);
     }
 
-    private void configuraAzioni() {
-        btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione()));
-        //btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.(idSegnalazione)));
-        //btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiPositivo(idSegnalazione)));
+
+    private void configuraAzioni(Long idRow) {
+        btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
+        btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
+        btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
         btnChiudi.addActionListener(e -> dispose());
     }
 
     // Metodo helper per ridurre la duplicazione del codice
-    private void eseguiAzione(java.util.function.Supplier<Boolean> operazione) {
+    private void eseguiAzione(java.util.function.Supplier<Boolean> operazione,Long idRow) {
         if (operazione.get()) {
             JOptionPane.showMessageDialog(this, "Operazione eseguita con successo.");
-            caricaDettagliSegnalazione();
+            caricaDettagliSegnalazione(idRow);
         } else {
             JOptionPane.showMessageDialog(this, "Errore nell'esecuzione dell'operazione.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void caricaDettagliSegnalazione() {
-        Map<String, String> mappaDettagli = ControllerSegnalazioni.getDettagliSegnalazione(idSegnalazione);
+    private void caricaDettagliSegnalazione(Long idRow) {
+        Map<String, String> mappaDettagli = ControllerSegnalazioni.getDettagliSegnalazione(idRow);
 
         if (mappaDettagli != null) {
             lblId.setText(mappaDettagli.get("id"));
@@ -103,5 +103,10 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
                 btnConcludiGestione.setVisible(true);
                 break;
         }
+    }
+
+    public static void main(String[] args){
+        FormVisualizzaDettaglioSegnalazioneRicevuta form = new FormVisualizzaDettaglioSegnalazioneRicevuta(1L);
+
     }
 }

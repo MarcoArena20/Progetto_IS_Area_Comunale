@@ -23,9 +23,10 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
         setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
         setContentPane(contentPanel);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 500);
         setLocationRelativeTo(null);
+        setVisible(true);
 
         aggiornaTabella();
 
@@ -52,15 +53,9 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                     return;
                 }
 
-                // Recupero dell'ID
-                String idStringa = (String) tableSegnalazioni.getValueAt(rigaSelezionata, 0);
-
-                // Conversione esplicita in Long per garantire la coerenza del tipo di dato
-                Long idSegnalazioneSelezionata = Long.parseLong(idStringa);
-
                 // Istanziazione e apertura del form di dettaglio parametrizzato con l'ID
                 FormVisualizzaDettaglioSegnalazioneRicevuta formDettaglio =
-                        new FormVisualizzaDettaglioSegnalazioneRicevuta(idSegnalazioneSelezionata);
+                        new FormVisualizzaDettaglioSegnalazioneRicevuta(Long.parseLong(String.valueOf(rigaSelezionata)));
                 formDettaglio.setVisible(true);
             }
         });

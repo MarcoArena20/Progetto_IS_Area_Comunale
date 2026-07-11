@@ -1,7 +1,7 @@
 package Boundary;
 
 import Controller.ControllerSegnalazioni;
-import Entity.Categoria;
+import Entity.Enum.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
