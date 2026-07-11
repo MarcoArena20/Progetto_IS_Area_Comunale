@@ -51,18 +51,17 @@ public class FormRegistrazione {
 
     public JFrame apriFormRegistrazione(){
 
-        JFrame frame = new JFrame();
-        frame.setTitle("RegistraFrame");
-        frame.setContentPane(contentPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        registrazioneFrame = new JFrame();
+        registrazioneFrame.setTitle("RegistraFrame");
+        registrazioneFrame.setContentPane(contentPanel);
+        registrazioneFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        registrazioneFrame.setResizable(true);
+        registrazioneFrame.pack();
+        registrazioneFrame.setLocationRelativeTo(null);
+        registrazioneFrame.setVisible(true);
 
-        registrazioneFrame = frame;
 
-        return frame;
+        return registrazioneFrame;
     }
 
     private void Registra() {
@@ -81,6 +80,7 @@ public class FormRegistrazione {
             esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
             if (esitoFormatoRegistrazione) {
                 esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+                registrazioneFrame.dispose();
                 System.out.println("Esito Registrazione: " + esitoRegistrazione);
             } else {
                 JOptionPane.showMessageDialog(registrazioneFrame, "Impossibile registrarsi con le suddette credenziali!");
@@ -98,7 +98,7 @@ public class FormRegistrazione {
 
                 new FormAreaPersonaleCittadino().apriAreaPersonale();
 
-            } else {
+            } else if (ruoloStringa.equals("OPERATORE")){
                 new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
             }
         }

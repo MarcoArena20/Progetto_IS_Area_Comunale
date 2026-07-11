@@ -1,6 +1,7 @@
 package Controller;
 
 import Entity.EntryDB.AggiornamentoStatoEntry;
+import Entity.Gestori.GestoreAggiornamentoStato;
 import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Segnalazione;
 import Entity.Enum.Ruolo;
@@ -111,12 +112,12 @@ public class ControllerSegnalazioni {
         return esitoAggiuntaNota;
     }
 
-    public static boolean verificaModificabilità(){
+    public static boolean verificaModificabilità(Integer idRow){
 
         // La prima cosa da fare è ottenere l'id della segnalazione corrente
         // e chiamare il gestore segnalazioni
 
-        Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = bindingId.get(idRow);
 
         // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
         Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
@@ -150,13 +151,12 @@ public class ControllerSegnalazioni {
         return gestoreAggiornamentoStato.verificaOperatoreInGestioneCorrente(idOperatore, idSegnalazione);
     }
 
-    public static Map<String, String> ottieniParametriModificabili(){
+    public static Map<String, String> ottieniParametriModificabili(Integer idRow){
 
         // La prima cosa da fare è ottenere l'id della segnalazione corrente
         // e chiamare il gestore segnalazioni
 
-        //Long idSegnalazione = getIdSegnalazioneCorrente();
-        Long idSegnalazione = 1L;
+        Long idSegnalazione = bindingId.get(idRow);
 
         // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
         Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
@@ -185,7 +185,7 @@ public class ControllerSegnalazioni {
 
     }
 
-    public static boolean modificaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public static boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         // Prima di effettuare la chiamata al Façade dello strato Entity, convertiamo il valore di categoria
         Categoria categoriaEnum = Categoria.valueOf(categoria);
@@ -205,10 +205,8 @@ public class ControllerSegnalazioni {
 
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        //Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
-        //Long idSegnalazione = getIdSegnalazioneCorrente();
-        Long idSegnalazione = 1L;
-        Long idCittadino = 1L;
+        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
+        Long idSegnalazione = bindingId.get(idRow);
 
         boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
         return esito;
@@ -256,7 +254,7 @@ public class ControllerSegnalazioni {
 
             String[] riga = new String[]{
                     anteprima.categoria().toString(),
-                    anteprima.data().toString(),
+                    (anteprima.data() != null)? anteprima.data().toString(): "",
                     anteprima.posizione().toString(),
                     anteprima.stato().toString(),
             };
@@ -283,7 +281,7 @@ public class ControllerSegnalazioni {
         String titolo = dettaglioCompleto.dettaglio().titolo().toString();
         String categoria = dettaglioCompleto.dettaglio().anteprima().categoria().toString();
         String stato = dettaglioCompleto.dettaglio().anteprima().stato().toString();
-        String data = dettaglioCompleto.dettaglio().anteprima().data().toString();
+        String data = (dettaglioCompleto.dettaglio().anteprima().data() != null) ? dettaglioCompleto.dettaglio().anteprima().data().toString(): "";
         String posizione = dettaglioCompleto.dettaglio().anteprima().posizione().toString();
 
         righeTabellaInvertita.add(new String[]{"Titolo:", titolo});
@@ -388,7 +386,7 @@ public class ControllerSegnalazioni {
                 };
 
                 righeTabella.add(riga);
-                //bindingId.put(idRow, s.getIdSegnalazione());
+                bindingId.put(idRow, s.getIdSegnalazione());
                 idRow++;
             }
         }

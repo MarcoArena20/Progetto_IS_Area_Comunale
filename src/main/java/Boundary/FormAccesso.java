@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 public class FormAccesso {
 
+    private JFrame accessoFrame;
     private JPanel contentPanel;
     private JButton accessButton;
     private JTextField emailField;
@@ -39,7 +40,7 @@ public class FormAccesso {
 
     public JFrame apriFormAccesso(){
 
-        JFrame accessoFrame = new JFrame();
+        accessoFrame = new JFrame();
         accessoFrame.setTitle("AccediFrame");
         accessoFrame.setContentPane(contentPanel);
 
@@ -67,7 +68,13 @@ public class FormAccesso {
             esitoFormatoAccesso = controlloFormatoDatiAccesso(ruoloStringa, email, password);
             if (esitoFormatoAccesso) {
                 esitoAccesso = ControllerUtenti.accessoUtente(ruoloStringa, email, password);
-                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+
+                if(ruoloStringa.equals("CITTADINO"))
+                    new FormAreaPersonaleCittadino().apriAreaPersonale();
+                else if(ruoloStringa.equals("OPERATORE"))
+                    new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+
+                accessoFrame.dispose();
                 System.out.println("Esito Registrazione: " + esitoAccesso);
             } else {
                 JOptionPane.showMessageDialog(null, "Email o password errati.");

@@ -12,9 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FormVisualizzaSegnalazioni {
 
+    private JFrame visualizzaFrame;
     private JPanel contentPanel;
     private JScrollPane scroll;
     private JButton visualizzaDettaglioButton;
@@ -62,7 +64,7 @@ public class FormVisualizzaSegnalazioni {
                     );
                     return;
                 }
-                frame.dispose();
+                visualizzaFrame.dispose();
                 // Apriamo il form di dettaglio passando il numero della riga selezionata
                 FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione(rigaSelezionata);
                 dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni(rigaSelezionata);
@@ -88,9 +90,30 @@ public class FormVisualizzaSegnalazioni {
                     return;
                 }
 
-                // Apriamo il form di dettaglio passando il numero della riga selezionata
-                //FormModificaSegnalazione modificaFrame = new FormModificaSegnalazione(rigaSelezionata);
-                //modificaFrame.apriFormModificaSegnalazioni();
+                // Una volta ottenuta la conferma, otteniamo le informazioni relative alla segnalazione
+                // e apriamo il form di modifica
+
+                boolean modificabile = ControllerSegnalazioni.verificaModificabilità(rigaSelezionata);
+                if(!modificabile)
+                    System.out.println("Segnalazione non modificabile");
+                else{
+
+                    Map<String, String> parametri = ControllerSegnalazioni.ottieniParametriModificabili(rigaSelezionata);
+                    //Apriamo il form di dettaglio passando il numero della riga selezionata
+                    FormModificaSegnalazione modificaFrame = new FormModificaSegnalazione(rigaSelezionata);
+                    modificaFrame.apriModificaForm(parametri.get("titolo"),
+                            parametri.get("descrizione"),
+                            parametri.get("categoria"),
+                            parametri.get("posizione"),
+                            parametri.get("data"),
+                            parametri.get("immagine"));
+
+                    visualizzaFrame.dispose();
+
+                }
+
+
+
             }
         });
 
@@ -98,14 +121,14 @@ public class FormVisualizzaSegnalazioni {
 
     public JFrame apriFormVisualizzaSegnalazioni(){
 
-        frame = new JFrame("Visualizza dettaglio segnalazione");
-        frame.setContentPane(contentPanel);
+        visualizzaFrame = new JFrame("Visualizza dettaglio segnalazione");
+        visualizzaFrame.setContentPane(contentPanel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        visualizzaFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        visualizzaFrame.pack();
+        visualizzaFrame.setLocationRelativeTo(null);
+        visualizzaFrame.setVisible(true);
 
         return frame;
     }

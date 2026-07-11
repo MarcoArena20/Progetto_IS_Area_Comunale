@@ -24,12 +24,21 @@ public class FormModificaSegnalazione {
     private JButton modificaButton;
     private JComboBox categoriaBox;
 
-    public FormModificaSegnalazione(){
+    public FormModificaSegnalazione(int idRow){
 
         modificaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                modificaSegnalazione();
+
+                boolean esito = modificaSegnalazione(idRow);
+
+                if(esito){
+
+                    modificaFrame.dispose();
+                    new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+
+                }
+
             }
         });
     }
@@ -59,7 +68,7 @@ public class FormModificaSegnalazione {
 
     }
 
-    private boolean modificaSegnalazione(){
+    private boolean modificaSegnalazione(int idRow){
 
         // Caratteristiche obbligatorie che ogni segnalazione deve avere
         String titolo = titoloField.getText();
@@ -88,7 +97,7 @@ public class FormModificaSegnalazione {
         }
         else
         {
-            boolean esito = ControllerSegnalazioni.modificaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+            boolean esito = ControllerSegnalazioni.modificaSegnalazione(idRow, titolo, descrizione, categoria, posizione, data, urlImmagine);
             return esito;
         }
 
