@@ -1,9 +1,8 @@
 package Controller;
 
-import Entity.Categoria;
-import Entity.GestoreAggiornamentoStato;
-import Entity.GestoreSegnalazioni;
-import Entity.Ruolo;
+import Entity.Enum.Categoria;
+import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Enum.Ruolo;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -132,6 +131,7 @@ public class ControllerSegnalazioni {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
         //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+        //TODO controllo nel boundary per verificare che non può aggiornare una segnalazione con stato inLavorazione (si deve concludere)
 
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
         Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
@@ -145,6 +145,7 @@ public class ControllerSegnalazioni {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
         //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+        //TODO controllo nel boundary per verificare che non si può concludere con esito positivo una segnalazione con stato presaInCarico (si deve prima aggiornare)
 
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
         Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
@@ -215,6 +216,8 @@ public class ControllerSegnalazioni {
             TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
             TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
          */
+        concludiGestioneSegnalazione(null, null, false);
+        //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
 
     }

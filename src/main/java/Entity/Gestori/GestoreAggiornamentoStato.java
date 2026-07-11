@@ -1,7 +1,12 @@
-package Entity;
+package Entity.Gestori;
 
 import Controller.ControllerUtenti;
 import Database.GestorePersistenza;
+import Entity.*;
+import Entity.EntryDB.AggiornamentoStatoEntry;
+import Entity.EntryDB.GestioneOperatoreEntry;
+import Entity.StateMachine.StatoSegnalazione;
+import Entity.Enum.StatoType;
 
 import java.util.List;
 import java.util.Map;

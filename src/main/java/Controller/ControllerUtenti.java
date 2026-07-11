@@ -1,6 +1,6 @@
 package Controller;
 
-import Entity.Ruolo;
+import Entity.Enum.Ruolo;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import Entity.GestoreUtenti;
+import Entity.Gestori.GestoreUtenti;
 
 //Façade
 public class ControllerUtenti {

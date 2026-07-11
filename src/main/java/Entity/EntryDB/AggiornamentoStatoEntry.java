@@ -1,9 +1,12 @@
-package Entity;
+package Entity.EntryDB;
 
+import Entity.StateMachine.*;
+import Entity.*;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "AggiornamentoStato")
 public class AggiornamentoStatoEntry {
 
     //Attributi

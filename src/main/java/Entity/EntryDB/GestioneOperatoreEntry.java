@@ -1,8 +1,10 @@
-package Entity;
+package Entity.EntryDB;
 
 import jakarta.persistence.*;
+import Entity.*;
 
 @Entity
+@Table(name = "GestioneOperatore")
 public class GestioneOperatoreEntry {
 
     //Attributi
