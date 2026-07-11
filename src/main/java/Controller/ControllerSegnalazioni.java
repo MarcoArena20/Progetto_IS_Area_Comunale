@@ -66,50 +66,44 @@ public class ControllerSegnalazioni {
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
-        if (ruoloUtente.equals(Ruolo.CITTADINO.name())) {
-            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
+        if (!verificaRuoloUtenteCorrente(Ruolo.OPERATORE)) {
             return false;
         }
 
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
-        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
 
-
-        boolean esito = gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente, idOperatore);
-
-        return esito;
+        return gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente);
     }
 
     public static boolean aggiornaStatoSegnalazione() {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
-        //TODO controllo nel boundary per verificare che non può aggiornare una segnalazione con stato inLavorazione (si deve concludere)
-
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
         Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
 
-        boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
+        if (!verificaPermessiOperatore(idOperatore, idSegnalazioneCorrente)) {
+            return false;
+        }
 
-        return esitoAggiornamento;
+        return gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
     }
 
     public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
-        //TODO controllo nel boundary per verificare che non si può concludere con esito positivo una segnalazione con stato presaInCarico (si deve prima aggiornare)
-
         Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
         Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+        if (!verificaPermessiOperatore(idOperatore, idSegnalazioneCorrente)) {
+            return false;
+        }
+
+        //TODO controllo nel boundary per verificare che non si può concludere con esito positivo una segnalazione con stato presaInCarico (si deve prima aggiornare)
 
         boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
         boolean esitoAggiuntaNota = false;
 
         if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
-            //TODO controllo nel boundary per fare in modo tale da avere o titolo e descrizione null o che rispettano i vincoli
-
             esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
         }
 
@@ -122,8 +116,7 @@ public class ControllerSegnalazioni {
         // La prima cosa da fare è ottenere l'id della segnalazione corrente
         // e chiamare il gestore segnalazioni
 
-        //Long idSegnalazione = getIdSegnalazioneCorrente();
-        Long idSegnalazione = 1L;
+        Long idSegnalazione = getIdSegnalazioneCorrente();
 
         // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
         Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
@@ -137,6 +130,24 @@ public class ControllerSegnalazioni {
         else
             return true;
 
+    }
+
+    public static boolean verificaRuoloUtenteCorrente(Ruolo ruolo) {
+
+        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
+        if (!ruoloUtente.equals(ruolo.name())) {
+            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public static boolean verificaPermessiOperatore(Long idOperatore, Long idSegnalazione){
+        GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
+
+        return gestoreAggiornamentoStato.verificaOperatoreInGestioneCorrente(idOperatore, idSegnalazione);
     }
 
     public static Map<String, String> ottieniParametriModificabili(){
@@ -474,7 +485,7 @@ public class ControllerSegnalazioni {
             TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
             TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
          */
-        concludiGestioneSegnalazione(null, null, false);
+        //concludiGestioneSegnalazione(null, null, false);
         //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
 

@@ -28,7 +28,7 @@ public class GestoreSegnalazioni {
     public boolean inserisciSegnalazione(Long idCittadino, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
 
         // Bisogna trovare il cittadino corrispondente
-        Cittadino cittadino = new GestoreUtenti().cercaUtente(idCittadino);
+        Cittadino cittadino = new GestoreUtenti().cercaCittadino(idCittadino);
 
         //if(cittadino == null)
             //return false;
@@ -125,7 +125,7 @@ public class GestoreSegnalazioni {
         return true;
     }
 
-    public boolean iniziaGestioneSegnalazione(Long idSegnalazione, Long idOperatore) {
+    public boolean iniziaGestioneSegnalazione(Long idSegnalazione) {
         //Bisogna controllare che: 0. la segnalazione esiste, 1. accesso in mutua esclusione, 2. la segnalazione ha stato inviata
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
         if (segnalazione == null) {

@@ -105,7 +105,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
                 break;
             case "PRESA_IN_CARICO":
                 btnAggiornaStato.setVisible(true);
-
+                btnConcludiGestione.setVisible(true);
                 break;
             case "IN_LAVORAZIONE":
                 btnConcludiGestione.setVisible(true);
