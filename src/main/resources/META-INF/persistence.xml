@@ -14,7 +14,7 @@
         <class>Entity.Cittadino</class>
         <class>Entity.Operatore</class>
         <class>Entity.AggiornamentoStatoEntry</class>
-        <class>Entity.NotaInternaEntry</class>
+        <class>Entity.GestioneOperatoreEntry</class>
 
 
         <properties>

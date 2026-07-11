@@ -3,19 +3,26 @@ package Entity;
 public class ConcreteObserver implements Observer {
 
     //Attributi
-    private final String nameObserver;
+    private static ConcreteObserver instance;
 
     //Costruttore
-    public ConcreteObserver(String name) {
-        this.nameObserver = name;
+    private ConcreteObserver() {
+
+    }
+
+    public static ConcreteObserver getInstance() {
+        if (instance == null)
+            instance = new ConcreteObserver();
+
+        return instance;
     }
 
     @Override
     public boolean update(Segnalazione segnalazione, StatoSegnalazione newStato) {
-        System.out.println("["+this.nameObserver+"] Stato aggiornato:\n"+segnalazione.toString());
-        System.out.println("["+this.nameObserver+"] Contatto db..");
+        System.out.println("[Observer] Stato aggiornato:\n"+segnalazione.toString());
+        System.out.println("[Observer] Contatto db..");
 
-        GestoreAggiornamento gestoreAggiornamento = new GestoreAggiornamento();
+        GestoreAggiornamentoStato gestoreAggiornamento = new GestoreAggiornamentoStato();
         boolean esito = gestoreAggiornamento.aggiornaStato(segnalazione, newStato);
 
 

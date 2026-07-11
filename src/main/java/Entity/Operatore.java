@@ -36,4 +36,13 @@ public class Operatore extends UtenteAutenticato {
         //TODO
         return "";
     }
+
+    @Override
+    public String toString() {
+        //TODO
+        return"Operatore {\n" +
+                    "*\tidOperatore=" + idOperatore + ",\n" +
+                    //"*\ttitolo=" + titolo + ",\n" +
+                    '}';
+    }
 }

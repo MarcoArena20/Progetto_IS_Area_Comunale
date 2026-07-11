@@ -11,13 +11,10 @@ public class GestoreSegnalazioni {
 
     //Attributi
     private GestorePersistenza gestorePersistenza;
-    private Observer observerSegnalazione;
 
     public GestoreSegnalazioni(){
 
         this.gestorePersistenza = new GestorePersistenza();
-
-        this.observerSegnalazione = new ConcreteObserver("observerSegnalazione");
 
     }
 
@@ -61,8 +58,37 @@ public class GestoreSegnalazioni {
         return segnalazione;
     }
 
-    public boolean aggiungiNota(Long idSegnalazione, String titolo, String descrizioneNota) {
-        //TODO
+    public boolean aggiungiNota(Long idSegnalazione, Long idOperatore, String titolo, String descrizione) {
+        //Bisogna controllare che: 0. la segnalazione esiste, 1. lo stato sia Inviata o Risolta
+
+
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+        if (segnalazione == null) {
+            System.err.println("[GestoreSegnalazioni] Nessuna segnalazione trovata..");
+            return false;
+        }
+
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+
+
+        StatoSegnalazione statoSegnalazione = segnalazione.getStato();
+
+        if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())
+                && !statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
+
+            //Impossibile aggiungere nota
+            System.err.println("[GestoreSegnalazioni] Nota non aggiungibile..\n"+segnalazione.toString());
+            return false;
+        } else {
+            GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
+
+            Operatore operatore = this.gestorePersistenza.trovaPerId(Operatore.class, idOperatore);
+
+            gestoreAggiornamentoStato.aggiungiNota(operatore, segnalazione, titolo, descrizione);
+        }
+
+        System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
+
         return true;
     }
 
@@ -81,24 +107,48 @@ public class GestoreSegnalazioni {
 
         if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())) {
             //Impossibile iniziare la gestione
-            System.err.println("[GestoreSegnalazioni] Segnalazione già in gestione..");
+            System.err.println("[GestoreSegnalazioni] Impossibile prendere in carico la segnalazione, stato:"+statoSegnalazione.getStatoToString());
             return false;
         } else {
 
-            segnalazione.attach(this.observerSegnalazione);
-
             segnalazione.aggiornaStato(true);
-        }
 
-        //Posso uscire dal blocco synchronized poiché è conclusa la sezione critica
+        }
 
         System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
 
         return true;
     }
 
-    public boolean concludiGestioneSegnalazione(String idSegnalazione, boolean esito) {
-        //TODO
+    //metodo invocato sia per aggiornare lo stato che per concludere la gestione
+    public boolean aggiornaStatoSegnalazione(Long idSegnalazione, Long idOperatore, boolean esito) {
+        //Bisogna controllare che: 0. la segnalazione esiste, 1. la segnalazione non ha ne stato inviata ne stato risolta
+
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+        if (segnalazione == null) {
+            System.err.println("[GestoreSegnalazioni] Nessuna segnalazione trovata..");
+            return false;
+        }
+
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+
+
+        StatoSegnalazione statoSegnalazione = segnalazione.getStato();
+
+        if (statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())
+                || statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
+
+            //Impossibile aggiornare stato
+            System.err.println("[GestoreSegnalazioni] Stato della segnalazione non aggiornabile..");
+            return false;
+        } else {
+
+            segnalazione.aggiornaStato(esito);
+        }
+
+        System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
+
         return true;
     }
+
 }
