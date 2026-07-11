@@ -10,23 +10,16 @@ import java.util.List;
 
 public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
+    private JFrame mainFrame;
     private JPanel contentPanel;
     private JComboBox<String> comboStato;
     private JComboBox<String> comboCategoria;
     private JComboBox<String> comboArea;
     private JButton btnApplicaFiltri;
-    private JScrollPane scrollPaneTable;
     private JTable tableSegnalazioni;
     private JButton btnVisualizzaDettaglio;
 
     public FormVisualizzaSegnalazioniRicevute() {
-
-        setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
-        setContentPane(contentPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 500);
-        setLocationRelativeTo(null);
-        setVisible(true);
 
         aggiornaTabella();
 
@@ -55,11 +48,20 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 // Istanziazione e apertura del form di dettaglio parametrizzato con l'ID
                 FormVisualizzaDettaglioSegnalazioneRicevuta formDettaglio =
-                        new FormVisualizzaDettaglioSegnalazioneRicevuta(Long.parseLong(String.valueOf(rigaSelezionata)));
-                formDettaglio.setVisible(true);
+                        new FormVisualizzaDettaglioSegnalazioneRicevuta((long) rigaSelezionata);
+                formDettaglio.apriDettaglioFrame();
             }
         });
 
+    }
+
+    public void apriVisualizzaFrame() {
+        setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
+        setContentPane(contentPanel);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(900, 500);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
 
@@ -89,7 +91,8 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         tableSegnalazioni.setModel(model);
     }
     public static void main(String[] args){
-        new FormVisualizzaSegnalazioniRicevute();
+        FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
+        form.apriVisualizzaFrame();
     }
 }
 

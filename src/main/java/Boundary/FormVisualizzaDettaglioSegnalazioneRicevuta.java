@@ -27,20 +27,21 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
     public FormVisualizzaDettaglioSegnalazioneRicevuta(Long idRow) {
 
+        txtDescrizione.setEditable(false);
+        txtDescrizione.setLineWrap(true);
 
+        // Inizializzazione Listener
+        configuraAzioni(idRow);
+        caricaDettagliSegnalazione(idRow);
+    }
+
+    public void apriDettaglioFrame() {
         setTitle("Dettaglio Segnalazione");
         setContentPane(contentPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
-
-        txtDescrizione.setEditable(false);
-        txtDescrizione.setLineWrap(true);
         setVisible(true);
-
-        // Inizializzazione Listener
-        configuraAzioni(idRow);
-        caricaDettagliSegnalazione(idRow);
     }
 
 
@@ -103,10 +104,5 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
                 btnConcludiGestione.setVisible(true);
                 break;
         }
-    }
-
-    public static void main(String[] args){
-        FormVisualizzaDettaglioSegnalazioneRicevuta form = new FormVisualizzaDettaglioSegnalazioneRicevuta(1L);
-
     }
 }
