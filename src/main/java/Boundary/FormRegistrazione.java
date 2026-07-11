@@ -37,10 +37,10 @@ public class FormRegistrazione {
         System.out.println("Password: "+passwordTextField.getText());
     }
 
-    private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String recapitoTelefonico, String email, String password){
+    private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password){
         boolean esitoFormatoRegistrazione=false;
         try {
-            esitoFormatoRegistrazione = CheckDatiForm.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, recapitoTelefonico, email, password);
+            esitoFormatoRegistrazione = CheckDatiForm.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
             return  esitoFormatoRegistrazione;
         } catch (IllegalArgumentException ex) {
             // Mostra il motivo del fallimento nel terminale e restituisce false
@@ -65,8 +65,8 @@ public class FormRegistrazione {
 
     private void Registra(){
         String ruoloStringa = (String) ruoloRegistrazione.getSelectedItem();
-        String cognome = nomeTextField.getText();
         String nome = nomeTextField.getText();
+        String cognome = cognomeTextField.getText();
         String recapitoTelefonico =recapitoTelefonicoTextField.getText();
         String email= emailTextField.getText();
         String password = passwordTextField.getText();
@@ -74,22 +74,16 @@ public class FormRegistrazione {
         printFormRegistrazione();
         boolean esitoRegistrazione =false;
         boolean esitoFormatoRegistrazione;
-        esitoFormatoRegistrazione= controlloFormatoDatiRegistrazione((String) ruoloRegistrazione.getSelectedItem(),
-                                                                                nomeTextField.getText(),
-                                                                                cognomeTextField.getText(),
-                                                                                recapitoTelefonicoTextField.getText(),
-                                                                                emailTextField.getText(),
-                                                                                passwordTextField.getText());
+        esitoFormatoRegistrazione= controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
         if (esitoFormatoRegistrazione){
-            esitoRegistrazione =ControllerUtenti.salvaUtente(ruoloStringa, nome,cognome,recapitoTelefonico,email,password);
+            esitoRegistrazione =ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+            System.out.println("Esito Registrazione: "+esitoRegistrazione);
         }
         else{
             return;
             //TODO interfaccia registrazione rifiutata
-            }
-        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
-        System.out.println("Esito Registrazione: "+esitoRegistrazione);
-
+        }
     }
 
 }
