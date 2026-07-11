@@ -72,6 +72,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     public String getUrlImmagine() { return urlImmagine; }
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
+
     // Metodi
     /*
     public synchronized boolean iniziaGestione(Long idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
@@ -248,7 +249,5 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         s.aggiornaStato(false);
 
     }
-
-
 
 }

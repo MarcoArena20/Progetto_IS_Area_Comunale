@@ -2,82 +2,33 @@ package Controller;
 
 import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Segnalazione;
-import Entity.Enum.Categoria;
 import Entity.Enum.Ruolo;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Enum.Categoria;
+import Entity.StateMachine.StatoInLavorazione;
+import Entity.StateMachine.StatoInviata;
+import Entity.StateMachine.StatoRisolta;
+import Entity.StateMachine.StatoSegnalazione;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+
 //Façade
 public class ControllerSegnalazioni {
 
+    private static Map<Long,Long> bindingId;
+    private static Long idSegnalazioneCorrente;
+
     public static Long getIdSegnalazioneCorrente(){
-
-        Path path = Path.of("configuration/config.txt");
-
-        try {
-            if (!Files.exists(path)) {
-
-                return null;
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                return Long.parseLong(lines.get(2).split(":")[1]);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-            return null;
-
-        }
+        return idSegnalazioneCorrente;
     }
 
     public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
-
-        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-        // di default, ovvero
-        // idUtente:
-        // ruolo:
-        // idSegnalazione:
-
-        Path path = Path.of("configuration/config.txt");
-
-
-        try {
-
-            Files.createDirectories(Path.of("configuration"));
-
-            if (!Files.exists(path)) {
-
-                Files.createFile(path);
-                Files.writeString(path, "idUtente:\nruolo:\nidSegnalazione:" + idSegnalazioneCorrente + "\n", StandardOpenOption.APPEND);
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                lines.set(2, "idSegnalazione:" + idSegnalazioneCorrente);
-
-                Files.write(path, lines);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-
-        }
-
+        ControllerSegnalazioni.idSegnalazioneCorrente = idSegnalazioneCorrente;
     }
 
 
@@ -114,7 +65,7 @@ public class ControllerSegnalazioni {
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();//Controllo superfluo
+        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
         if (ruoloUtente.equals(Ruolo.CITTADINO.name())) {
             System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
             return false;
@@ -250,6 +201,103 @@ public class ControllerSegnalazioni {
         boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
         return esito;
 
+    }
+
+    public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
+
+        //Traduzione dei parametri dal Boundary ai tipi Entity
+        Categoria categoria = null;
+        if (categoriaStr != null && !categoriaStr.equals("Tutte")) {
+            categoria = Categoria.valueOf(categoriaStr.toUpperCase().replace(" ", "_"));
+        }
+
+        StatoSegnalazione stato = null;
+        if (statoStr != null && !statoStr.equals("Tutti")) {
+            switch (statoStr.toLowerCase()) {
+                case "inviata":
+                    stato = new StatoInviata();
+                    break;
+                case "in lavorazione":
+                    stato = new StatoInLavorazione();
+                    break;
+                case "risolta":
+                    stato = new StatoRisolta();
+                    break;
+            }
+        }
+
+        String posizione = (areaStr != null && !areaStr.equals("Tutte")) ? areaStr : null;
+
+        //Invocazione del Façade dello strato Entity
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        // Il gestore si occuperà di chiamare il database e restituire gli oggetti Segnalazione
+        List<Segnalazione> listaEntity = gestore.cercaSegnalazioni(stato, categoria, posizione);
+
+        // Mappatura inversa: da Entity a Stringhe primitive per la GUI
+        List<String[]> righeTabella = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        if (listaEntity != null) {
+            Long idRow = 0L;
+            bindingId = new HashMap<>();
+
+            for (Segnalazione s : listaEntity) {
+
+                String[] riga = new String[] {
+                        s.getIdSegnalazione() != null ? String.valueOf(s.getIdSegnalazione()) : "N/D",
+                        s.getIdCittadino() != null ? String.valueOf(s.getIdCittadino()) : "Utente Sconosciuto",
+                        (s.getData() != null) ? s.getData().format(formatter) : "",
+                        s.getDescrizione(),
+                        (s.getStato() != null) ? s.getStato().getStatoToString() : "Sconosciuto",
+                        s.getCategoria() != null ? s.getCategoria().name() : "",
+                        s.getPosizione()
+                };
+
+                righeTabella.add(riga);
+                bindingId.put(idRow, s.getIdSegnalazione());
+                idRow++;
+            }
+        }
+
+        return righeTabella;
+    }
+
+    public static Map<String, String> getDettagliSegnalazione(Long idRow) {
+
+        //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        Long idSegnalazione = bindingId.get(idRow);
+        setIdSegnalazioneCorrente(idSegnalazione);
+
+        //Ricerchiamo l'entity Segnalazione tramite il suo identificativo
+        Segnalazione s = gestore.cercaSegnalazione(idSegnalazione);
+
+        if (s == null) {
+            return null;
+        }
+
+        Map<String, String> dettagli = new HashMap<>();
+
+        dettagli.put("id", s.getIdSegnalazione() != null ? String.valueOf(s.getIdSegnalazione()) : "");
+        dettagli.put("titolo", s.getTitolo() != null ? s.getTitolo() : "");
+        dettagli.put("descrizione", s.getDescrizione() != null ? s.getDescrizione() : "");
+        dettagli.put("categoria", s.getCategoria() != null ? s.getCategoria().name() : "");
+        dettagli.put("posizione", s.getPosizione() != null ? s.getPosizione() : "");
+        dettagli.put("stato", s.getStato() != null ? s.getStato().getStatoToString() : "Sconosciuto");
+
+        if (s.getData() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            dettagli.put("data", s.getData().format(formatter));
+        } else {
+            dettagli.put("data", "");
+        }
+
+        dettagli.put("idCittadino", s.getIdCittadino() != null ? String.valueOf(s.getIdCittadino()) : "");
+        dettagli.put("urlImmagine", s.getUrlImmagine() != null ? s.getUrlImmagine() : "");
+
+        return dettagli;
     }
 
 
