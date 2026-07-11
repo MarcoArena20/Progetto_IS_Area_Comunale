@@ -361,7 +361,7 @@ public class ControllerSegnalazioni {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         if (listaEntity != null) {
-            Long idRow = 0L;
+            int idRow = 0;
             bindingId = new HashMap<>();
 
             for (Segnalazione s : listaEntity) {
@@ -385,7 +385,7 @@ public class ControllerSegnalazioni {
         return righeTabella;
     }
 
-    public static Map<String, String> getDettagliSegnalazione(Long idRow) {
+    public static Map<String, String> getDettagliSegnalazione(Integer idRow) {
 
         //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
@@ -402,7 +402,6 @@ public class ControllerSegnalazioni {
 
         Map<String, String> dettagli = new HashMap<>();
 
-        dettagli.put("id", s.getIdSegnalazione() != null ? String.valueOf(s.getIdSegnalazione()) : "");
         dettagli.put("titolo", s.getTitolo() != null ? s.getTitolo() : "");
         dettagli.put("descrizione", s.getDescrizione() != null ? s.getDescrizione() : "");
         dettagli.put("categoria", s.getCategoria() != null ? s.getCategoria().name() : "");
