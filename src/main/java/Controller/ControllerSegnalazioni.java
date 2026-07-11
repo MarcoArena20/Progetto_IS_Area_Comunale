@@ -1,11 +1,9 @@
 package Controller;
 
+import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Segnalazione;
-import Entity.Categoria;
-import Entity.GestoreAggiornamentoStato;
-import Entity.GestoreSegnalazioni;
-import Entity.Ruolo;
-
+import Entity.Enum.Categoria;
+import Entity.Enum.Ruolo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
