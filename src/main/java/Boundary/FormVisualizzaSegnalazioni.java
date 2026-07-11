@@ -3,7 +3,7 @@ package Boundary;
 //import controller.GestoreSegnalazioni;
 import Controller.ControllerSegnalazioni;
 import Entity.Segnalazione;
-import Entity.Categoria;
+import Entity.Enum.Categoria;
 import Entity.Cittadino;
 
 import javax.swing.*;
