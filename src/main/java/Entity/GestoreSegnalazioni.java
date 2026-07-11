@@ -107,7 +107,7 @@ public class GestoreSegnalazioni {
 
         if (!statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())) {
             //Impossibile iniziare la gestione
-            System.err.println("[GestoreSegnalazioni] Segnalazione già in gestione..");
+            System.err.println("[GestoreSegnalazioni] Impossibile prendere in carico la segnalazione, stato:"+statoSegnalazione.getStatoToString());
             return false;
         } else {
 

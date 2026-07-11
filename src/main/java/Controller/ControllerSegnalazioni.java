@@ -169,11 +169,53 @@ public class ControllerSegnalazioni {
         setIdSegnalazioneCorrente(1L);
         ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
-        ControllerSegnalazioni.iniziaGestioneSegnalazione();
 
-        ControllerSegnalazioni.aggiornaStatoSegnalazione();
+        //1. flusso normale
+        System.out.println("[ControllerSegnalazioni] Test flusso principale");
 
-        ControllerSegnalazioni.concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+        iniziaGestioneSegnalazione();
+
+        aggiornaStatoSegnalazione();
+
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //2. dopo aver preso in carico una segnalazione, un altro operatore tenta l'accesso
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione non sua");
+
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
+        System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
+        iniziaGestioneSegnalazione();
+
+
+        //4. tentativo di prendere in carico una segnalazione risolta
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        setIdSegnalazioneCorrente(4L);
+        iniziaGestioneSegnalazione();
+
+        //5. tentativo di concludere con esito positivo una segnalazione presa in carico
+        System.out.println("[ControllerSegnalazioni] Test operatore tenta di risolvere con esito positivo una segnalazione presa in carico");
+
+        setIdSegnalazioneCorrente(1L);
+        iniziaGestioneSegnalazione();
+        concludiGestioneSegnalazione("Risolta", "Segnalazione risolta con successo", true);
+        /*
+            TODO| non è un problema ma è il flusso di esecuzione: se si fa concludi gestione con esito true da presaInCarico:
+            TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
+            TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
+         */
+
 
     }
 
