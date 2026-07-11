@@ -105,8 +105,6 @@ public class ControllerSegnalazioni {
         boolean esitoAggiuntaNota = false;
 
         if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
-            //TODO controllo nel boundary per fare in modo tale da avere o titolo e descrizione null o che rispettano i vincoli
-
             esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
         }
 

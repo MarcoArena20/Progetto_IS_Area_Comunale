@@ -30,7 +30,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
         setTitle("Dettaglio Segnalazione");
         setContentPane(contentPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
 
@@ -48,6 +48,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
         //btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
+        btnConcludiGestione.addActionListener(e -> new FormConclusioneGestione().apriConclusioneFrame());
         btnChiudi.addActionListener(e -> dispose());
     }
 
