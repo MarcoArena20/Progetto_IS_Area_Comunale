@@ -1,7 +1,6 @@
 package Controller;
 
 import Entity.Categoria;
-import Entity.GestoreAggiornamentoStato;
 import Entity.GestoreSegnalazioni;
 import Entity.Ruolo;
 
