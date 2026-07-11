@@ -42,20 +42,17 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
-        public static boolean salvaUtente(String ruoloStringa, String cognome, String nome, String recapitoTelefonico, String email,String password) {
+        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoRegistrazione = false;
             try {
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash = hashPassword(password);
-
-                String idUtente = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash);
-
+                String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
                 if (idUtente != null) {
                     esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
                 }
-                esitoRegistrazione = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash) != null;
             } catch (NoSuchAlgorithmException e) {
                 //TODO
                 e.printStackTrace();

@@ -1,7 +1,7 @@
 package Boundary;
 
 public class CheckDatiForm {
-    public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String recapitoTelefonico, String email, String password) throws  IllegalArgumentException{
+    public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws  IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
             throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
@@ -45,8 +45,11 @@ public class CheckDatiForm {
         for (char c : email.toCharArray()) {
             if (c == '@') chiocciole++;
         }
-        if (chiocciole != 1 || !email.contains(".")) {
+        if (chiocciole > 1 || !email.contains(".")) {
             throw new IllegalArgumentException("L'email contiene piu di una chiocciola '@' o manca del punto identificativo del dominio.");
+        }
+        if (chiocciole == 0){
+            throw new IllegalArgumentException("L'email non contiene neanche una chiocciola '@.");
         }
 
         // Controllo password: Lunghezza 8-25, almeno 1 Maiuscola, 1 Minuscola, 1 Numero, 1 Speciale [!?-@%]
@@ -95,8 +98,11 @@ public class CheckDatiForm {
         for (char c : email.toCharArray()) {
             if (c == '@') chiocciole++;
         }
-        if (chiocciole != 1 || !email.contains(".")) {
+        if (chiocciole > 1 || !email.contains(".")) {
             throw new IllegalArgumentException("L'email contiene piu di una chiocciola '@' o manca del punto identificativo del dominio.");
+        }
+        if (chiocciole == 0){
+            throw new IllegalArgumentException("L'email non contiene neanche una chiocciola '@.");
         }
 
         // Controllo password: Lunghezza 8-25, almeno 1 Maiuscola, 1 Minuscola, 1 Numero, 1 Speciale [!?-@%]

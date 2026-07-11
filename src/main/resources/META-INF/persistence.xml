@@ -29,7 +29,7 @@
                       value="root"/>
 
             <property name="jakarta.persistence.jdbc.password"
-                      value="GiuliFoundation05"/>
+                      value="Mf-29043035"/>
 
             <property name="hibernate.hbm2ddl.auto"
                       value="update"/>
