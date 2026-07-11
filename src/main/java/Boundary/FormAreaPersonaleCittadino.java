@@ -17,7 +17,9 @@ public class FormAreaPersonaleCittadino {
         visualizzaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Visualizza segnalazioni inviate");
+                areaPersonale.dispose();
+                FormVisualizzaSegnalazioni visualizzaFrame = new FormVisualizzaSegnalazioni();
+                visualizzaFrame.apriFormVisualizzaSegnalazioni();
             }
         });
         creaSegnalazioneButton.addActionListener(new ActionListener() {

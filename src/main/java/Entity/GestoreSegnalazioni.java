@@ -49,7 +49,7 @@ public class GestoreSegnalazioni {
 
         return gestorePersistenza.cercaPerCampo(
                 Segnalazione.class,
-                "Cittadino.id",
+                "cittadino.idCittadino",
                 idCittadino
         );
     }
@@ -106,12 +106,19 @@ public class GestoreSegnalazioni {
         return true;
     }
 
-    public Segnalazione.Dettaglio visualizzaDettaglioSegnalazione(Long idSegnalazione){
+    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, List<AggiornamentoStatoEntry> aggiornamentiStato) {}
+
+    public dettaglioCompleto visualizzaDettaglioSegnalazione(Long idSegnalazione){
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
 
         Segnalazione.Dettaglio dettaglio = segnalazione.getDettaglioSegnalazione();
+        List<AggiornamentoStatoEntry> aggiornamentiStato = gestorePersistenza.cercaPerCampo(
+                                                                    AggiornamentoStatoEntry.class,
+                                                                    "segnalazione.idSegnalazione",
+                                                                    idSegnalazione
+                                                                    );
 
-        return dettaglio;
+        return new dettaglioCompleto(dettaglio, aggiornamentiStato);
     }
 
     public List<Segnalazione.InfoAnteprima> visualizzaSegnalazioniPerCittadino(Long idCittadino) {

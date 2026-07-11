@@ -200,30 +200,35 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     */
 
     //record usato per tornare in modo pulito l'anteprima
-    public record InfoAnteprima(Categoria categoria, LocalDateTime data, String posizione, StatoSegnalazione stato) {}
+    public record InfoAnteprima(Categoria categoria, LocalDateTime data, String posizione, StatoSegnalazione stato, Long idSegnalazione) {}
 
     public InfoAnteprima getInfoAnteprima(){
-        return new InfoAnteprima(this.categoria, this.data, this.posizione, this.stato);
-    }
-
-    //record usato per tornare in modo pulito i dettagli
-    //[ATTENZIONE] public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, Long idCittadino, Map<LocalDateTime, StatoSegnalazione> evoluzione_stato) {}
-    public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, Long idCittadino) {}
-
-    public Dettaglio getDettaglioSegnalazione(){
-        if(verificaPresenzaImmagine()){
-            String url = getUrlImmagine();
-        }
         if(verificaPresenzaData()){
             LocalDateTime date = getData();
         }
 
-        //manca il dettaglio dello storico delle segnalazioni
-        //[ATTENZIONE] return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino(), this.elencoGestioniSegnalazione.getStoricoStato());
-        return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), getIdCittadino());
+        return new InfoAnteprima(this.categoria, this.data, this.posizione, this.stato, this.idSegnalazione);
+    }
+
+    //record usato per tornare in modo pulito i dettagli
+    public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, String urlImmagine) {}
+
+    public Dettaglio getDettaglioSegnalazione(){
+        String url;
+        if(verificaPresenzaImmagine()){
+            url = getUrlImmagine();
+        }
+        else{
+            url = new String("Immagine non presente");
+        }
+
+        return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), url);
     }
 
     private boolean verificaPresenzaImmagine(){
+        if (this.urlImmagine == null) {
+            return false;
+        }
         return !(this.urlImmagine.isEmpty());
     }
 

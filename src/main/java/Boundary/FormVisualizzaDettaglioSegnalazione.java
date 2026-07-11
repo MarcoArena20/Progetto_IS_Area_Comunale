@@ -1,30 +1,93 @@
 package Boundary;
 
-import Entity.Segnalazione;
+import Controller.ControllerSegnalazioni;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.time.format.DateTimeFormatter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class FormVisualizzaDettaglioSegnalazione {
+    private JFrame frame;
     private JPanel contentPanel;
-    private JLabel imageLabel;
+    private JScrollPane scrollStati;
     private JScrollPane scrollDettagli;
-    private JScrollPane scrollDescrizione;
-    private JScrollPane scrollStato;
-    private JTextArea texAreaStato;
+    private JScrollPane scrollImage;
+    private JTable tableDettagli;
+    private JTable tableStati;
     private JTextArea textAreaDescrizione;
-    private JTextArea textAreaDettagli;
+    private JTextArea textAreaImage;
+    private JButton INDIETROButton;
 
 
-    public FormVisualizzaDettaglioSegnalazione(){
+    public FormVisualizzaDettaglioSegnalazione(int idRiga){
         //Mettiamo in sicurezza tutte le JTextArea (Sola Lettura e testo a capo automatico)
-        configuraTextArea(textAreaDettagli);
         configuraTextArea(textAreaDescrizione);
-        configuraTextArea(texAreaStato);
+        configuraTextArea(textAreaImage);
 
-        //Popoliamo le aree di testo e l'immagine con i dati reali dell'Entity
-        //popolaInterfaccia(segnalazione);
+        //Definiamo le colonne fisse: la prima per il nome del campo, la seconda per il valore
+        String[] colonne = {"Proprietà", "Valore"};
+
+        DefaultTableModel modelInvertito = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Rende la tabella non modificabile
+            }
+        };
+
+        tableDettagli.setModel(modelInvertito);
+
+        // Nascondiamo la riga in alto con "Proprietà" e "Valore"
+        tableDettagli.setTableHeader(null);
+
+        //Chiediamo i dati al controller
+        List<String[]> datiInvertiti = ControllerSegnalazioni.caricaDettaglioSegnalazione(idRiga);
+
+        //Inseriamo le righe verticali nel modello della tabella
+        for (String[] riga : datiInvertiti) {
+            modelInvertito.addRow(riga);
+        }
+
+        //Definiamo le 2 colonne della cronologia
+        String[] colonneStato = {"Data", "Stato"};
+
+        DefaultTableModel modelStati = new DefaultTableModel(colonneStato, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Non modificabile
+            }
+        };
+
+        tableStati.setModel(modelStati);
+
+        // Nascondiamo l'header
+        tableStati.setTableHeader(null);
+
+        //Chiediamo i dati al controller
+        List<String[]> datiCronologia = ControllerSegnalazioni.caricaStoricoStatiSegnalazione(idRiga);
+
+        //Inseriamo i dati nella la tabella
+        for (String[] riga : datiCronologia) {
+            modelStati.addRow(riga);
+        }
+
+        //Chiediamo la descrizione al controller
+        String[] DescrizioneEImmagine = ControllerSegnalazioni.caricaDescrizioneEImmagineSegnalazione(idRiga);
+
+        //Inseriamo la descrizione nella TextArea
+        textAreaDescrizione.setText(DescrizioneEImmagine[0]);
+        textAreaImage.setText(DescrizioneEImmagine[1]);
+
+        INDIETROButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                FormVisualizzaSegnalazioni visualizzaFrame = new FormVisualizzaSegnalazioni();
+                visualizzaFrame.apriFormVisualizzaSegnalazioni();
+            }
+        });
     }
 
     private void configuraTextArea(JTextArea textArea) {
@@ -36,85 +99,18 @@ public class FormVisualizzaDettaglioSegnalazione {
         }
     }
 
+    public JFrame apriFormVisualizzaDettaglioSegnalazioni(int riga){
 
-    private void popolaInterfaccia(Segnalazione s) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        frame = new JFrame("Visualizza dettaglio segnalazione");
+        frame.setContentPane(contentPanel);
 
-        /*
-        // --- 4. POPOLIAMO LA IMAGE LABEL (Gestione URL foto) ---
-        gestisciImmagineAllegata(s.getUrlImmagine());
-        */
-    }
-
-/*
-    private void gestisciImmagineAllegata(String urlOPath) {
-        if (urlOPath == null || urlOPath.isEmpty()) {
-            imageLabel.setIcon(null);
-            imageLabel.setText("Nessun allegato fotografico.");
-            imageLabel.setForeground(Color.GRAY);
-            imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            return;
-        }
-
-        try {
-            ImageIcon iconOriginale = urlOPath.startsWith("http") ?
-                    new ImageIcon(new java.net.URL(urlOPath)) : new ImageIcon(urlOPath);
-
-            // Dimensioni indicative per il tuo riquadro foto
-            int targetW = 350;
-            int targetH = 200;
-
-            Image imgMin = iconOriginale.getImage();
-            double ratioOriginale = (double) imgMin.getWidth(null) / imgMin.getHeight(null);
-            double ratioTarget = (double) targetW / targetH;
-
-            int newW = targetW;
-            int newH = targetH;
-
-            if (ratioOriginale > ratioTarget) {
-                newH = (int) (targetW / ratioOriginale);
-            } else {
-                newW = (int) (targetH * ratioOriginale);
-            }
-
-            Image imgScalata = imgMin.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-
-            // Smussiamo gli angoli dell'immagine per un look moderno
-            BufferedImage imgArrotondata = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2 = imgArrotondata.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setClip(new java.awt.geom.RoundRectangle2D.Float(0, 0, newW, newH, 12, 12));
-            g2.drawImage(imgScalata, 0, 0, null);
-            g2.dispose();
-
-            imageLabel.setText("");
-            imageLabel.setIcon(new ImageIcon(imgArrotondata));
-
-        } catch (Exception e) {
-            imageLabel.setIcon(null);
-            imageLabel.setText("Errore di caricamento dell'immagine.");
-            imageLabel.setForeground(Color.RED);
-            imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        }
-    }
-         */
-
-    public JFrame apriFormVisualizzaDettaglioSegnalazioni(){
-
-        JFrame frame = new JFrame("Visualizza dettaglio segnalazione");
-        FormVisualizzaDettaglioSegnalazione form = new FormVisualizzaDettaglioSegnalazione();
-        frame.setContentPane(form.contentPanel);
-
-        /*
-         * DISPOSE_ON_CLOSE chiude solo questa finestra,
-         * senza terminare tutta l'applicazione.
-         */
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.pack();
+        frame.setSize(900, 600);
+        frame.setMinimumSize(new java.awt.Dimension(800, 500));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setResizable(false);
 
         return frame;
     }

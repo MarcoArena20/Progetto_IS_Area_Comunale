@@ -19,9 +19,9 @@ public class FormVisualizzaSegnalazioni {
     private JScrollPane scroll;
     private JButton visualizzaDettaglioButton;
     private JTable tabellaSegnalazioni;
+    private JButton modificaSegnalazioneButton;
     private DefaultTableModel tableModel;
-    private List<Segnalazione> listaSegnalazioniDati;
-    //private GestoreSegnalazioni controller;
+    private JFrame frame;
 
     public FormVisualizzaSegnalazioni() {
 
@@ -49,7 +49,32 @@ public class FormVisualizzaSegnalazioni {
         visualizzaDettaglioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Recuperiamo la riga selezionata
+                // Recuperiamo l'indice della riga selezionata
+                int rigaSelezionata = tabellaSegnalazioni.getSelectedRow();
+
+                // Controlliamo se l'utente ha cliccato su una riga
+                if (rigaSelezionata == -1) {
+                    JOptionPane.showMessageDialog(
+                            contentPanel,
+                            "Seleziona una segnalazione dalla tabella prima di procedere.",
+                            "Attenzione",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
+                frame.dispose();
+                // Apriamo il form di dettaglio passando il numero della riga selezionata
+                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione(rigaSelezionata);
+                dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni(rigaSelezionata);
+
+            }
+        });
+
+        modificaSegnalazioneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Aggiungere la chiamata alla schermata di modifica");
+                // Recuperiamo l'indice della riga selezionata
                 int rigaSelezionata = tabellaSegnalazioni.getSelectedRow();
 
                 // Controlliamo se l'utente ha cliccato su una riga
@@ -63,13 +88,9 @@ public class FormVisualizzaSegnalazioni {
                     return;
                 }
 
-                // Recuperiamo l'oggetto reale corrispondente alla riga cliccata
-                Segnalazione segnalazioneSelezionata = listaSegnalazioniDati.get(rigaSelezionata);
-
-                // Apriamo il form di dettaglio passandogli l'oggetto
-                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione();
-                dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni();
-
+                // Apriamo il form di dettaglio passando il numero della riga selezionata
+                //FormModificaSegnalazione modificaFrame = new FormModificaSegnalazione(rigaSelezionata);
+                //modificaFrame.apriFormModificaSegnalazioni();
             }
         });
 
@@ -77,20 +98,14 @@ public class FormVisualizzaSegnalazioni {
 
     public JFrame apriFormVisualizzaSegnalazioni(){
 
-        JFrame frame = new JFrame("Visualizza dettaglio segnalazione");
-        FormVisualizzaSegnalazioni form = new FormVisualizzaSegnalazioni();
-        frame.setContentPane(form.contentPanel);
+        frame = new JFrame("Visualizza dettaglio segnalazione");
+        frame.setContentPane(contentPanel);
 
-        /*
-         * DISPOSE_ON_CLOSE chiude solo questa finestra,
-         * senza terminare tutta l'applicazione.
-         */
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setResizable(false);
 
         return frame;
     }
