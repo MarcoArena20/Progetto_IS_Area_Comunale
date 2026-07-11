@@ -1,4 +1,7 @@
-package Entity;
+package Entity.Observer;
+
+import Entity.Segnalazione;
+import Entity.StateMachine.StatoSegnalazione;
 
 public abstract class ObserverSegnalazione {
 

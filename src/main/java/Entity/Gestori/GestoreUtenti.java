@@ -1,6 +1,9 @@
-package Entity;
+package Entity.Gestori;
 
 import Database.GestorePersistenza;
+import Entity.Cittadino;
+import Entity.Operatore;
+import Entity.Enum.Ruolo;
 
 import java.util.HashMap;
 import java.util.List;

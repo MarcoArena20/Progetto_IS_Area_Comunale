@@ -1,4 +1,7 @@
-package Entity;
+package Entity.StateMachine;
+
+import Entity.Enum.StatoType;
+import Entity.Segnalazione;
 
 public class StatoInviata extends StatoSegnalazione {
 

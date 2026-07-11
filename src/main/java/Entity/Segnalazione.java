@@ -1,5 +1,11 @@
 package Entity;
 
+import Entity.Enum.Categoria;
+import Entity.Observer.ConcreteObserver;
+import Entity.Observer.ObserverSegnalazione;
+import Entity.StateMachine.ConverterStato;
+import Entity.StateMachine.StatoInviata;
+import Entity.StateMachine.StatoSegnalazione;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

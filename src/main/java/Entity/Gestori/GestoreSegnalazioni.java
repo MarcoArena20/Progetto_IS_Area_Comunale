@@ -1,7 +1,11 @@
-package Entity;
+package Entity.Gestori;
 
 //Librerie
 import Database.GestorePersistenza;
+import Entity.*;
+import Entity.Enum.Categoria;
+import Entity.StateMachine.StatoSegnalazione;
+import Entity.Enum.StatoType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -135,6 +139,7 @@ public class GestoreSegnalazioni {
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
+        //Se la segnalazione è INVIATA, è RISOLTA
         if (statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())
                 || statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
 

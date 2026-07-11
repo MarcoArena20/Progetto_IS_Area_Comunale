@@ -1,4 +1,8 @@
-package Entity;
+package Entity.Observer;
+
+import Entity.Gestori.GestoreAggiornamentoStato;
+import Entity.Segnalazione;
+import Entity.StateMachine.StatoSegnalazione;
 
 public class ConcreteObserver implements Observer {
 
