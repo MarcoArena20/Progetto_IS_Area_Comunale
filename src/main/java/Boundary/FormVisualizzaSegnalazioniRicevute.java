@@ -39,7 +39,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 // Verifica preventiva della selezione di una riga
                 if (rigaSelezionata == -1) {
-                    JOptionPane.showMessageDialog(FormVisualizzaSegnalazioniRicevute.this,
+                    JOptionPane.showMessageDialog(mainFrame,
                             "Seleziona una segnalazione dalla tabella prima di procedere.",
                             "Attenzione",
                             JOptionPane.WARNING_MESSAGE);
@@ -48,20 +48,28 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 // Istanziazione e apertura del form di dettaglio parametrizzato con l'ID
                 FormVisualizzaDettaglioSegnalazioneRicevuta formDettaglio =
-                        new FormVisualizzaDettaglioSegnalazioneRicevuta((long) rigaSelezionata);
+                        new FormVisualizzaDettaglioSegnalazioneRicevuta((int) rigaSelezionata);
                 formDettaglio.apriDettaglioFrame();
             }
         });
 
     }
 
-    public void apriVisualizzaFrame() {
-        setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
-        setContentPane(contentPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 500);
-        setLocationRelativeTo(null);
-        setVisible(true);
+    public JFrame apriVisualizzaFrame() {
+        JFrame frame = new JFrame();
+        frame.setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
+        frame.setContentPane(contentPanel);
+
+        // Essendo la schermata principale, EXIT_ON_CLOSE va bene
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setSize(900, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        mainFrame = frame;
+
+        return frame;
     }
 
 
