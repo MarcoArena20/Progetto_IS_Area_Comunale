@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
-    private JFrame mainFrame;
+    private JFrame visualizzaFrame;
     private JPanel contentPanel;
     private JComboBox<String> comboStato;
     private JComboBox<String> comboCategoria;
@@ -39,7 +39,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 // Verifica preventiva della selezione di una riga
                 if (rigaSelezionata == -1) {
-                    JOptionPane.showMessageDialog(mainFrame,
+                    JOptionPane.showMessageDialog(visualizzaFrame,
                             "Seleziona una segnalazione dalla tabella prima di procedere.",
                             "Attenzione",
                             JOptionPane.WARNING_MESSAGE);
@@ -50,6 +50,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                 FormVisualizzaDettaglioSegnalazioneRicevuta formDettaglio =
                         new FormVisualizzaDettaglioSegnalazioneRicevuta((int) rigaSelezionata);
                 formDettaglio.apriDettaglioFrame();
+                visualizzaFrame.dispose();
             }
         });
 
@@ -67,7 +68,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        mainFrame = frame;
+        visualizzaFrame = frame;
 
         return frame;
     }
