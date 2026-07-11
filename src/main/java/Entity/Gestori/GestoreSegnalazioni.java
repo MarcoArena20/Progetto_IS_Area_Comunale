@@ -3,11 +3,13 @@ package Entity.Gestori;
 //Librerie
 import Database.GestorePersistenza;
 import Entity.*;
+import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Enum.Categoria;
 import Entity.StateMachine.StatoSegnalazione;
 import Entity.Enum.StatoType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 //Façade
@@ -64,9 +66,12 @@ public class GestoreSegnalazioni {
     }
 
     public List<Segnalazione> cercaSegnalazioni(Long idCittadino) {
-        //TODO
 
-        return null;
+        return gestorePersistenza.cercaPerCampo(
+                Segnalazione.class,
+                "cittadino.idCittadino",
+                idCittadino
+        );
     }
 
     public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String posizione) {
@@ -178,6 +183,33 @@ public class GestoreSegnalazioni {
         System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
 
         return true;
+    }
+
+    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, List<AggiornamentoStatoEntry> aggiornamentiStato) {}
+
+    public dettaglioCompleto visualizzaDettaglioSegnalazione(Long idSegnalazione){
+        Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+
+        Segnalazione.Dettaglio dettaglio = segnalazione.getDettaglioSegnalazione();
+        List<AggiornamentoStatoEntry> aggiornamentiStato = gestorePersistenza.cercaPerCampo(
+                AggiornamentoStatoEntry.class,
+                "segnalazione.idSegnalazione",
+                idSegnalazione
+        );
+
+        return new dettaglioCompleto(dettaglio, aggiornamentiStato);
+    }
+
+    public List<Segnalazione.InfoAnteprima> visualizzaSegnalazioniPerCittadino(Long idCittadino) {
+        List<Segnalazione> segnalazioni = cercaSegnalazioni(idCittadino);
+        List<Segnalazione.InfoAnteprima> anteprime = new ArrayList<>();
+
+        for (Segnalazione segnalazione : segnalazioni) {
+            Segnalazione.InfoAnteprima anteprima = segnalazione.getInfoAnteprima();
+            anteprime.add(anteprima);
+        }
+
+        return anteprime;
     }
 
 }

@@ -1,7 +1,6 @@
 package Boundary;
 
 import Controller.ControllerUtenti;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +16,8 @@ public class FormRegistrazione {
     private JTextField recapitoTelefonicoTextField;
     private JTextField passwordTextField;
     private JTextField emailTextField;
+
+    private JFrame FormVisualizzaSegnalazioniRicevute;
 
     public FormRegistrazione() {
         registratiButton.addActionListener(new ActionListener() {
@@ -38,15 +39,13 @@ public class FormRegistrazione {
         System.out.println("Password: "+passwordTextField.getText());
     }
 
-    private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password){
-        boolean esitoFormatoRegistrazione=false;
+    private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password)throws IllegalArgumentException{
+        boolean controlloFormatoRegistrazione=false;
         try {
-            esitoFormatoRegistrazione = CheckDatiForm.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-            return  esitoFormatoRegistrazione;
+            controlloFormatoRegistrazione = CheckDatiForm.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+            return  controlloFormatoRegistrazione;
         } catch (IllegalArgumentException ex) {
-            // Mostra il motivo del fallimento nel terminale e restituisce false
-            System.out.println("Validazione fallita: " + ex.getMessage());
-            return esitoFormatoRegistrazione;
+            throw new IllegalArgumentException(ex.getMessage());
         }
     }
 
@@ -56,7 +55,7 @@ public class FormRegistrazione {
         frame.setTitle("RegistraFrame");
         frame.setContentPane(contentPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -66,44 +65,43 @@ public class FormRegistrazione {
         return frame;
     }
 
-    private void Registra(){
+    private void Registra() {
         String ruoloStringa = (String) ruoloRegistrazione.getSelectedItem();
         String nome = nomeTextField.getText();
         String cognome = cognomeTextField.getText();
-        String recapitoTelefonico =recapitoTelefonicoTextField.getText();
-        String email= emailTextField.getText();
+        String recapitoTelefonico = recapitoTelefonicoTextField.getText();
+        String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
         printFormRegistrazione();
-        boolean esitoRegistrazione =false;
-        boolean esitoFormatoRegistrazione;
-        esitoFormatoRegistrazione= controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
-        if (esitoFormatoRegistrazione){
-            esitoRegistrazione =ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-            System.out.println("Esito Registrazione: "+esitoRegistrazione);
-        }
-        else{
-            return;
-            //TODO interfaccia registrazione rifiutata
-            }
-        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
-        System.out.println("Esito Registrazione: "+esitoRegistrazione);
+        boolean esitoFormatoRegistrazione = false;
+        boolean esitoRegistrazione= false;
 
-        if(esitoRegistrazione){
+        try{
+            esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+            if (esitoFormatoRegistrazione) {
+                esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+                System.out.println("Esito Registrazione: " + esitoRegistrazione);
+            } else {
+                JOptionPane.showMessageDialog(registrazioneFrame, "Impossibile registrarsi con le suddette credenziali!");
+            }
+        }
+        catch (IllegalArgumentException ex){
+            JOptionPane.showMessageDialog(registrazioneFrame, ex.getMessage());
+        }
+
+
+        if (esitoRegistrazione) {
 
             registrazioneFrame.dispose();
-            if(ruoloStringa.equals("CITTADINO")){
+            if (ruoloStringa.equals("CITTADINO")) {
 
                 new FormAreaPersonaleCittadino().apriAreaPersonale();
 
-            }else{
-
-
+            } else {
+                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
             }
-
         }
-
     }
 
 }
