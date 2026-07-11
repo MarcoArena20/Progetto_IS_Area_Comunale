@@ -1,5 +1,11 @@
 package Entity;
 
+import Entity.Enum.Categoria;
+import Entity.Observer.ConcreteObserver;
+import Entity.Observer.ObserverSegnalazione;
+import Entity.StateMachine.ConverterStato;
+import Entity.StateMachine.StatoInviata;
+import Entity.StateMachine.StatoSegnalazione;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -30,7 +36,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
 
     //Costruttori
     public Segnalazione(){
-
+        this.attach(ConcreteObserver.getInstance());
     }
 
     public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
@@ -42,9 +48,14 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         this.posizione = posizione;
         this.stato = new StatoInviata();
 
+        this.attach(ConcreteObserver.getInstance());
     }
 
     // Getter e Setter
+    public Long getIdSegnalazione() {
+        return idSegnalazione;
+    }
+    public void setIdSegnalazione(Long idSegnalazione) { this.idSegnalazione = idSegnalazione;}
     public String getTitolo() { return titolo; }
     public void setTitolo(String titolo) { this.titolo = titolo; }
     public String getDescrizione() { return descrizione; }
@@ -107,7 +118,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             }
 
             //1.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
+            esito = notifyObserver(this, this.stato);
             if (esito == false) {
                 System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
                 return false;
@@ -131,7 +142,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             }
 
             //2.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
+            esito = notifyObserver(this, this.stato);
             if (esito == false) {
                 System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
                 return false;
@@ -228,7 +239,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         Posizione: Viale delle mimose
         */
 
-        s.attach(new ConcreteObserver("ObserverCambioStato"));
+        s.attach(ConcreteObserver.getInstance());
 
         System.out.println(s.toString());
 

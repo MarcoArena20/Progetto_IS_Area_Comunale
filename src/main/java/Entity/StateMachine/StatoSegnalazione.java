@@ -1,6 +1,6 @@
-package Entity;
+package Entity.StateMachine;
 
-import jakarta.persistence.Entity;
+import Entity.Segnalazione;
 
 public abstract class StatoSegnalazione {
 

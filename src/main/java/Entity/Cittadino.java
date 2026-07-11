@@ -26,7 +26,7 @@ public class Cittadino extends UtenteAutenticato {
 
     //Costruttore
     public Cittadino(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
-        super(nome, cognome, email, recapitoTelefonico, passwordHash);
+        super(nome, cognome, email, recapitoTelefonico,  passwordHash);
     }
 
     //Getter

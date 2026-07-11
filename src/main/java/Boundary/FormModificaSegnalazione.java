@@ -1,7 +1,7 @@
 package Boundary;
 
 import Controller.ControllerSegnalazioni;
-import Entity.Enum.Categoria;
+import Entity.Categoria;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,44 +10,34 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class FormCreazioneSegnalazione {
+public class FormModificaSegnalazione {
 
-    private JFrame creazioneFrame;
+    private JFrame modificaFrame;
     private JPanel contentPanel;
-    private JButton creaSegnalazioneButton;
-    private JTextField titoloField;
-    private JTextField descrizioneField;
-    private JComboBox categoriaBox;
-    private JTextField posizioneField;
-    private JTextField urlImmagineField;
-    private JTextField dataField;
-    private JPanel insertPanel;
     private JPanel labelPanel;
-    private JLabel l;
-    private JPanel titoloPanel;
-    private JPanel descrizionePanel;
-    private JPanel categoriaPanel;
-    private JPanel posizionePanel;
-    private JPanel dataPanel;
-    private JPanel immaginePanel;
+    private JPanel fieldPanel;
+    private JTextField dataField;
+    private JTextField immagineField;
+    private JTextField posizioneField;
+    private JTextField descrizioneField;
+    private JTextField titoloField;
+    private JButton modificaButton;
+    private JComboBox categoriaBox;
 
-    public FormCreazioneSegnalazione() {
-        creaSegnalazioneButton.addActionListener(new ActionListener() {
+    public FormModificaSegnalazione(){
+
+        modificaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                if(creaSegnalazione()) {
-                    creazioneFrame.dispose();
-                    new FormAreaPersonaleCittadino().apriAreaPersonale();
-                }
+                modificaSegnalazione();
             }
         });
     }
 
-    public JFrame apriCreazioneFrame(){
+    public JFrame apriModificaForm(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         JFrame frame = new JFrame();
-        frame.setTitle("CreazioneFrame");
+        frame.setTitle("ModificaFrame");
         frame.setContentPane(contentPanel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,13 +46,20 @@ public class FormCreazioneSegnalazione {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        creazioneFrame = frame;
+        titoloField.setText(titolo);
+        descrizioneField.setText(descrizione);
+        categoriaBox.setSelectedItem(categoria);
+        posizioneField.setText(posizione);
+        dataField.setText(data);
+        immagineField.setText(urlImmagine);
+
+        modificaFrame = frame;
 
         return frame;
 
     }
 
-    private boolean creaSegnalazione(){
+    private boolean modificaSegnalazione(){
 
         // Caratteristiche obbligatorie che ogni segnalazione deve avere
         String titolo = titoloField.getText();
@@ -77,7 +74,7 @@ public class FormCreazioneSegnalazione {
         }
 
         // Caratteristiche opzionali che una segnalazione può avere
-        String urlImmagine = urlImmagineField.getText();
+        String urlImmagine = immagineField.getText();
         String data = dataField.getText();
 
         if (urlImmagine.equalsIgnoreCase(""))
@@ -91,7 +88,7 @@ public class FormCreazioneSegnalazione {
         }
         else
         {
-            boolean esito = ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+            boolean esito = ControllerSegnalazioni.modificaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
             return esito;
         }
 
@@ -158,12 +155,6 @@ public class FormCreazioneSegnalazione {
         }
 
         return true;
-
-    }
-
-    public static void main(String[] args){
-
-        new FormCreazioneSegnalazione().apriCreazioneFrame();
 
     }
 }
