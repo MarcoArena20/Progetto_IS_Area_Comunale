@@ -63,12 +63,8 @@
             <item value="Centro storico"/>
             <item value="Chiaia"/>
             <item value="Vomero"/>
-            <item value="Posillipo"/>
-            <item value="Arenella"/>
             <item value="Fuorigrotta"/>
             <item value="Bagnoli"/>
-            <item value="Soccavo"/>
-            <item value="Pianura"/>
           </model>
         </properties>
       </component>
