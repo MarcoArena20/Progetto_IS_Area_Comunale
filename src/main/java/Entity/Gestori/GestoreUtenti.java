@@ -103,9 +103,13 @@ public class GestoreUtenti {
         }
     }
 
-    public Cittadino cercaUtente(Long idCittadino) {
+    public Cittadino cercaCittadino(Long idCittadino) {
 
         return gestorePersistenza.trovaPerId(Cittadino.class, idCittadino);
+    }
+
+    public Operatore cercaOperatore(Long idOperatore) {
+        return gestorePersistenza.trovaPerId(Operatore.class, idOperatore);
     }
 }
 

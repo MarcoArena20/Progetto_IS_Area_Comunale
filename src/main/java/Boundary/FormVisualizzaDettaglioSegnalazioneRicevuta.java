@@ -47,7 +47,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private void configuraAzioni(Long idRow) {
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
-        btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
+        //btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
         btnChiudi.addActionListener(e -> dispose());
     }
 
@@ -97,7 +97,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
                 break;
             case "PRESA_IN_CARICO":
                 btnAggiornaStato.setVisible(true);
-
+                btnConcludiGestione.setVisible(true);
                 break;
             case "IN_LAVORAZIONE":
                 btnConcludiGestione.setVisible(true);
