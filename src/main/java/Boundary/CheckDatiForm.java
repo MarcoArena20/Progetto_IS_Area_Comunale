@@ -1,10 +1,12 @@
 package Boundary;
 
+import static Boundary.ValidatorePassword.validaPassword;
+
 public class CheckDatiForm {
-    public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String recapitoTelefonico, String email, String password) throws  IllegalArgumentException{
+    public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws  IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
-            throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
+            throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore'.");
         }
 
         // Controllo Nome: Lettere, Lunghezza: 3-20
@@ -37,46 +39,14 @@ public class CheckDatiForm {
             }
         }
 
-        // Controllo mail: Lunghezza 7-50, una sola '@', almeno un '.'
-        if (email == null || email.length() < 7 || email.length() > 50) {
-            throw new IllegalArgumentException("La lunghezza dell'email deve essere compresa tra 7 e 50 caratteri.");
-        }
-        int chiocciole = 0;
-        for (char c : email.toCharArray()) {
-            if (c == '@') chiocciole++;
-        }
-        if (chiocciole != 1 || !email.contains(".")) {
-            throw new IllegalArgumentException("L'email contiene piu di una chiocciola '@' o manca del punto identificativo del dominio.");
-        }
-
-        // Controllo password: Lunghezza 8-25, almeno 1 Maiuscola, 1 Minuscola, 1 Numero, 1 Speciale [!?-@%]
-        if (password == null || password.length() < 8 || password.length() > 25) {
-            throw new IllegalArgumentException("La lunghezza della password deve essere compresa tra 8 e 25 caratteri.");
+        // Controllo formato Email
+        if (!ValidatoreEmail.validaEmail(email)){
+            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
         }
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
-        boolean haMaiuscola = false;
-        boolean haMinuscola = false;
-        boolean haNumero = false;
-        boolean haSpeciale = false;
-        String specialiConsentiti = "!?-@%";
-
-        for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) {
-                haMaiuscola = true;
-            } else if (Character.isLowerCase(c)) {
-                haMinuscola = true;
-            } else if (Character.isDigit(c)) {
-                haNumero = true;
-            } else if (specialiConsentiti.indexOf(c) != -1) {
-                haSpeciale = true;
-            } else {
-                throw new IllegalArgumentException("La password contiene caratteri speciali non ammessi. Usa solo: !, ?, -, @, %");
-            }
-        }
-
-        if (!haMaiuscola || !haMinuscola || !haNumero || !haSpeciale) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
+        if (!validaPassword(password)) {
+            throw new IllegalArgumentException("La password non soddisfa i requisiti: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
@@ -84,48 +54,14 @@ public class CheckDatiForm {
     }
     public static boolean checkDatiFormAccesso(String ruoloStringa, String email, String password) throws IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-        if (!"Cittadino".equals(ruoloStringa) && !"Operatore Comunale".equals(ruoloStringa)) {
-            throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore Comunale'.");
+        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
+            throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore'.");
         }
-        // Controllo mail: Lunghezza 7-50, una sola '@', almeno un '.'
-        if (email == null || email.length() < 7 || email.length() > 50) {
-            throw new IllegalArgumentException("La lunghezza dell'email deve essere compresa tra 7 e 50 caratteri.");
-        }
-        int chiocciole = 0;
-        for (char c : email.toCharArray()) {
-            if (c == '@') chiocciole++;
-        }
-        if (chiocciole != 1 || !email.contains(".")) {
-            throw new IllegalArgumentException("L'email contiene piu di una chiocciola '@' o manca del punto identificativo del dominio.");
+        if (!ValidatoreEmail.validaEmail(email)){
+            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
         }
 
-        // Controllo password: Lunghezza 8-25, almeno 1 Maiuscola, 1 Minuscola, 1 Numero, 1 Speciale [!?-@%]
-        if (password == null || password.length() < 8 || password.length() > 25) {
-            throw new IllegalArgumentException("La lunghezza della password deve essere compresa tra 8 e 25 caratteri.");
-        }
-
-        // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
-        boolean haMaiuscola = false;
-        boolean haMinuscola = false;
-        boolean haNumero = false;
-        boolean haSpeciale = false;
-        String specialiConsentiti = "!?-@%";
-
-        for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) {
-                haMaiuscola = true;
-            } else if (Character.isLowerCase(c)) {
-                haMinuscola = true;
-            } else if (Character.isDigit(c)) {
-                haNumero = true;
-            } else if (specialiConsentiti.indexOf(c) != -1) {
-                haSpeciale = true;
-            } else {
-                throw new IllegalArgumentException("La password contiene caratteri speciali non ammessi. Usa solo: !, ?, -, @, %");
-            }
-        }
-
-        if (!haMaiuscola || !haMinuscola || !haNumero || !haSpeciale) {
+        if (!ValidatorePassword.validaPassword(password)) {
             throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
         }
 

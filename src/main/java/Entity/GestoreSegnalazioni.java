@@ -1,8 +1,5 @@
 package Entity;
 
-//Librerie
-import Database.GestorePersistenza;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

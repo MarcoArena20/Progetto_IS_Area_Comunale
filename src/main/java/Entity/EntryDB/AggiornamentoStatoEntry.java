@@ -1,9 +1,12 @@
-package Entity;
+package Entity.EntryDB;
 
+import Entity.StateMachine.*;
+import Entity.*;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "AggiornamentoStato")
 public class AggiornamentoStatoEntry {
 
     //Attributi
@@ -24,21 +27,16 @@ public class AggiornamentoStatoEntry {
     @JoinColumn(name = "idOperatore")
     private Operatore operatore;
 
-    @ManyToOne
-    @JoinColumn(name = "idNotaInterna")
-    private NotaInternaEntry notaInternaEntry;
-
 
     //Costruttori
     public AggiornamentoStatoEntry() {
     }
 
-    public AggiornamentoStatoEntry(Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore, NotaInternaEntry notaInternaEntry) {
+    public AggiornamentoStatoEntry(Segnalazione segnalazione, StatoSegnalazione stato, Operatore operatore) {
         this.data = LocalDateTime.now();
         this.segnalazione = segnalazione;
         this.stato = stato;
         this.operatore = operatore;
-        this.notaInternaEntry = notaInternaEntry;
     }
 
     //Getter e Setter
@@ -76,12 +74,4 @@ public class AggiornamentoStatoEntry {
     public void setOperatore(Operatore operatore) {
         this.operatore = operatore;
     }
-
-    public NotaInternaEntry getNotaInternaEntry() {
-        return notaInternaEntry;
-    }
-    public void setNotaInternaEntry(NotaInternaEntry notaInternaEntry) {
-        this.notaInternaEntry = notaInternaEntry;
-    }
-
 }

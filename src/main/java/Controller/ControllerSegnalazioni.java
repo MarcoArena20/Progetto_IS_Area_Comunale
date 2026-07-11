@@ -1,83 +1,34 @@
 package Controller;
 
-import Entity.*;
-
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Segnalazione;
+import Entity.Enum.Ruolo;
+import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Enum.Categoria;
+import Entity.StateMachine.StatoInLavorazione;
+import Entity.StateMachine.StatoInviata;
+import Entity.StateMachine.StatoRisolta;
+import Entity.StateMachine.StatoSegnalazione;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
 
 //Façade
 public class ControllerSegnalazioni {
 
+    private static Map<Integer,Long> bindingId;
+    private static Long idSegnalazioneCorrente;
+
     public static Long getIdSegnalazioneCorrente(){
-
-        Path path = Path.of("configuration/config.txt");
-
-        try {
-            if (!Files.exists(path)) {
-
-                return null;
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                return Long.parseLong(lines.get(2).split(":")[1]);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-            return null;
-
-        }
+        return idSegnalazioneCorrente;
     }
 
     public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
-
-        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-        // di default, ovvero
-        // idUtente:
-        // ruolo:
-        // idSegnalazione:
-
-        Path path = Path.of("configuration/config.txt");
-
-
-        try {
-
-            Files.createDirectories(Path.of("configuration"));
-
-            if (!Files.exists(path)) {
-
-                Files.createFile(path);
-                Files.writeString(path, "idUtente:\nruolo:\nidSegnalazione:" + idSegnalazioneCorrente + "\n", StandardOpenOption.APPEND);
-
-            }else{
-
-                List<String> lines = Files.readAllLines(path);
-                lines.set(2, "idSegnalazione:" + idSegnalazioneCorrente);
-
-                Files.write(path, lines);
-
-            }
-
-
-        }catch(IOException e){
-
-            e.printStackTrace();
-
-        }
-
+        ControllerSegnalazioni.idSegnalazioneCorrente = idSegnalazioneCorrente;
     }
 
 
@@ -127,11 +78,131 @@ public class ControllerSegnalazioni {
         boolean esito = gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente, idOperatore);
 
         return esito;
+    }
+
+    public static boolean aggiornaStatoSegnalazione() {
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+        //TODO controllo nel boundary per verificare che non può aggiornare una segnalazione con stato inLavorazione (si deve concludere)
+
+        Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
+        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+        boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
+
+        return esitoAggiornamento;
+    }
+
+    public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //TODO controllo nel boundary per verificare che l'operatore stia gestendo quella segnalazione
+        //TODO controllo nel boundary per verificare che non si può concludere con esito positivo una segnalazione con stato presaInCarico (si deve prima aggiornare)
+
+        Long idSegnalazioneCorrente = ControllerSegnalazioni.getIdSegnalazioneCorrente();
+        Long idOperatore = ControllerUtenti.getIdUtenteCorrente();
+
+        boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
+        boolean esitoAggiuntaNota = false;
+
+        if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
+            //TODO controllo nel boundary per fare in modo tale da avere o titolo e descrizione null o che rispettano i vincoli
+
+            esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
+        }
+
+
+        return esitoAggiuntaNota;
+    }
+
+    public static boolean verificaModificabilità(){
+
+        // La prima cosa da fare è ottenere l'id della segnalazione corrente
+        // e chiamare il gestore segnalazioni
+
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+
+        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        if (segnalazione == null)
+            return false;
+
+        // Dopo aver trovato la segnalazione abbiamo bisogno di verificare il suo stato
+        if (segnalazione.getStato().getStatoToString().equals("RISOLTA"))
+            return false;
+        else
+            return true;
 
     }
 
-    //Mappa usata per associare ogni riga all'id della segnalazione
-    private static Map<Integer, Long> mapId;
+    public static Map<String, String> ottieniParametriModificabili(){
+
+        // La prima cosa da fare è ottenere l'id della segnalazione corrente
+        // e chiamare il gestore segnalazioni
+
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+
+        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        if (segnalazione == null)
+            return null;
+
+        Map<String, String> parametri = new HashMap<>();
+
+        parametri.put("titolo",segnalazione.getTitolo());
+        parametri.put("descrizione", segnalazione.getDescrizione());
+        parametri.put("categoria", segnalazione.getCategoria().name());
+        parametri.put("posizione", segnalazione.getPosizione());
+
+        if (segnalazione.getData() != null)
+            parametri.put("data", segnalazione.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        else
+            parametri.put("data", "");
+
+        if (segnalazione.getUrlImmagine() != null)
+            parametri.put("immagine", segnalazione.getUrlImmagine());
+        else
+            parametri.put("immagine", "");
+
+        return parametri;
+
+    }
+
+    public static boolean modificaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+
+        // Prima di effettuare la chiamata al Façade dello strato Entity, convertiamo il valore di categoria
+        Categoria categoriaEnum = Categoria.valueOf(categoria);
+
+        LocalDateTime localData;
+
+        if(data != null) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            localData = LocalDateTime.parse(data, formatter);
+
+        }else{
+
+            localData = null;
+
+        }
+
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+        Long idCittadino = 1L;
+
+        boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
+        return esito;
+
+    }
+
     public static List<String[]> caricaSegnalazioni(){
         /*
          * Questo metodo svolge il ruolo di "adapter" tra:
@@ -253,6 +324,103 @@ public class ControllerSegnalazioni {
 
         return datiRimanenti;
     }
+    public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
+
+        //Traduzione dei parametri dal Boundary ai tipi Entity
+        Categoria categoria = null;
+        if (categoriaStr != null && !categoriaStr.equals("Tutte")) {
+            categoria = Categoria.valueOf(categoriaStr.toUpperCase().replace(" ", "_"));
+        }
+
+        StatoSegnalazione stato = null;
+        if (statoStr != null && !statoStr.equals("Tutti")) {
+            switch (statoStr.toLowerCase()) {
+                case "inviata":
+                    stato = new StatoInviata();
+                    break;
+                case "in lavorazione":
+                    stato = new StatoInLavorazione();
+                    break;
+                case "risolta":
+                    stato = new StatoRisolta();
+                    break;
+            }
+        }
+
+        String posizione = (areaStr != null && !areaStr.equals("Tutte")) ? areaStr : null;
+
+        //Invocazione del Façade dello strato Entity
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        // Il gestore si occuperà di chiamare il database e restituire gli oggetti Segnalazione
+        List<Segnalazione> listaEntity = gestore.cercaSegnalazioni(stato, categoria, posizione);
+
+        // Mappatura inversa: da Entity a Stringhe primitive per la GUI
+        List<String[]> righeTabella = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        if (listaEntity != null) {
+            Long idRow = 0L;
+            bindingId = new HashMap<>();
+
+            for (Segnalazione s : listaEntity) {
+
+                String[] riga = new String[] {
+                        s.getIdSegnalazione() != null ? String.valueOf(s.getIdSegnalazione()) : "N/D",
+                        s.getIdCittadino() != null ? String.valueOf(s.getIdCittadino()) : "Utente Sconosciuto",
+                        (s.getData() != null) ? s.getData().format(formatter) : "",
+                        s.getDescrizione(),
+                        (s.getStato() != null) ? s.getStato().getStatoToString() : "Sconosciuto",
+                        s.getCategoria() != null ? s.getCategoria().name() : "",
+                        s.getPosizione()
+                };
+
+                righeTabella.add(riga);
+                bindingId.put(idRow, s.getIdSegnalazione());
+                idRow++;
+            }
+        }
+
+        return righeTabella;
+    }
+
+    public static Map<String, String> getDettagliSegnalazione(Long idRow) {
+
+        //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
+        GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        Long idSegnalazione = bindingId.get(idRow);
+        setIdSegnalazioneCorrente(idSegnalazione);
+
+        //Ricerchiamo l'entity Segnalazione tramite il suo identificativo
+        Segnalazione s = gestore.cercaSegnalazione(idSegnalazione);
+
+        if (s == null) {
+            return null;
+        }
+
+        Map<String, String> dettagli = new HashMap<>();
+
+        dettagli.put("id", s.getIdSegnalazione() != null ? String.valueOf(s.getIdSegnalazione()) : "");
+        dettagli.put("titolo", s.getTitolo() != null ? s.getTitolo() : "");
+        dettagli.put("descrizione", s.getDescrizione() != null ? s.getDescrizione() : "");
+        dettagli.put("categoria", s.getCategoria() != null ? s.getCategoria().name() : "");
+        dettagli.put("posizione", s.getPosizione() != null ? s.getPosizione() : "");
+        dettagli.put("stato", s.getStato() != null ? s.getStato().getStatoToString() : "Sconosciuto");
+
+        if (s.getData() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            dettagli.put("data", s.getData().format(formatter));
+        } else {
+            dettagli.put("data", "");
+        }
+
+        dettagli.put("idCittadino", s.getIdCittadino() != null ? String.valueOf(s.getIdCittadino()) : "");
+        dettagli.put("urlImmagine", s.getUrlImmagine() != null ? s.getUrlImmagine() : "");
+
+        return dettagli;
+    }
+
 
     public static void main(String[] args) {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
@@ -260,7 +428,54 @@ public class ControllerSegnalazioni {
         setIdSegnalazioneCorrente(1L);
         ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
-        boolean esito = ControllerSegnalazioni.iniziaGestioneSegnalazione();
+
+        //1. flusso normale
+        System.out.println("[ControllerSegnalazioni] Test flusso principale");
+
+        iniziaGestioneSegnalazione();
+
+        aggiornaStatoSegnalazione();
+
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //2. dopo aver preso in carico una segnalazione, un altro operatore tenta l'accesso
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione non sua");
+
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
+        System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
+        iniziaGestioneSegnalazione();
+
+
+        //4. tentativo di prendere in carico una segnalazione risolta
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        setIdSegnalazioneCorrente(4L);
+        iniziaGestioneSegnalazione();
+
+        //5. tentativo di concludere con esito positivo una segnalazione presa in carico
+        System.out.println("[ControllerSegnalazioni] Test operatore tenta di risolvere con esito positivo una segnalazione presa in carico");
+
+        setIdSegnalazioneCorrente(1L);
+        iniziaGestioneSegnalazione();
+        concludiGestioneSegnalazione("Risolta", "Segnalazione risolta con successo", true);
+        /*
+            TODO| non è un problema ma è il flusso di esecuzione: se si fa concludi gestione con esito true da presaInCarico:
+            TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
+            TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
+         */
+        concludiGestioneSegnalazione(null, null, false);
+        //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
 
     }

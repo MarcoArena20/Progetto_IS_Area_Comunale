@@ -1,6 +1,6 @@
 package Controller;
 
-import Entity.Ruolo;
+import Entity.Enum.Ruolo;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,27 +9,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import Entity.GestoreUtenti;
+import Entity.Gestori.GestoreUtenti;
 
 //Façade
 public class ControllerUtenti {
 
-        private static Ruolo stringaToRuolo(String ruoloStringa){
-            try {
-                if (ruoloStringa == null) {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
-                    return Ruolo.CITTADINO;
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
-                    return Ruolo.OPERATORE;
-                } else {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                }
-            }catch (IllegalArgumentException e){
-                e.getMessage();
-                return null;
+    private static String uniformaEmail(String email){
+        return email.toLowerCase();
+    }
+
+    private static Ruolo stringaToRuolo(String ruoloStringa){
+        try {
+            if (ruoloStringa == null) {
+                throw new IllegalArgumentException("Ruolo non specificato.");
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
+                return Ruolo.CITTADINO;
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
+                return Ruolo.OPERATORE;
+            } else {
+                throw new IllegalArgumentException("Ruolo non specificato.");
             }
+        }catch (IllegalArgumentException e){
+            e.getMessage();
+            return null;
         }
+    }
 
         private static String hashPassword(String password) throws NoSuchAlgorithmException {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -42,20 +46,17 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
-        public static boolean salvaUtente(String ruoloStringa, String cognome, String nome, String recapitoTelefonico, String email,String password) {
+        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoRegistrazione = false;
             try {
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash = hashPassword(password);
-
-                String idUtente = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash);
-
+                String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
                 if (idUtente != null) {
                     esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
                 }
-                esitoRegistrazione = gestoreUtenti.registraUtente(ruolo, cognome, nome, recapitoTelefonico, email, passwordHash) != null;
             } catch (NoSuchAlgorithmException e) {
                 //TODO
                 e.printStackTrace();
@@ -77,7 +78,6 @@ public class ControllerUtenti {
             }
             catch (NoSuchAlgorithmException e){
                 e.printStackTrace();
-                return esitoAccesso;
             }
             return esitoAccesso;
         }
