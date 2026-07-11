@@ -45,6 +45,24 @@ public class GestoreSegnalazioni {
         return gestorePersistenza.salva(segnalazione);
     }
 
+    public boolean modificaSegnalazione(Long idSegnalazione, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine){
+
+        Segnalazione segnalazione= gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
+
+        if (segnalazione == null)
+            return false;
+
+        segnalazione.setTitolo(titolo);
+        segnalazione.setDescrizione(descrizione);
+        segnalazione.setCategoria(categoria);
+        segnalazione.setPosizione(posizione);
+        segnalazione.setData(data);
+        segnalazione.setUrlImmagine(urlImmagine);
+
+        return (gestorePersistenza.aggiorna(segnalazione) != null);
+
+    }
+
     public List<Segnalazione> cercaSegnalazioni(Long idCittadino) {
         //TODO
 

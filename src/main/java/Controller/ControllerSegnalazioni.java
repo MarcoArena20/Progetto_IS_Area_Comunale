@@ -1,8 +1,10 @@
 package Controller;
 
-import Entity.Enum.Categoria;
-import Entity.Gestori.GestoreSegnalazioni;
-import Entity.Enum.Ruolo;
+import Entity.Segnalazione;
+import Entity.Categoria;
+import Entity.GestoreAggiornamentoStato;
+import Entity.GestoreSegnalazioni;
+import Entity.Ruolo;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +13,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 //Façade
 public class ControllerSegnalazioni {
@@ -161,6 +165,93 @@ public class ControllerSegnalazioni {
 
 
         return esitoAggiuntaNota;
+    }
+
+    public static boolean verificaModificabilità(){
+
+        // La prima cosa da fare è ottenere l'id della segnalazione corrente
+        // e chiamare il gestore segnalazioni
+
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+
+        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        if (segnalazione == null)
+            return false;
+
+        // Dopo aver trovato la segnalazione abbiamo bisogno di verificare il suo stato
+        if (segnalazione.getStato().getStatoToString().equals("RISOLTA"))
+            return false;
+        else
+            return true;
+
+    }
+
+    public static Map<String, String> ottieniParametriModificabili(){
+
+        // La prima cosa da fare è ottenere l'id della segnalazione corrente
+        // e chiamare il gestore segnalazioni
+
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+
+        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        if (segnalazione == null)
+            return null;
+
+        Map<String, String> parametri = new HashMap<>();
+
+        parametri.put("titolo",segnalazione.getTitolo());
+        parametri.put("descrizione", segnalazione.getDescrizione());
+        parametri.put("categoria", segnalazione.getCategoria().name());
+        parametri.put("posizione", segnalazione.getPosizione());
+
+        if (segnalazione.getData() != null)
+            parametri.put("data", segnalazione.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        else
+            parametri.put("data", "");
+
+        if (segnalazione.getUrlImmagine() != null)
+            parametri.put("immagine", segnalazione.getUrlImmagine());
+        else
+            parametri.put("immagine", "");
+
+        return parametri;
+
+    }
+
+    public static boolean modificaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+
+        // Prima di effettuare la chiamata al Façade dello strato Entity, convertiamo il valore di categoria
+        Categoria categoriaEnum = Categoria.valueOf(categoria);
+
+        LocalDateTime localData;
+
+        if(data != null) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            localData = LocalDateTime.parse(data, formatter);
+
+        }else{
+
+            localData = null;
+
+        }
+
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        //Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
+        //Long idSegnalazione = getIdSegnalazioneCorrente();
+        Long idSegnalazione = 1L;
+        Long idCittadino = 1L;
+
+        boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
+        return esito;
+
     }
 
 

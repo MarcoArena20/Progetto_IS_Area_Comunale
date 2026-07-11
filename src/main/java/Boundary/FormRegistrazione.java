@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 public class FormRegistrazione {
 
+    private JFrame registrazioneFrame;
     private JPanel contentPanel;
     private JButton registratiButton;
     private JComboBox ruoloRegistrazione;
@@ -60,6 +61,8 @@ public class FormRegistrazione {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        registrazioneFrame = frame;
+
         return frame;
     }
 
@@ -83,7 +86,24 @@ public class FormRegistrazione {
         else{
             return;
             //TODO interfaccia registrazione rifiutata
+            }
+        System.out.println("Esito form registrazione: "+esitoFormatoRegistrazione);
+        System.out.println("Esito Registrazione: "+esitoRegistrazione);
+
+        if(esitoRegistrazione){
+
+            registrazioneFrame.dispose();
+            if(ruoloStringa.equals("CITTADINO")){
+
+                new FormAreaPersonaleCittadino().apriAreaPersonale();
+
+            }else{
+
+
+            }
+
         }
+
     }
 
 }
