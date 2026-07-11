@@ -19,6 +19,7 @@ public class MainFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                mainFrame.dispose();
                 SchermataAccesso();
 
             }
@@ -27,6 +28,7 @@ public class MainFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                mainFrame.dispose();
                 SchermataRegistrazione();
 
             }
