@@ -48,8 +48,14 @@ public class GestoreSegnalazioni {
     }
 
     public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String posizione) {
-        //TODO
-        return null;
+
+        java.util.Map<String, Object> filtri = new java.util.HashMap<>();
+
+        if (stato != null) {filtri.put("stato", stato);}
+        if (categoria != null) {filtri.put("categoria", categoria);}
+        if (posizione != null && !posizione.trim().isEmpty()) {filtri.put("posizione", posizione);}
+
+        return gestorePersistenza.cercaPerCampi(Segnalazione.class, filtri);
     }
 
     public Segnalazione cercaSegnalazione(Long idSegnalazione) {
