@@ -1,4 +1,10 @@
 import Boundary.FormCreazioneSegnalazione;
+import Boundary.FormModificaSegnalazione;
+import Boundary.FormRegistrazione;
+import Controller.ControllerSegnalazioni;
+import Database.JpaUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,15 +18,21 @@ public class ModificaSegnalazioneTest {
     @BeforeAll
     static void setUp(){
 
+        CreazioneSegnalazioneTest.puliziaDatabase();
+
         // La prima cosa da fare è creare un utente ed una segnalazione
+
+        // Creaiamo un utente
+        new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
 
         boolean esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
                 "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                 "RIFIUTI_ABBANDONATI",
                 "Fuorigrotta: Piazzale Tecchio 50", "", "");
 
-    }
+        ControllerSegnalazioni.caricaSegnalazioni(); // Viene effettuato il mapping in memoria
 
+    }
 
 
     @Test
@@ -30,7 +42,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Fuorigrotta: Piazzale Tecchio 50", "", "");
@@ -52,7 +64,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Fuorigrotta: Piazzale Tecchio 50", "20/05/2004 22:50", "https://www.testCaseProgetto.it");
@@ -78,7 +90,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione(titolo,
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, titolo,
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Fuorigrotta: Piazzale Tecchio 50", "", "");
@@ -109,7 +121,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     descrizione,
                     "RIFIUTI_ABBANDONATI",
                     "Viale delle mimose", "", "");
@@ -132,7 +144,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0,"Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "Immondizia",
                     "Fuorigrotta: Piazzale Tecchio 50", "", "");
@@ -155,7 +167,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Viale delle resede 8", "", "");
@@ -177,7 +189,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Fuorigrotta: Piazzale Tecchio 50", "20 Maggio 2004 22:50", "");
@@ -199,7 +211,7 @@ public class ModificaSegnalazioneTest {
 
         try{
 
-            esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+            esito = new FormModificaSegnalazione(0).modificaSegnalazione(0, "Discarica",
                     "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                     "RIFIUTI_ABBANDONATI",
                     "Fuorigrotta: Piazzale Tecchio 50", "", "ftp://www.testCaseProgetto.it");
