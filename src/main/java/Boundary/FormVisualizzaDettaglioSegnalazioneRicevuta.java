@@ -2,6 +2,8 @@ package Boundary;
 
 import Controller.ControllerSegnalazioni;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 
 public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
@@ -40,7 +42,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
         JFrame frame = new JFrame();
         frame.setTitle("Dettaglio Segnalazione");
         frame.setContentPane(contentPanel);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(600, 600);
         frame.setLocationRelativeTo(null);
@@ -56,7 +58,14 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private void configuraAzioni(Integer idRow) {
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
-        btnConcludiGestione.addActionListener(e -> new FormConclusioneGestione(idRow).apriConclusioneFrame());
+        btnConcludiGestione.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FormConclusioneGestione(idRow).apriConclusioneFrame();
+                dettaglioFrame.dispose();
+            }
+        });
+
     }
 
     // Metodo helper per ridurre la duplicazione del codice
