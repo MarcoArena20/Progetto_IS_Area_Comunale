@@ -20,9 +20,10 @@ public class FormVisualizzaDettaglioSegnalazione {
     private JTextArea textAreaDescrizione;
     private JTextArea textAreaImage;
     private JButton INDIETROButton;
+    private DefaultTableModel modelInvertito;
+    private DefaultTableModel modelStati;
 
-
-    public FormVisualizzaDettaglioSegnalazione(int idRiga){
+    public FormVisualizzaDettaglioSegnalazione(){
         //Mettiamo in sicurezza tutte le JTextArea (Sola Lettura e testo a capo automatico)
         configuraTextArea(textAreaDescrizione);
         configuraTextArea(textAreaImage);
@@ -30,7 +31,7 @@ public class FormVisualizzaDettaglioSegnalazione {
         //Definiamo le colonne fisse: la prima per il nome del campo, la seconda per il valore
         String[] colonne = {"Proprietà", "Valore"};
 
-        DefaultTableModel modelInvertito = new DefaultTableModel(colonne, 0) {
+        this.modelInvertito = new DefaultTableModel(colonne, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Rende la tabella non modificabile
@@ -42,18 +43,10 @@ public class FormVisualizzaDettaglioSegnalazione {
         // Nascondiamo la riga in alto con "Proprietà" e "Valore"
         tableDettagli.setTableHeader(null);
 
-        //Chiediamo i dati al controller
-        List<String[]> datiInvertiti = ControllerSegnalazioni.caricaDettaglioSegnalazione(idRiga);
-
-        //Inseriamo le righe verticali nel modello della tabella
-        for (String[] riga : datiInvertiti) {
-            modelInvertito.addRow(riga);
-        }
-
         //Definiamo le 2 colonne della cronologia
         String[] colonneStato = {"Data", "Stato", "Titolo"};
 
-        DefaultTableModel modelStati = new DefaultTableModel(colonneStato, 0) {
+        modelStati = new DefaultTableModel(colonneStato, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Non modificabile
@@ -64,21 +57,6 @@ public class FormVisualizzaDettaglioSegnalazione {
 
         // Nascondiamo l'header
         tableStati.setTableHeader(null);
-
-        //Chiediamo i dati al controller
-        List<String[]> datiCronologia = ControllerSegnalazioni.caricaStoricoStatiSegnalazione(idRiga);
-
-        //Inseriamo i dati nella la tabella
-        for (String[] riga : datiCronologia) {
-            modelStati.addRow(riga);
-        }
-
-        //Chiediamo la descrizione al controller
-        String[] DescrizioneEImmagine = ControllerSegnalazioni.caricaDescrizioneEImmagineSegnalazione(idRiga);
-
-        //Inseriamo la descrizione nella TextArea
-        textAreaDescrizione.setText(DescrizioneEImmagine[0]);
-        textAreaImage.setText(DescrizioneEImmagine[1]);
 
         INDIETROButton.addActionListener(new ActionListener() {
             @Override
@@ -112,6 +90,32 @@ public class FormVisualizzaDettaglioSegnalazione {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        visualizzaDettaglioSegnalazione(riga);
         return frame;
+    }
+
+    private void visualizzaDettaglioSegnalazione(int riga){
+        //Chiediamo i dati al controller
+        List<String[]> datiInvertiti = ControllerSegnalazioni.caricaDettaglioSegnalazione(riga);
+
+        //Inseriamo le righe verticali nel modello della tabella
+        for (String[] riga1 : datiInvertiti) {
+            modelInvertito.addRow(riga1);
+        }
+
+        //Chiediamo i dati al controller
+        List<String[]> datiCronologia = ControllerSegnalazioni.caricaStoricoStatiSegnalazione(riga);
+
+        //Inseriamo i dati nella la tabella
+        for (String[] riga2 : datiCronologia) {
+            modelStati.addRow(riga2);
+        }
+
+        //Chiediamo la descrizione al controller
+        String[] DescrizioneEImmagine = ControllerSegnalazioni.caricaDescrizioneEImmagineSegnalazione(riga);
+
+        //Inseriamo la descrizione nella TextArea
+        textAreaDescrizione.setText(DescrizioneEImmagine[0]);
+        textAreaImage.setText(DescrizioneEImmagine[1]);
     }
 }

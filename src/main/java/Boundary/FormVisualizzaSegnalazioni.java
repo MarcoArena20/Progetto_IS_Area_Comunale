@@ -40,14 +40,14 @@ public class FormVisualizzaSegnalazioni {
         tabellaSegnalazioni.setRowSelectionAllowed(true);
         tabellaSegnalazioni.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        List<String[]> righe = ControllerSegnalazioni.caricaSegnalazioni();
+        //Collega il modello alla tabella
+        tabellaSegnalazioni.setModel(tableModel);
+
+        List<String[]> righe = visualizzaSegnalazioni();
 
         for(String[] riga : righe){
             tableModel.addRow(riga);
         }
-
-        //Collega il modello alla tabella
-        tabellaSegnalazioni.setModel(tableModel);
 
         visualizzaDettaglioButton.addActionListener(new ActionListener() {
             @Override
@@ -67,7 +67,7 @@ public class FormVisualizzaSegnalazioni {
                 }
                 visualizzaFrame.dispose();
                 // Apriamo il form di dettaglio passando il numero della riga selezionata
-                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione(rigaSelezionata);
+                FormVisualizzaDettaglioSegnalazione dettaglioFrame = new FormVisualizzaDettaglioSegnalazione();
                 dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni(rigaSelezionata);
 
             }
@@ -95,8 +95,15 @@ public class FormVisualizzaSegnalazioni {
                 // e apriamo il form di modifica
 
                 boolean modificabile = ControllerSegnalazioni.verificaModificabilita(rigaSelezionata);
-                if(!modificabile)
-                    System.out.println("Segnalazione non modificabile");
+                if(!modificabile) {
+                    JOptionPane.showMessageDialog(
+                            contentPanel,
+                            "Segnalazione non modificabile.",
+                            "Attenzione",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
                 else{
 
                     Map<String, String> parametri = ControllerSegnalazioni.ottieniParametriModificabili(rigaSelezionata);
@@ -140,6 +147,12 @@ public class FormVisualizzaSegnalazioni {
         return visualizzaFrame;
     }
 
+    private List<String[]> visualizzaSegnalazioni(){
+        List<String[]> righe = ControllerSegnalazioni.caricaSegnalazioni();
+
+        return righe;
+    }
+
     public static void main(String[] args){
 
         System.out.println("Avvio dell'applicazione e creazione dell'oggetto MainFrame");
@@ -147,4 +160,5 @@ public class FormVisualizzaSegnalazioni {
         new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
 
     }
+
 }
