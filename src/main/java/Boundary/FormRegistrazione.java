@@ -23,15 +23,26 @@ public class FormRegistrazione {
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ruoloStringa = (String) ruoloRegistrazione.getSelectedItem();
-                String nome = nomeTextField.getText();
-                String cognome = cognomeTextField.getText();
-                String recapitoTelefonico = recapitoTelefonicoTextField.getText();
-                String email = emailTextField.getText();
-                String password = passwordTextField.getText();
+                try {
+                    if (registrazioneFrame != null) {
+                        String ruoloStringa = (String) ruoloRegistrazione.getSelectedItem();
+                        String nome = nomeTextField.getText();
+                        String cognome = cognomeTextField.getText();
+                        String recapitoTelefonico = recapitoTelefonicoTextField.getText();
+                        String email = emailTextField.getText();
+                        String password = passwordTextField.getText();
 
-                Registra(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-
+                        boolean esito = Registra(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+                        if (esito) {
+                            registrazioneFrame.dispose();
+                        }
+                    } else {
+                        registrazioneFrame = apriFormRegistrazione();
+                    }
+                }
+                catch (IllegalArgumentException ex){
+                    JOptionPane.showMessageDialog(registrazioneFrame, ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
@@ -48,7 +59,7 @@ public class FormRegistrazione {
     private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password)throws IllegalArgumentException{
         boolean controlloFormatoRegistrazione=false;
         try {
-            controlloFormatoRegistrazione = CheckDatiForm.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+            controlloFormatoRegistrazione = CheckDatiFormAccessoRegistrazione.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
             return  controlloFormatoRegistrazione;
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(ex.getMessage());
@@ -70,31 +81,33 @@ public class FormRegistrazione {
         return registrazioneFrame;
     }
 
-    public boolean Registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) {
+    public boolean Registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
 
         printFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+        boolean esitoFormatoRegistrazione = false;
         boolean esitoRegistrazione = false;
 
         //check formato
         try {
-            controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+            esitoFormatoRegistrazione = controlloFormatoDatiRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(registrazioneFrame, ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage());
         }
 
-        try {
-            esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-            if (esitoRegistrazione) {
-                registrazioneFrame.dispose();
-                if (ruoloStringa.equals("CITTADINO")) {
-                    new FormAreaPersonaleCittadino().apriAreaPersonale();
-                } else {
-                    new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+        if (esitoFormatoRegistrazione){
+            try {
+                esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+                if (esitoRegistrazione) {
+                    if (ruoloStringa.equals("CITTADINO")) {
+                        new FormAreaPersonaleCittadino().apriAreaPersonale();
+                    } else {
+                        new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+                    }
                 }
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException(ex.getMessage());
             }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(registrazioneFrame, ex.getMessage());
         }
-        return  esitoRegistrazione;
+        return esitoRegistrazione;
     }
 }

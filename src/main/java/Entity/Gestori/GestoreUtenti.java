@@ -21,7 +21,7 @@ public class GestoreUtenti {
 
     }
 
-    private boolean verificaUtenteGiaRegistrato(Ruolo ruolo, String email) {
+    private boolean verificaUtenteGiaRegistrato(Ruolo ruolo, String email)  {
         if(ruolo == Ruolo.CITTADINO) {
             return !gestorePersistenza.cercaPerCampo(Cittadino.class, "email", email).isEmpty();
         } else {
@@ -55,20 +55,20 @@ public class GestoreUtenti {
         }
     }
 
-    public String accessoUtente(Ruolo ruolo, String email, String passwordHash) {
+    public String accessoUtente(Ruolo ruolo, String email, String passwordHash) throws  IllegalArgumentException{
         if (ruolo == Ruolo.OPERATORE) {
             Operatore operatoreAccesso = cercaUtenteOperatore(email, passwordHash);
             if (operatoreAccesso != null) {
                 return operatoreAccesso.getIdOperatore().toString();
             } else {
-                return null;
+                throw new IllegalArgumentException("Accesso negato!");
             }
         } else {
             Cittadino cittadinoAccesso = cercaUtenteCittadino(email, passwordHash);
             if (cittadinoAccesso != null) {
                 return cittadinoAccesso.getIdCittadino().toString();
             } else {
-                return null;
+                throw new IllegalArgumentException("Accesso negato!");
             }
         }
     }

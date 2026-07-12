@@ -57,11 +57,11 @@ public class ControllerUtenti {
                     esitoRegistrazione = true;
                     setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
                 }
-            } catch (NoSuchAlgorithmException e) {
-                throw new IllegalAccessException("Utente Già registrato!");
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Utente Già registrato!");
             }
             catch (NoSuchAlgorithmException e){
-                throw
+                System.err.println("Errore critico!");
             }
             return esitoRegistrazione;
         }
@@ -72,14 +72,17 @@ public class ControllerUtenti {
             boolean esitoAccesso=false;
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
-                String passwordHash =hashPassword(password);
+                String passwordHash =hashPassword(password.trim());
 
-                if (gestoreUtenti.accessoUtente(ruolo, email, passwordHash)!=null){
+                if (gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash)!=null){
                     esitoAccesso=true;
                 }
             }
+            catch (IllegalArgumentException ex){
+                throw  new IllegalArgumentException("Email o password sbagliati!");
+            }
             catch (NoSuchAlgorithmException e){
-                e.printStackTrace();
+                System.err.println("Errore critico! riprovare.");
             }
             return esitoAccesso;
         }
