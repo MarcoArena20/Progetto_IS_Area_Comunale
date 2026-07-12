@@ -2,15 +2,11 @@ package Boundary;
 
 //import controller.GestoreSegnalazioni;
 import Controller.ControllerSegnalazioni;
-import Entity.Segnalazione;
-import Entity.Enum.Categoria;
-import Entity.Cittadino;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +18,8 @@ public class FormVisualizzaSegnalazioni {
     private JButton visualizzaDettaglioButton;
     private JTable tabellaSegnalazioni;
     private JButton modificaSegnalazioneButton;
+    private JButton INDIETROButton;
     private DefaultTableModel tableModel;
-    private JFrame frame;
 
     public FormVisualizzaSegnalazioni() {
 
@@ -93,7 +89,7 @@ public class FormVisualizzaSegnalazioni {
                 // Una volta ottenuta la conferma, otteniamo le informazioni relative alla segnalazione
                 // e apriamo il form di modifica
 
-                boolean modificabile = ControllerSegnalazioni.verificaModificabilità(rigaSelezionata);
+                boolean modificabile = ControllerSegnalazioni.verificaModificabilita(rigaSelezionata);
                 if(!modificabile)
                     System.out.println("Segnalazione non modificabile");
                 else{
@@ -111,9 +107,15 @@ public class FormVisualizzaSegnalazioni {
                     visualizzaFrame.dispose();
 
                 }
+            }
+        });
 
-
-
+        INDIETROButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                visualizzaFrame.dispose();
+                FormAreaPersonaleCittadino areaPersonaleFrame = new FormAreaPersonaleCittadino();
+                areaPersonaleFrame.apriAreaPersonale();
             }
         });
 
@@ -130,20 +132,14 @@ public class FormVisualizzaSegnalazioni {
         visualizzaFrame.setLocationRelativeTo(null);
         visualizzaFrame.setVisible(true);
 
-        return frame;
+        return visualizzaFrame;
     }
 
-    /*
-    public static void main(String[] args) {
-        // Avviamo l'interfaccia in sicurezza nel thread grafico di Swing
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                FormVisualizzaSegnalazioni interfaccia = new FormVisualizzaSegnalazioni();
-                interfaccia.apriFormVisualizzaSegnalazioni();
-            }
-        });
-    }
-    */
+    public static void main(String[] args){
 
+        System.out.println("Avvio dell'applicazione e creazione dell'oggetto MainFrame");
+
+        new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+
+    }
 }

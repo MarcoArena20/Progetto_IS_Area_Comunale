@@ -4,13 +4,17 @@ package Entity.Gestori;
 import Database.GestorePersistenza;
 import Entity.*;
 import Entity.EntryDB.AggiornamentoStatoEntry;
+import Entity.EntryDB.GestioneOperatoreEntry;
 import Entity.Enum.Categoria;
+import Entity.StateMachine.StatoRisolta;
 import Entity.StateMachine.StatoSegnalazione;
 import Entity.Enum.StatoType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //Façade
 public class GestoreSegnalazioni {
@@ -185,10 +189,15 @@ public class GestoreSegnalazioni {
         return true;
     }
 
-    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, List<AggiornamentoStatoEntry> aggiornamentiStato) {}
+    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, Map<AggiornamentoStatoEntry, String> aggiornamentiStato) {}
 
     public dettaglioCompleto visualizzaDettaglioSegnalazione(Long idSegnalazione){
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
+
+        //mappa usata per cercare nel database
+        Map<String, Object> filtri = new HashMap<>();
+        //mappa usata per tornare
+        Map<AggiornamentoStatoEntry, String> mappaRisultati = new HashMap<>();
 
         Segnalazione.Dettaglio dettaglio = segnalazione.getDettaglioSegnalazione();
         List<AggiornamentoStatoEntry> aggiornamentiStato = gestorePersistenza.cercaPerCampo(
@@ -197,7 +206,19 @@ public class GestoreSegnalazioni {
                 idSegnalazione
         );
 
-        return new dettaglioCompleto(dettaglio, aggiornamentiStato);
+        //associo il titolo della nota agli aggiornamenti di stato (la nota è presente solo nella conclusione della nota
+        for(AggiornamentoStatoEntry aggiornamento: aggiornamentiStato) {
+            if(aggiornamento.getStato() instanceof StatoRisolta) {
+                filtri.put("idOperatore", aggiornamento.getOperatore().getIdOperatore());
+                filtri.put("idSegnalazione", idSegnalazione);
+                GestioneOperatoreEntry gestioneOperatore = gestorePersistenza.cercaPrimoPerCampi(GestioneOperatoreEntry.class, filtri);
+                mappaRisultati.put(aggiornamento, gestioneOperatore.getTitolo());
+            }
+            else{
+                mappaRisultati.put(aggiornamento, "");
+            }
+        }
+        return new dettaglioCompleto(dettaglio, mappaRisultati);
     }
 
     public List<Segnalazione.InfoAnteprima> visualizzaSegnalazioniPerCittadino(Long idCittadino) {
