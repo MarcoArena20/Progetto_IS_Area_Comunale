@@ -101,12 +101,11 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
         tableSegnalazioni.setModel(model);
     }
-    /*
+
     public static void main(String[] args){
         FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
         form.apriVisualizzaFrame();
     }
 
-     */
 }
 
