@@ -209,8 +209,8 @@ public class GestoreSegnalazioni {
         //associo il titolo della nota agli aggiornamenti di stato (la nota è presente solo nella conclusione della nota
         for(AggiornamentoStatoEntry aggiornamento: aggiornamentiStato) {
             if(aggiornamento.getStato() instanceof StatoRisolta) {
-                filtri.put("idOperatore", aggiornamento.getOperatore().getIdOperatore());
-                filtri.put("idSegnalazione", idSegnalazione);
+                filtri.put("operatore", aggiornamento.getOperatore());
+                filtri.put("segnalazione", segnalazione);
                 GestioneOperatoreEntry gestioneOperatore = gestorePersistenza.cercaPrimoPerCampi(GestioneOperatoreEntry.class, filtri);
                 mappaRisultati.put(aggiornamento, gestioneOperatore.getTitolo());
             }
