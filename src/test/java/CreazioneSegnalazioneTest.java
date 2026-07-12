@@ -14,17 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreazioneSegnalazioneTest {
 
-    @BeforeEach
-     void setUp(){
+    @BeforeAll
+     static void setUp(){
+
+        puliziaDatabase();
 
         // Creaiamo un utente
-
-
-        // Una volta creato l'utente posso andare a creare le segnalazioni
+        new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
 
     }
 
-    @BeforeAll
     static void puliziaDatabase(){
 
         // Andiamo a ripulire le tabelle di cittadino e segnalazione di test in modo da conoscere lo stato iniziale
@@ -33,8 +32,11 @@ public class CreazioneSegnalazioneTest {
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
-        em.createQuery("DELETE FROM segnalazione").executeUpdate();
-        em.createQuery("DELETE FROM cittadino").executeUpdate();
+        em.createQuery("DELETE FROM Segnalazione").executeUpdate();
+        em.createQuery("DELETE FROM Cittadino").executeUpdate();
+        em.createQuery("DELETE FROM Operatore").executeUpdate();
+        em.createQuery("DELETE FROM AggiornamentoStatoEntry").executeUpdate();
+        em.createQuery("DELETE FROM GestioneOperatoreEntry").executeUpdate();
         tx.commit();
 
         em.close();

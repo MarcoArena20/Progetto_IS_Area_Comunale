@@ -93,7 +93,7 @@ public class FormModificaSegnalazione {
 
     }
 
-    private boolean modificaSegnalazione(int idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public boolean modificaSegnalazione(int idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         try{
 
