@@ -1,16 +1,14 @@
 import Boundary.FormConclusioneGestione;
 import Boundary.FormCreazioneSegnalazione;
+import Boundary.FormVisualizzaDettaglioSegnalazioneRicevuta;
 
-import Boundary.FormRegistrazione;
+import Boundary.FormVisualizzaSegnalazioniRicevute;
 import Controller.ControllerSegnalazioni;
-import Database.GestorePersistenza;
-import Entity.Segnalazione;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CreazioneNotaTest {
 
     private FormConclusioneGestione form;
-    private static Integer idRow = 0;
+    private static Integer idRow;
 
     //Il db si presuppone vuoto in fase di testing => si crea un operatore, un cittadino e una segnalazione (il cui id sarà 1);
     //poiché ci sarà una segnalazione, anche l'idRow sarà 1
@@ -26,24 +24,18 @@ public class CreazioneNotaTest {
     @BeforeAll
     public static void setUp() {
 
-        CreazioneSegnalazioneTest.puliziaDatabase();
-
-        new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
-        new FormRegistrazione().registra("OPERATORE", "Giuliano", "Izzo", "giuliano@gmail.com", "1112121221", "Passw123!");
-
+        //TODO inizializzazione database con segnalazione, cittadino e operatore
 
         new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
                 "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                 "RIFIUTI_ABBANDONATI",
                 "Centro Storico: Via dei Tribunali 120", "", "");
+        //new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
 
-        //Ricavo l'id dell'unica segnalazione inserita
-        ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore(null, null, null);
-        List<Segnalazione> listaS = new GestorePersistenza().cercaPerCampi(Segnalazione.class, Map.of());
+        ControllerSegnalazioni.caricaSegnalazioni();
+        ControllerSegnalazioni.setIdSegnalazioneCorrente(1L);
 
-        Long idSegnalazioneCorrente = listaS.get(0).getIdSegnalazione();
-
-        ControllerSegnalazioni.setIdSegnalazioneCorrente(idSegnalazioneCorrente);
+        idRow = Integer.parseInt(ControllerSegnalazioni.getIdSegnalazioneCorrente().toString());
 
     }
 
@@ -62,18 +54,11 @@ public class CreazioneNotaTest {
         // -> di conseguenza il test parte dal controller
         ControllerSegnalazioni.iniziaGestioneSegnalazione();
 
-        form = new FormConclusioneGestione(idRow);
+        form = new FormConclusioneGestione(1);
 
         form.presenzaNota = true;
 
     }
-
-    /*
-     * Per i test, si presuppone che errori nell'inserimento di titolo o descrizione lancino un eccezione
-     * IllegalArgumentException; di conseguenza, se non viene lanciata alcuna eccezione la conclusione è da considerarsi
-     * andata a buon fine (anche se l'esito di quel metodo fosse false) visto che non sarebbero riscontrati problemi
-     * nei valori inseriti come titolo e descrizione della nota
-     */
 
     @Test
     public void tuttiInputValidi() {
@@ -83,14 +68,9 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
-            esito = true;
-
+            esito = form.concludiGestione();
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -107,8 +87,7 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
+            esito = form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
@@ -130,14 +109,11 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-             form.concludiGestione();
-             esito = true;
+            esito = form.concludiGestione();
+            esito = true;
 
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -153,14 +129,11 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
+            esito = form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -176,14 +149,11 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
+            esito = form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -199,14 +169,11 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
+            esito = form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -222,14 +189,11 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-
-            form.concludiGestione();
+            esito = form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
-
             esito = false;
-
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
