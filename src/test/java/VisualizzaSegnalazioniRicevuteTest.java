@@ -12,7 +12,7 @@ public class VisualizzaSegnalazioniRicevuteTest {
 
     @BeforeEach
     void setUp() {
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.valueOf(Ruolo.OPERATORE.name()));
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
     }
 
     @Test
