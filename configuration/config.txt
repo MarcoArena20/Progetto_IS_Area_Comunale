@@ -1,2 +1,2 @@
-idUtente:7
+idUtente:1
 ruolo:OPERATORE

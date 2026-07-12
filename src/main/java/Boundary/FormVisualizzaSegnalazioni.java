@@ -2,11 +2,15 @@ package Boundary;
 
 //import controller.GestoreSegnalazioni;
 import Controller.ControllerSegnalazioni;
+import Entity.Segnalazione;
+import Entity.Enum.Categoria;
+import Entity.Cittadino;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,7 @@ public class FormVisualizzaSegnalazioni {
     private JButton modificaSegnalazioneButton;
     private JButton INDIETROButton;
     private DefaultTableModel tableModel;
+    private JFrame frame;
 
     public FormVisualizzaSegnalazioni() {
 
