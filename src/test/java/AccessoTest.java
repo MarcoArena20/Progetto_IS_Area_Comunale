@@ -1,5 +1,4 @@
 import  Boundary.FormAccesso;
-import Boundary.FormAccesso;
 import Boundary.FormRegistrazione;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ public class AccessoTest {
     @Test
     void testCorrettoCittadino() {
         boolean esito;
-        formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
+        formRegistrazione.registra("Cittadino", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
         esito = formAccesso.Accedi("Cittadino", "nome.cognome@comune.it", "MarioRossi-03");
         assertTrue(esito);
     }
@@ -31,7 +30,7 @@ public class AccessoTest {
     @Test
     void testCorrettoOperatore() {
         boolean esito;
-        formRegistrazione.Registra("Operatore", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
+        formRegistrazione.registra("Operatore", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
         esito = formAccesso.Accedi("Operatore", "nome.cognome@comune.it", "MarioRossi-03");
         assertTrue(esito);
     }
@@ -39,7 +38,11 @@ public class AccessoTest {
     @Test
     void testRuoloNonValido() {
         boolean esito;
-        esito = formAccesso.Accedi("", "nome.cognome@comune.it", "MarioRossi-03");
+        try {
+            esito = formRegistrazione.registra("", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+        } catch (IllegalArgumentException ex) {
+            esito = false;
+        }
         assertFalse(esito);
     }
 

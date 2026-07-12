@@ -423,7 +423,7 @@ public class ControllerSegnalazioni {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
 
 
         //1. flusso normale
@@ -440,23 +440,23 @@ public class ControllerSegnalazioni {
 
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE);
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
         concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
 
         //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
         System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO);
         iniziaGestioneSegnalazione();
 
 
         //4. tentativo di prendere in carico una segnalazione risolta
         System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
         setIdSegnalazioneCorrente(4L);
         iniziaGestioneSegnalazione();
 

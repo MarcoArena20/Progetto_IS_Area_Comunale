@@ -46,6 +46,7 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
+
         public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) throws IllegalArgumentException{
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoRegistrazione = false;
@@ -53,9 +54,10 @@ public class ControllerUtenti {
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash = hashPassword(password);
                 String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
+
                 if (idUtente != null) {
                     esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruolo);
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Utente Già registrato!");
@@ -73,9 +75,10 @@ public class ControllerUtenti {
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password.trim());
-
-                if (gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash)!=null){
+                String idUtente = gestoreUtenti.accessoUtente(ruolo, email, passwordHash);
+                if (idUtente!=null){
                     esitoAccesso=true;
+                    setIdUtenteCorrente( Long.parseLong(idUtente), ruolo);
                 }
             }
             catch (IllegalArgumentException ex){
@@ -131,7 +134,7 @@ public class ControllerUtenti {
 
     }
 
-    public static void setIdUtenteCorrente(Long idUtenteCorrente, String ruolo){
+    public static void setIdUtenteCorrente(Long idUtenteCorrente, Ruolo ruolo){
         // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
         // di default, ovvero
         // idUtente:
@@ -161,8 +164,7 @@ public class ControllerUtenti {
 
         } catch (IOException e) {
 
-            e.printStackTrace();
+                        e.printStackTrace();
+                    }
         }
     }
-}
-
