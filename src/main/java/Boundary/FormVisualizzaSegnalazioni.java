@@ -121,7 +121,7 @@ public class FormVisualizzaSegnalazioni {
 
     public JFrame apriFormVisualizzaSegnalazioni(){
 
-        visualizzaFrame = new JFrame("Visualizza dettaglio segnalazione");
+        visualizzaFrame = new JFrame("Visualizza segnalazione");
         visualizzaFrame.setContentPane(contentPanel);
 
         visualizzaFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,6 +133,7 @@ public class FormVisualizzaSegnalazioni {
         return frame;
     }
 
+    /*
     public static void main(String[] args) {
         // Avviamo l'interfaccia in sicurezza nel thread grafico di Swing
         SwingUtilities.invokeLater(new Runnable() {
@@ -143,4 +144,6 @@ public class FormVisualizzaSegnalazioni {
             }
         });
     }
+    */
+
 }

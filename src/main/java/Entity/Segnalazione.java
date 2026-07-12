@@ -267,7 +267,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     }
 
 
-
+    /*
     public static void main(String[] args) {
         System.out.println("[Segnalazione] MainTest avviato..");
 
@@ -278,7 +278,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
         Categoria: Rifiuti abbandonati
         Posizione: Viale delle mimose
-        */
+
 
         s.attach(ConcreteObserver.getInstance());
 
@@ -291,5 +291,5 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         s.aggiornaStato(false);
 
     }
-
+    */
 }

@@ -161,9 +161,12 @@ public class FormCreazioneSegnalazione {
 
     }
 
+    /*
     public static void main(String[] args){
 
         new FormCreazioneSegnalazione().apriCreazioneFrame();
 
     }
+    */
+
 }
