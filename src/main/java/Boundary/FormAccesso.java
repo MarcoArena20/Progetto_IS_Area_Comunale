@@ -25,7 +25,7 @@ public class FormAccesso {
                         String email = emailField.getText();
                         String password = passwordField.getText();
 
-                        boolean esito = Accedi(ruoloStringa, email, password);
+                        boolean esito = accedi(ruoloStringa, email, password);
                         if (esito) {
                             if (ruoloStringa.equals("CITTADINO")) {
                                 new FormAreaPersonaleCittadino().apriAreaPersonale();
@@ -80,7 +80,7 @@ public class FormAccesso {
         return accessoFrame;
     }
 
-    public boolean Accedi(String ruoloStringa, String email, String password) throws IllegalArgumentException{
+    public boolean accedi(String ruoloStringa, String email, String password) throws IllegalArgumentException{
 
         boolean esitoFormatoAccesso=false;
         boolean esitoAccesso = false;
