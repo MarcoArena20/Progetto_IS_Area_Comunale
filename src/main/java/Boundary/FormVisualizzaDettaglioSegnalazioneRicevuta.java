@@ -2,6 +2,8 @@ package Boundary;
 
 import Controller.ControllerSegnalazioni;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Map;

@@ -1,11 +1,12 @@
 package Boundary;
 
 import Controller.ControllerSegnalazioni;
-import Controller.ControllerUtenti;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FormConclusioneGestione {
     private JFrame conclusioneFrame;
@@ -22,7 +23,7 @@ public class FormConclusioneGestione {
     private JLabel statoPrecedenteEffettivoLabel;
     private JLabel statoSuccessivoEffettivoLabel;
 
-    private boolean visualizza = false;
+    public boolean presenzaNota = false;
     private final Integer idRow;
 
     public FormConclusioneGestione(Integer idRow) {
@@ -31,16 +32,17 @@ public class FormConclusioneGestione {
         confermaEConcludiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    if (concludiGestione()) {
 
-                if(concludiGestione()) {
+                        conclusioneFrame.dispose();
+                        JOptionPane.showMessageDialog(conclusioneFrame, "Conclusa la gestione della segnalazione");
 
-                    conclusioneFrame.dispose();
-                    JOptionPane.showMessageDialog(conclusioneFrame, "Conclusa la gestione della segnalazione");
+                    }
 
-                } else {
-
-                    JOptionPane.showMessageDialog(conclusioneFrame, "Impossibile concludere la gestione della segnalazione", "Errore", JOptionPane.ERROR_MESSAGE);
-
+                } catch (IllegalArgumentException | IllegalAccessException exception) {
+                    //System.err.println(exception.getMessage());
+                    JOptionPane.showMessageDialog(conclusioneFrame, exception.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -48,16 +50,18 @@ public class FormConclusioneGestione {
         aggiungiNotaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                visualizzaCampiNotaInterna(visualizza);
 
-                if (visualizza) {
+                presenzaNota = !presenzaNota;
+
+                visualizzaCampiNotaInterna(presenzaNota);
+
+                if (presenzaNota) {
                     aggiungiNotaButton.setText("Rimuovi nota");
                 } else {
                     aggiungiNotaButton.setText("Aggiungi nota");
                     titoloTextField.setText("");
                     descrizioneTextField.setText("");
                 }
-                visualizza = !visualizza;
             }
         });
 
@@ -85,8 +89,7 @@ public class FormConclusioneGestione {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        visualizzaCampiNotaInterna(visualizza);
-        visualizza=true;
+        visualizzaCampiNotaInterna(presenzaNota);
 
         statoSuccessivoEffettivoLabel.setText("Inviata");
 
@@ -99,21 +102,26 @@ public class FormConclusioneGestione {
 
         conclusioneFrame = frame;
 
+        conclusioneFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                new FormVisualizzaDettaglioSegnalazioneRicevuta(idRow).apriDettaglioFrame();
+            }
+        });
+
         return frame;
     }
 
-    private void visualizzaCampiNotaInterna(boolean visualizza) {
-        titoloNotaLabel.setVisible(visualizza);
-        descrizioneNotaLabel.setVisible(visualizza);
-        titoloTextField.setVisible(visualizza);
-        descrizioneTextField.setVisible(visualizza);
+    private void visualizzaCampiNotaInterna(boolean presenzaNota) {
+        titoloNotaLabel.setVisible(presenzaNota);
+        descrizioneNotaLabel.setVisible(presenzaNota);
+        titoloTextField.setVisible(presenzaNota);
+        descrizioneTextField.setVisible(presenzaNota);
 
     }
 
-    public boolean concludiGestione(){
+    public boolean concludiGestione() throws IllegalArgumentException, IllegalAccessException{
         boolean risolutiva = gestioneRisolutivaCheckBox.isSelected();
-        boolean presenzaNota = !visualizza;
-
 
         String titolo = titoloTextField.getText();
         String descrizione = descrizioneTextField.getText();
@@ -133,47 +141,51 @@ public class FormConclusioneGestione {
 
         }
 
-        boolean esito = ControllerSegnalazioni.concludiGestioneSegnalazione(titolo, descrizione, risolutiva);
+        if (!ControllerSegnalazioni.concludiGestioneSegnalazione(titolo, descrizione, risolutiva) ) {
+            throw new IllegalAccessException("Non si hanno i permessi per eseguire questa azione");
+        }
 
-        return esito;
+        return true;
     }
 
-    private boolean verificaCampi(String titolo, String descrizione) {
+    private boolean verificaCampi(String titolo, String descrizione) throws IllegalArgumentException {
         //Titolo [5,15] caratteri, no caratteri speciali
         //Descrizione [5,200] caratteri, no caratteri speciali
 
-        if (titolo.length() < 5 || titolo.length() > 15){
+        if (titolo.length() < 5 || titolo.length() > 15) {
 
-            if (titolo.length()<5) {
+            if (titolo.length() < 5) {
 
                 System.err.println("Inserire titolo di almeno 5 caratteri");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Inserire titolo di almeno 5 caratteri");
 
             } else {
 
                 System.err.println("Inserire titolo di massimo 15 caratteri");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di massimo 15 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di massimo 15 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Inserire titolo di massimo 15 caratteri");
 
             }
 
-            return false;
         }
 
         if (descrizione.length() < 5 || descrizione.length() > 200) {
 
-            if (descrizione.length()<5) {
+            if (descrizione.length() < 5) {
 
                 System.err.println("Inserire descrizione di almeno 5 caratteri");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Inserire descrizione di almeno 5 caratteri");
 
             } else {
 
                 System.err.println("Inserire descrizione di massimo 200 caratteri");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di massimo 200 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di massimo 200 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Inserire descrizione di massimo 200 caratteri");
 
             }
 
-            return false;
         }
 
         //Check caratteri speciali
@@ -182,9 +194,9 @@ public class FormConclusioneGestione {
             if (!Character.isLetter(c) && c != ' ') {
 
                 System.err.println("Rimuovere caratteri speciali dal titolo");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dal titolo", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dal titolo", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Rimuovere caratteri speciali dal titolo");
 
-                return false;
             }
         }
 
@@ -193,12 +205,16 @@ public class FormConclusioneGestione {
             if (!Character.isLetter(c) && c != ' ') {
 
                 System.err.println("Rimuovere caratteri speciali dalla descrizione");
-                JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dalla descrizione", "Errore", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dalla descrizione", "Errore", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Rimuovere caratteri speciali dalla descrizione");
 
-                return false;
             }
         }
 
         return true;
+    }
+
+    public static void main(String[] args){
+        new FormConclusioneGestione(1).apriConclusioneFrame();
     }
 }
