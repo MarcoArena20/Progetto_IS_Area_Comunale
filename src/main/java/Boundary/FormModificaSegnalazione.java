@@ -29,18 +29,28 @@ public class FormModificaSegnalazione {
 
                 Map<String, String> dati = CheckFormSegnalazione.recuperaDatiSegnalazione(titoloField, descrizioneField, categoriaBox, posizioneBox, dataField, urlImmagineField);
 
-                boolean modificata = modificaSegnalazione(idRow,
-                        dati.get("titolo"),
-                        dati.get("descrizione"),
-                        dati.get("categoria"),
-                        dati.get("posizione"),
-                        dati.get("data"),
-                        dati.get("urlImmagine"));
+                try{
 
-                if(modificata){
+                    boolean modificata = modificaSegnalazione(idRow,
+                            dati.get("titolo"),
+                            dati.get("descrizione"),
+                            dati.get("categoria"),
+                            dati.get("posizione"),
+                            dati.get("data"),
+                            dati.get("urlImmagine"));
 
-                    modificaFrame.dispose();
-                    new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+                    if(!modificata)
+                        JOptionPane.showMessageDialog(contentPanel, "Errore inatteso");
+                    else{
+
+                        modificaFrame.dispose();
+                        new FormAreaPersonaleCittadino().apriAreaPersonale();
+
+                    }
+
+                }catch (IllegalArgumentException ex){
+
+                    JOptionPane.showMessageDialog(contentPanel, ex.getMessage());
 
                 }
 
@@ -75,7 +85,16 @@ public class FormModificaSegnalazione {
 
     private boolean modificaSegnalazione(int idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
-        CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+        try{
+
+            CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+
+        }catch(IllegalArgumentException e){
+
+            System.err.println(e.getMessage());
+            throw e;
+
+        }
 
         if (urlImmagine.equalsIgnoreCase(""))
             urlImmagine = null;

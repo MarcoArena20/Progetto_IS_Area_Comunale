@@ -37,16 +37,28 @@ public class FormCreazioneSegnalazione {
 
                 Map<String, String> dati = CheckFormSegnalazione.recuperaDatiSegnalazione(titoloField, descrizioneField, categoriaBox, posizioneComboBox, dataField, urlImmagineField);
 
-                boolean creata = creaSegnalazione(dati.get("titolo"),
-                                                dati.get("descrizione"),
-                                                dati.get("categoria"),
-                                                dati.get("posizione"),
-                                                dati.get("data"),
-                                                dati.get("urlImmagine"));
+                try{
 
-                if(creata) {
-                    creazioneFrame.dispose();
-                    new FormAreaPersonaleCittadino().apriAreaPersonale();
+                    boolean creata = creaSegnalazione(dati.get("titolo"),
+                            dati.get("descrizione"),
+                            dati.get("categoria"),
+                            dati.get("posizione"),
+                            dati.get("data"),
+                            dati.get("urlImmagine"));
+
+                    if(!creata)
+                        JOptionPane.showMessageDialog(contentPanel, "Errore inatteso");
+                    else{
+
+                        creazioneFrame.dispose();
+                        new FormAreaPersonaleCittadino().apriAreaPersonale();
+
+                    }
+
+                }catch(IllegalArgumentException ex){
+
+                    JOptionPane.showMessageDialog(contentPanel, ex.getMessage());
+
                 }
             }
         });
@@ -70,9 +82,18 @@ public class FormCreazioneSegnalazione {
 
     }
 
-    public boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine) throws IllegalArgumentException{
 
-        CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+        try{
+
+            CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+
+        }catch(IllegalArgumentException e){
+
+            System.err.println(e.getMessage());
+            throw e;
+
+        }
 
         if (urlImmagine.equalsIgnoreCase(""))
             urlImmagine = null;
