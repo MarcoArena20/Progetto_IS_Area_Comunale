@@ -23,13 +23,13 @@
                       value="com.mysql.cj.jdbc.Driver"/>
 
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/prova_db"/>
+                      value="jdbc:mysql://localhost:3306/test_db"/>
 
             <property name="jakarta.persistence.jdbc.user"
                       value="root"/>
 
             <property name="jakarta.persistence.jdbc.password"
-                      value="Mf-29043035"/>
+                      value="Marco"/>
 
             <property name="hibernate.hbm2ddl.auto"
                       value="update"/>
