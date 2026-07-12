@@ -144,28 +144,36 @@ public class FormConclusioneGestione {
 
         if (titolo.length() < 5 || titolo.length() > 15){
 
-            System.err.println("Errore nel titolo");
+            if (titolo.length()<5) {
 
-            if (titolo.length()<5)
+                System.err.println("Inserire titolo di almeno 5 caratteri");
                 JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
-            else
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di alpiù 15 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                System.err.println("Inserire titolo di massimo 15 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di massimo 15 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            }
 
             return false;
-
         }
 
         if (descrizione.length() < 5 || descrizione.length() > 200) {
 
-            System.err.println("Errore nella descrizione");
+            if (descrizione.length()<5) {
 
-            if (descrizione.length()<5)
+                System.err.println("Inserire descrizione di almeno 5 caratteri");
                 JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
-            else
-                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di alpiù 200 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                System.err.println("Inserire descrizione di massimo 200 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di massimo 200 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            }
 
             return false;
-
         }
 
         //Check caratteri speciali
@@ -173,7 +181,7 @@ public class FormConclusioneGestione {
 
             if (!Character.isLetter(c) && c != ' ') {
 
-                System.err.println("Caratteri speciali nel titolo");
+                System.err.println("Rimuovere caratteri speciali dal titolo");
                 JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dal titolo", "Errore", JOptionPane.ERROR_MESSAGE);
 
                 return false;
@@ -184,7 +192,7 @@ public class FormConclusioneGestione {
 
             if (!Character.isLetter(c) && c != ' ') {
 
-                System.err.println("Caratteri speciali nella descrizione");
+                System.err.println("Rimuovere caratteri speciali dalla descrizione");
                 JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dalla descrizione", "Errore", JOptionPane.ERROR_MESSAGE);
 
                 return false;
