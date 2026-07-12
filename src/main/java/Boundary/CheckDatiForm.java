@@ -41,12 +41,12 @@ public class CheckDatiForm {
 
         // Controllo formato Email
         if (!ValidatoreEmail.validaEmail(email)){
-            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
+            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio .");
         }
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
         if (!validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
@@ -58,11 +58,11 @@ public class CheckDatiForm {
             throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore'.");
         }
         if (!ValidatoreEmail.validaEmail(email)){
-            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
+            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio .");
         }
 
         if (!ValidatorePassword.validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni

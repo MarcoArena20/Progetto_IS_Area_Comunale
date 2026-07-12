@@ -46,7 +46,7 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
-        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
+        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) throws IllegalArgumentException{
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoRegistrazione = false;
             try {
@@ -58,8 +58,10 @@ public class ControllerUtenti {
                     setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
                 }
             } catch (NoSuchAlgorithmException e) {
-                //TODO
-                e.printStackTrace();
+                throw new IllegalAccessException("Utente Già registrato!");
+            }
+            catch (NoSuchAlgorithmException e){
+                throw
             }
             return esitoRegistrazione;
         }

@@ -32,20 +32,26 @@ public class GestoreUtenti {
     //Metodi
     public String registraUtente(Ruolo ruolo, String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         //verifico che non ci sia un Utente(Cittadino/Operatore) che si sta registrando con un email gia registrata per il ruolo scelto
-        if (verificaUtenteGiaRegistrato(ruolo, email)) {
-            return null;
-        } else {
-            //Assicurati che non esista un utente con email e ruolo specificati gia registrati
-            //procedo alla registrazione e salvataggio dell'utente
-            if (ruolo == Ruolo.CITTADINO) {
-                Cittadino cittadino = new Cittadino(nome, cognome, email, recapitoTelefonico, passwordHash);
-                gestorePersistenza.salva(cittadino);
-                return cittadino.getIdCittadino().toString();
+        try {
+            if (verificaUtenteGiaRegistrato(ruolo, email)) {
+                throw new IllegalArgumentException();
             } else {
-                Operatore operatore = new Operatore(nome, cognome, email, recapitoTelefonico, passwordHash);
-                gestorePersistenza.salva(operatore);
-                return operatore.getIdOperatore().toString();
+                //Assicurati che non esista un utente con email e ruolo specificati gia registrati
+                //procedo alla registrazione e salvataggio dell'utente
+                if (ruolo == Ruolo.CITTADINO) {
+                    Cittadino cittadino = new Cittadino(nome, cognome, email, recapitoTelefonico, passwordHash);
+                    gestorePersistenza.salva(cittadino);
+                    return cittadino.getIdCittadino().toString();
+                } else {
+                    Operatore operatore = new Operatore(nome, cognome, email, recapitoTelefonico, passwordHash);
+                    gestorePersistenza.salva(operatore);
+                    return operatore.getIdOperatore().toString();
+                }
             }
+
+        }
+        catch (IllegalArgumentException ex){
+            throw new IllegalArgumentException();
         }
     }
 
