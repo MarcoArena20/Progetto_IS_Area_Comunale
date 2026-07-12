@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FormRegistrazione {
-
+    private MainFrame mainFrame;
     private JFrame registrazioneFrame;
     private JPanel contentPanel;
     private JButton registratiButton;
@@ -16,8 +16,7 @@ public class FormRegistrazione {
     private JTextField recapitoTelefonicoTextField;
     private JTextField passwordTextField;
     private JTextField emailTextField;
-
-    private JFrame FormVisualizzaSegnalazioniRicevute;
+    private JButton tornaAlMenuPrincipaleButton;
 
     public FormRegistrazione() {
         registratiButton.addActionListener(new ActionListener() {
@@ -48,6 +47,14 @@ public class FormRegistrazione {
                 catch (IllegalArgumentException ex){
                     JOptionPane.showMessageDialog(registrazioneFrame, ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+        tornaAlMenuPrincipaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame = new MainFrame();
+                mainFrame.apriMainFrame();
+                registrazioneFrame.dispose();
             }
         });
     }
