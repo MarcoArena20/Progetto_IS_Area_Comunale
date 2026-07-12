@@ -1,5 +1,4 @@
 import Boundary.FormCreazioneSegnalazione;
-import Boundary.FormRegistrazione;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,18 +7,22 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CreazioneSegnalazioneTest {
+public class ModificaSegnalazioneTest {
 
     @BeforeAll
     static void setUp(){
 
-        // La prima cosa da fare è creare un utente e settare il config.txt
+        // La prima cosa da fare è creare un utente ed una segnalazione
 
-        // Una volta creato l'utente posso andare a creare le segnalazioni
+        boolean esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+                "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
+                "RIFIUTI_ABBANDONATI",
+                "Fuorigrotta: Piazzale Tecchio 50", "", "");
 
     }
 
-    // Testiamo la creazione della segnalazione andando ad invocare il metodo di creaSegnalazione del controller
+
+
     @Test
     void testCorrettoObbligatori(){
 
@@ -66,8 +69,8 @@ public class CreazioneSegnalazioneTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Titolo vuoto
-                            "Ok", // Titolo < 5
-                            "Abbandono di rifiuti con cattivi odori davanti alla farmacia"}) // Titolo > 30
+            "Ok", // Titolo < 5
+            "Abbandono di rifiuti con cattivi odori davanti alla farmacia"}) // Titolo > 30
 
     void titoloErrato(String titolo){
 
@@ -210,6 +213,4 @@ public class CreazioneSegnalazioneTest {
         assertFalse(esito);
 
     }
-
 }
-
