@@ -423,7 +423,7 @@ public class ControllerSegnalazioni {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
 
 
         //1. flusso normale
@@ -440,23 +440,23 @@ public class ControllerSegnalazioni {
 
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE);
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
         concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
 
         //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
         System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
         iniziaGestioneSegnalazione();
 
 
         //4. tentativo di prendere in carico una segnalazione risolta
         System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
         setIdSegnalazioneCorrente(4L);
         iniziaGestioneSegnalazione();
 
@@ -466,11 +466,7 @@ public class ControllerSegnalazioni {
         setIdSegnalazioneCorrente(1L);
         iniziaGestioneSegnalazione();
         concludiGestioneSegnalazione("Risolta", "Segnalazione risolta con successo", true);
-        /*
-            TODO| non è un problema ma è il flusso di esecuzione: se si fa concludi gestione con esito true da presaInCarico:
-            TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
-            TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
-         */
+
         //concludiGestioneSegnalazione(null, null, false);
         //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
