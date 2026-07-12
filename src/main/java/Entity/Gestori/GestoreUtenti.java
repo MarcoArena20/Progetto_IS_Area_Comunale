@@ -21,7 +21,7 @@ public class GestoreUtenti {
 
     }
 
-    private boolean verificaUtenteGiaRegistrato(Ruolo ruolo, String email) {
+    private boolean verificaUtenteGiaRegistrato(Ruolo ruolo, String email)  {
         if(ruolo == Ruolo.CITTADINO) {
             return !gestorePersistenza.cercaPerCampo(Cittadino.class, "email", email).isEmpty();
         } else {
@@ -32,37 +32,43 @@ public class GestoreUtenti {
     //Metodi
     public String registraUtente(Ruolo ruolo, String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         //verifico che non ci sia un Utente(Cittadino/Operatore) che si sta registrando con un email gia registrata per il ruolo scelto
-        if (verificaUtenteGiaRegistrato(ruolo, email)) {
-            return null;
-        } else {
-            //Assicurati che non esista un utente con email e ruolo specificati gia registrati
-            //procedo alla registrazione e salvataggio dell'utente
-            if (ruolo == Ruolo.CITTADINO) {
-                Cittadino cittadino = new Cittadino(nome, cognome, email, recapitoTelefonico, passwordHash);
-                gestorePersistenza.salva(cittadino);
-                return cittadino.getIdCittadino().toString();
+        try {
+            if (verificaUtenteGiaRegistrato(ruolo, email)) {
+                throw new IllegalArgumentException();
             } else {
-                Operatore operatore = new Operatore(nome, cognome, email, recapitoTelefonico, passwordHash);
-                gestorePersistenza.salva(operatore);
-                return operatore.getIdOperatore().toString();
+                //Assicurati che non esista un utente con email e ruolo specificati gia registrati
+                //procedo alla registrazione e salvataggio dell'utente
+                if (ruolo == Ruolo.CITTADINO) {
+                    Cittadino cittadino = new Cittadino(nome, cognome, email, recapitoTelefonico, passwordHash);
+                    gestorePersistenza.salva(cittadino);
+                    return cittadino.getIdCittadino().toString();
+                } else {
+                    Operatore operatore = new Operatore(nome, cognome, email, recapitoTelefonico, passwordHash);
+                    gestorePersistenza.salva(operatore);
+                    return operatore.getIdOperatore().toString();
+                }
             }
+
+        }
+        catch (IllegalArgumentException ex){
+            throw new IllegalArgumentException();
         }
     }
 
-    public String accessoUtente(Ruolo ruolo, String email, String passwordHash) {
+    public String accessoUtente(Ruolo ruolo, String email, String passwordHash) throws  IllegalArgumentException{
         if (ruolo == Ruolo.OPERATORE) {
             Operatore operatoreAccesso = cercaUtenteOperatore(email, passwordHash);
             if (operatoreAccesso != null) {
                 return operatoreAccesso.getIdOperatore().toString();
             } else {
-                return null;
+                throw new IllegalArgumentException("Accesso negato!");
             }
         } else {
             Cittadino cittadinoAccesso = cercaUtenteCittadino(email, passwordHash);
             if (cittadinoAccesso != null) {
                 return cittadinoAccesso.getIdCittadino().toString();
             } else {
-                return null;
+                throw new IllegalArgumentException("Accesso negato!");
             }
         }
     }

@@ -44,44 +44,48 @@ public class ControllerUtenti {
             sb.append(String.format("%02x", b));
         }
 
-        return sb.toString();
-    }
-
-    public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
-        GestoreUtenti gestoreUtenti = new GestoreUtenti();
-        boolean esitoRegistrazione = false;
-        try {
-            Ruolo ruolo = stringaToRuolo(ruoloStringa);
-            String passwordHash = hashPassword(password);
-            String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
-            if (idUtente != null) {
-                esitoRegistrazione = true;
-                setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
+            return sb.toString();
+        }
+        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) throws IllegalArgumentException{
+            GestoreUtenti gestoreUtenti = new GestoreUtenti();
+            boolean esitoRegistrazione = false;
+            try {
+                Ruolo ruolo = stringaToRuolo(ruoloStringa);
+                String passwordHash = hashPassword(password);
+                String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
+                if (idUtente != null) {
+                    esitoRegistrazione = true;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
+                }
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Utente Già registrato!");
             }
-        } catch (NoSuchAlgorithmException e) {
-            //TODO
-            e.printStackTrace();
-        }
-        return esitoRegistrazione;
-    }
-
-    public static boolean accessoUtente(String ruoloStringa, String email, String password){
-        GestoreUtenti gestoreUtenti = new GestoreUtenti();
-        boolean esitoAccesso=false;
-        try{
-            Ruolo ruolo = stringaToRuolo(ruoloStringa);
-            String passwordHash =hashPassword(password);
-
-            if (gestoreUtenti.accessoUtente(ruolo, email, passwordHash)!=null){
-                esitoAccesso=true;
+            catch (NoSuchAlgorithmException e){
+                System.err.println("Errore critico!");
             }
+            return esitoRegistrazione;
         }
-        catch (NoSuchAlgorithmException e){
-            e.printStackTrace();
-                return esitoAccesso;
+
+
+        public static boolean accessoUtente(String ruoloStringa, String email, String password){
+            GestoreUtenti gestoreUtenti = new GestoreUtenti();
+            boolean esitoAccesso=false;
+            try{
+                Ruolo ruolo = stringaToRuolo(ruoloStringa);
+                String passwordHash =hashPassword(password.trim());
+
+                if (gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash)!=null){
+                    esitoAccesso=true;
+                }
+            }
+            catch (IllegalArgumentException ex){
+                throw  new IllegalArgumentException("Email o password sbagliati!");
+            }
+            catch (NoSuchAlgorithmException e){
+                System.err.println("Errore critico! riprovare.");
+            }
+            return esitoAccesso;
         }
-        return esitoAccesso;
-    }
 
     public static Long getIdUtenteCorrente(){
         Path path = Path.of("configuration/config.txt");
