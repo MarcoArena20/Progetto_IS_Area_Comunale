@@ -1,5 +1,8 @@
 package Boundary;
 
+import Controller.ControllerSegnalazioni;
+import Controller.ControllerUtenti;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,10 +10,10 @@ import java.awt.event.ActionListener;
 public class FormConclusioneGestione {
     private JFrame conclusioneFrame;
     private JPanel contentPanel;
-    private JButton confermaEConcludiButton;
-    private JTextField titoloTextField;
-    private JTextField descrizioneTextField;
-    private JButton aggiungiNotaButton;
+    public JButton confermaEConcludiButton;
+    public JTextField titoloTextField;
+    public JTextField descrizioneTextField;
+    public JButton aggiungiNotaButton;
     private JCheckBox gestioneRisolutivaCheckBox;
     private JLabel titoloNotaLabel;
     private JLabel descrizioneNotaLabel;
@@ -20,18 +23,24 @@ public class FormConclusioneGestione {
     private JLabel statoSuccessivoEffettivoLabel;
 
     private boolean visualizza = false;
+    private final Integer idRow;
 
-
-    public FormConclusioneGestione() {
-
+    public FormConclusioneGestione(Integer idRow) {
+        this.idRow = idRow;
 
         confermaEConcludiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 if(concludiGestione()) {
+
                     conclusioneFrame.dispose();
-                    //new FormAreaPersonaleCittadino().apriAreaPersonale();
+                    JOptionPane.showMessageDialog(conclusioneFrame, "Conclusa la gestione della segnalazione");
+
+                } else {
+
+                    JOptionPane.showMessageDialog(conclusioneFrame, "Impossibile concludere la gestione della segnalazione", "Errore", JOptionPane.ERROR_MESSAGE);
+
                 }
             }
         });
@@ -40,6 +49,7 @@ public class FormConclusioneGestione {
             @Override
             public void actionPerformed(ActionEvent e) {
                 visualizzaCampiNotaInterna(visualizza);
+
                 if (visualizza) {
                     aggiungiNotaButton.setText("Rimuovi nota");
                 } else {
@@ -80,6 +90,13 @@ public class FormConclusioneGestione {
 
         statoSuccessivoEffettivoLabel.setText("Inviata");
 
+        //Casting della stringa in formato migliore
+        String statoPrecedente = ControllerSegnalazioni.getDettagliSegnalazione(this.idRow).get("stato").toLowerCase();
+        statoPrecedente = statoPrecedente.substring(0, 1).toUpperCase() + statoPrecedente.substring(1);
+
+        statoPrecedente = statoPrecedente.replace("_", " ");
+        statoPrecedenteEffettivoLabel.setText(statoPrecedente);
+
         conclusioneFrame = frame;
 
         return frame;
@@ -93,28 +110,95 @@ public class FormConclusioneGestione {
 
     }
 
-    private boolean concludiGestione(){
+    public boolean concludiGestione(){
         boolean risolutiva = gestioneRisolutivaCheckBox.isSelected();
-        boolean presenzaNota = !risolutiva;
+        boolean presenzaNota = !visualizza;
+
+
+        String titolo = titoloTextField.getText();
+        String descrizione = descrizioneTextField.getText();
 
         if (presenzaNota) {
-            String titolo = titoloTextField.getText();
-            String descrizione = descrizioneTextField.getText();
 
-            if (verificaCampi(titolo, descrizione) ) {
-                JOptionPane.showMessageDialog(conclusioneFrame, "Errore nell'inserimento della nota.", "Errore", JOptionPane.ERROR_MESSAGE);
+            if (!verificaCampi(titolo, descrizione) ) {
+
+                return false;
+
+            }
+
+        } else {
+
+            titolo = null;
+            descrizione = null;
+
+        }
+
+        boolean esito = ControllerSegnalazioni.concludiGestioneSegnalazione(titolo, descrizione, risolutiva);
+
+        return esito;
+    }
+
+    private boolean verificaCampi(String titolo, String descrizione) {
+        //Titolo [5,15] caratteri, no caratteri speciali
+        //Descrizione [5,200] caratteri, no caratteri speciali
+
+        if (titolo.length() < 5 || titolo.length() > 15){
+
+            if (titolo.length()<5) {
+
+                System.err.println("Inserire titolo di almeno 5 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                System.err.println("Inserire titolo di massimo 15 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire titolo di massimo 15 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+            return false;
+        }
+
+        if (descrizione.length() < 5 || descrizione.length() > 200) {
+
+            if (descrizione.length()<5) {
+
+                System.err.println("Inserire descrizione di almeno 5 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di almeno 5 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                System.err.println("Inserire descrizione di massimo 200 caratteri");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Inserire descrizione di massimo 200 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+            return false;
+        }
+
+        //Check caratteri speciali
+        for (char c : titolo.toCharArray()) {
+
+            if (!Character.isLetter(c) && c != ' ') {
+
+                System.err.println("Rimuovere caratteri speciali dal titolo");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dal titolo", "Errore", JOptionPane.ERROR_MESSAGE);
+
                 return false;
             }
         }
 
-        //TODO verifica ammissibilità operazione
+        for (char c : descrizione.toCharArray()) {
 
+            if (!Character.isLetter(c) && c != ' ') {
+
+                System.err.println("Rimuovere caratteri speciali dalla descrizione");
+                JOptionPane.showMessageDialog(conclusioneFrame, "Rimuovere caratteri speciali dalla descrizione", "Errore", JOptionPane.ERROR_MESSAGE);
+
+                return false;
+            }
+        }
 
         return true;
-    }
-
-    private boolean verificaCampi(String titolo, String descrizione) {
-        //TODO
-        return titolo.isEmpty() && descrizione.isEmpty();
     }
 }

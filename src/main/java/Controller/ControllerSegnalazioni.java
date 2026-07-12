@@ -1,21 +1,17 @@
 package Controller;
 
 import Entity.EntryDB.AggiornamentoStatoEntry;
-import Entity.Gestori.GestoreAggiornamentoStato;
-import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Gestori.*;
 import Entity.Segnalazione;
-import Entity.Enum.Ruolo;
-import Entity.Enum.Categoria;
-import Entity.StateMachine.StatoInLavorazione;
-import Entity.StateMachine.StatoInviata;
-import Entity.StateMachine.StatoRisolta;
-import Entity.StateMachine.StatoSegnalazione;
+import Entity.Enum.*;
+import Entity.StateMachine.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+
 
 //Façade
 public class ControllerSegnalazioni {
@@ -30,6 +26,8 @@ public class ControllerSegnalazioni {
     public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
         ControllerSegnalazioni.idSegnalazioneCorrente = idSegnalazioneCorrente;
     }
+
+
 
     // Metodo per creare una segnalazione
     public static final boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
@@ -63,7 +61,7 @@ public class ControllerSegnalazioni {
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        if (!verificaRuoloUtenteCorrente(Ruolo.OPERATORE)) {
+        if (!ControllerUtenti.verificaRuoloUtenteCorrente(Ruolo.OPERATORE)) {
             return false;
         }
 
@@ -95,12 +93,18 @@ public class ControllerSegnalazioni {
             return false;
         }
 
+        //Se si vuole concludere la gestione con esito positivo e lo stato corrente è presaInCarico, errore
+        if (esitoGestione && gest.cercaSegnalazione(idSegnalazioneCorrente).getStato().getStatoToString().equals(StatoType.PRESA_IN_CARICO.name())) {
+            return false;
+        }
+
         boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
-        boolean esitoAggiuntaNota = false;
+        boolean esitoAggiuntaNota = true;
 
         if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
             esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
         }
+
 
         return esitoAggiuntaNota;
     }
@@ -115,28 +119,14 @@ public class ControllerSegnalazioni {
         // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
         Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
 
-        if (segnalazione == null) {
+        if (segnalazione == null)
             return false;
-        }
 
         // Dopo aver trovato la segnalazione abbiamo bisogno di verificare il suo stato
-        if (segnalazione.getStato().getStatoToString().equals("RISOLTA")) {
+        if (segnalazione.getStato().getStatoToString().equals("RISOLTA"))
             return false;
-        }
-        else {
+        else
             return true;
-        }
-    }
-
-    public static boolean verificaRuoloUtenteCorrente(Ruolo ruolo) {
-
-        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
-        if (!ruoloUtente.equals(ruolo.name())) {
-            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
-            return false;
-        } else {
-            return true;
-        }
 
     }
 
@@ -329,7 +319,6 @@ public class ControllerSegnalazioni {
 
         return datiRimanenti;
     }
-
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
 
         //Traduzione dei parametri dal Boundary ai tipi Entity
@@ -349,6 +338,9 @@ public class ControllerSegnalazioni {
                     break;
                 case "risolta":
                     stato = new StatoRisolta();
+                    break;
+                case "presa in carico":
+                    stato = new StatoPresaInCarico();
                     break;
             }
         }
@@ -424,6 +416,65 @@ public class ControllerSegnalazioni {
         dettagli.put("urlImmagine", s.getUrlImmagine() != null ? s.getUrlImmagine() : "");
 
         return dettagli;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println("[ControllerSegnalazioni] MainTest avviato..");
+
+        setIdSegnalazioneCorrente(1L);
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+
+
+        //1. flusso normale
+        System.out.println("[ControllerSegnalazioni] Test flusso principale");
+
+        iniziaGestioneSegnalazione();
+
+        aggiornaStatoSegnalazione();
+
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //2. dopo aver preso in carico una segnalazione, un altro operatore tenta l'accesso
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione non sua");
+
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
+        iniziaGestioneSegnalazione();
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
+
+        //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
+        System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
+        iniziaGestioneSegnalazione();
+
+
+        //4. tentativo di prendere in carico una segnalazione risolta
+        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
+
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        setIdSegnalazioneCorrente(4L);
+        iniziaGestioneSegnalazione();
+
+        //5. tentativo di concludere con esito positivo una segnalazione presa in carico
+        System.out.println("[ControllerSegnalazioni] Test operatore tenta di risolvere con esito positivo una segnalazione presa in carico");
+
+        setIdSegnalazioneCorrente(1L);
+        iniziaGestioneSegnalazione();
+        concludiGestioneSegnalazione("Risolta", "Segnalazione risolta con successo", true);
+        /*
+            TODO| non è un problema ma è il flusso di esecuzione: se si fa concludi gestione con esito true da presaInCarico:
+            TODO| la segnalazione passa in inLavorazione, rimane attiva e non viene aggiunta l'eventuale nota interna
+            TODO| NB: inserire conclusione e aggiornamento come operazione atomica potrebbe causare problemi a questo flusso
+         */
+        //concludiGestioneSegnalazione(null, null, false);
+        //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
+
+
     }
 
 }
