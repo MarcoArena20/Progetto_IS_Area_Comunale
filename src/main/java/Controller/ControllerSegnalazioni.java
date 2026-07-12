@@ -1,15 +1,10 @@
 package Controller;
 
 import Entity.EntryDB.AggiornamentoStatoEntry;
-import Entity.Gestori.GestoreAggiornamentoStato;
-import Entity.Gestori.GestoreSegnalazioni;
-import Entity.Enum.StatoType;
-import Entity.Gestori.GestoreAggiornamentoStato;
+import Entity.Gestori.*;
 import Entity.Segnalazione;
-import Entity.Enum.Ruolo;
-import Entity.Enum.Categoria;
+import Entity.Enum.*;
 import Entity.StateMachine.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -98,7 +93,6 @@ public class ControllerSegnalazioni {
             return false;
         }
 
-        //TODO è una buona pratica?
         //Se si vuole concludere la gestione con esito positivo e lo stato corrente è presaInCarico, errore
         if (esitoGestione && gest.cercaSegnalazione(idSegnalazioneCorrente).getStato().getStatoToString().equals(StatoType.PRESA_IN_CARICO.name())) {
             return false;

@@ -10,10 +10,10 @@ import java.awt.event.ActionListener;
 public class FormConclusioneGestione {
     private JFrame conclusioneFrame;
     private JPanel contentPanel;
-    private JButton confermaEConcludiButton;
-    private JTextField titoloTextField;
-    private JTextField descrizioneTextField;
-    private JButton aggiungiNotaButton;
+    public JButton confermaEConcludiButton;
+    public JTextField titoloTextField;
+    public JTextField descrizioneTextField;
+    public JButton aggiungiNotaButton;
     private JCheckBox gestioneRisolutivaCheckBox;
     private JLabel titoloNotaLabel;
     private JLabel descrizioneNotaLabel;
@@ -23,10 +23,10 @@ public class FormConclusioneGestione {
     private JLabel statoSuccessivoEffettivoLabel;
 
     private boolean visualizza = false;
+    private final Integer idRow;
 
-
-    public FormConclusioneGestione() {
-
+    public FormConclusioneGestione(Integer idRow) {
+        this.idRow = idRow;
 
         confermaEConcludiButton.addActionListener(new ActionListener() {
             @Override
@@ -90,6 +90,13 @@ public class FormConclusioneGestione {
 
         statoSuccessivoEffettivoLabel.setText("Inviata");
 
+        //Casting della stringa in formato migliore
+        String statoPrecedente = ControllerSegnalazioni.getDettagliSegnalazione(this.idRow).get("stato").toLowerCase();
+        statoPrecedente = statoPrecedente.substring(0, 1).toUpperCase() + statoPrecedente.substring(1);
+
+        statoPrecedente = statoPrecedente.replace("_", " ");
+        statoPrecedenteEffettivoLabel.setText(statoPrecedente);
+
         conclusioneFrame = frame;
 
         return frame;
@@ -103,7 +110,7 @@ public class FormConclusioneGestione {
 
     }
 
-    private boolean concludiGestione(){
+    public boolean concludiGestione(){
         boolean risolutiva = gestioneRisolutivaCheckBox.isSelected();
         boolean presenzaNota = !visualizza;
 

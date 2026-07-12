@@ -74,36 +74,6 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     public String getUrlImmagine() { return urlImmagine; }
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
-
-    // Metodi
-    /*
-    public synchronized boolean iniziaGestione(Long idOperatore) {//metodo synchronized in modo da garantire la mutua esclusione
-
-        //1. Aggiorno lo stato
-        boolean esito = this.stato.aggiornaStato(this, true);
-        if (esito == false) {
-            System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
-            return false;
-        }
-
-        //2. Notifico observer, segnalando il nuovo stato
-        esito = notifyObserver(this.idSegnalazione, this.stato);
-        if (esito == false) {
-            System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
-            return false;
-        }
-
-        //TODO NOTIFICA
-
-        System.out.println("[Segnalazione "+this.idSegnalazione+"] Iniziata la gestione..\n" +
-                this.toString()
-        );
-
-
-        return true;
-    }
-    */
-
     public synchronized boolean aggiornaStato(boolean avanzamento) {
 
         //1. Distinguo i due aggiornamenti
@@ -158,59 +128,6 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             return true;
         }
     }
-
-/*
-    public boolean concludiGestione(boolean gestioneRisolutiva) {
-
-        //1. Distinguo le due terminazioni
-        if (!gestioneRisolutiva) {
-            //La gestione non è stata risolutiva
-
-            //1.1 aggiorno stato con esito false
-            boolean esito = this.stato.aggiornaStato(this, false);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
-                return false;
-            }
-
-            //1.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
-                return false;
-            }
-
-            return true;//Modifica andata a buon fine
-
-
-        } else {
-            //La gestione è stata risolutiva
-
-            //2.1 aggiorno stato con esito true
-            boolean esito = this.stato.aggiornaStato(this, true);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
-                return false;
-            }
-
-            //2.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this.idSegnalazione, this.stato);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
-                return false;
-            }
-
-            //TODO NOTIFICA
-
-            System.out.println("[Segnalazione "+this.idSegnalazione+"] Conclusa gestione..\n" +
-                    this.toString()
-            );
-
-            return true;
-        }
-
-    }
-    */
 
     //record usato per tornare in modo pulito l'anteprima
     public record InfoAnteprima(Categoria categoria, LocalDateTime data, String posizione, StatoSegnalazione stato, Long idSegnalazione) {}
