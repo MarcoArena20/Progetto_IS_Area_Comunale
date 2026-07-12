@@ -88,6 +88,14 @@ public class FormCreazioneSegnalazione {
 
             CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
 
+            if (urlImmagine.equalsIgnoreCase(""))
+                urlImmagine = null;
+
+            if(data.equalsIgnoreCase(""))
+                data = null;
+
+            return ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
+
         }catch(IllegalArgumentException e){
 
             System.err.println(e.getMessage());
@@ -95,13 +103,6 @@ public class FormCreazioneSegnalazione {
 
         }
 
-        if (urlImmagine.equalsIgnoreCase(""))
-            urlImmagine = null;
-
-        if(data.equalsIgnoreCase(""))
-            data = null;
-
-        return ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
     }
 
 }

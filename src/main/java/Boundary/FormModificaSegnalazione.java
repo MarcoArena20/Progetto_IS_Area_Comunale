@@ -89,20 +89,20 @@ public class FormModificaSegnalazione {
 
             CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
 
+            if (urlImmagine.equalsIgnoreCase(""))
+                urlImmagine = null;
+
+            if(data.equalsIgnoreCase(""))
+                data = null;
+
+            return ControllerSegnalazioni.modificaSegnalazione(idRow, titolo, descrizione, categoria, posizione, data, urlImmagine);
+
         }catch(IllegalArgumentException e){
 
             System.err.println(e.getMessage());
             throw e;
 
         }
-
-        if (urlImmagine.equalsIgnoreCase(""))
-            urlImmagine = null;
-
-        if(data.equalsIgnoreCase(""))
-            data = null;
-
-        return ControllerSegnalazioni.modificaSegnalazione(idRow, titolo, descrizione, categoria, posizione, data, urlImmagine);
 
     }
 }
