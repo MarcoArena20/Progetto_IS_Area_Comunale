@@ -7,10 +7,8 @@ import Entity.Segnalazione;
 import Entity.Enum.Ruolo;
 import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Enum.Categoria;
-import Entity.StateMachine.StatoInLavorazione;
-import Entity.StateMachine.StatoInviata;
-import Entity.StateMachine.StatoRisolta;
-import Entity.StateMachine.StatoSegnalazione;
+import Entity.StateMachine.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -353,6 +351,9 @@ public class ControllerSegnalazioni {
                     break;
                 case "risolta":
                     stato = new StatoRisolta();
+                    break;
+                case "presa in carico":
+                    stato = new StatoPresaInCarico();
                     break;
             }
         }
