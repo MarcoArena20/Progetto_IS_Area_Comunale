@@ -93,7 +93,6 @@ public class ControllerSegnalazioni {
             return false;
         }
 
-        //TODO è una buona pratica?
         //Se si vuole concludere la gestione con esito positivo e lo stato corrente è presaInCarico, errore
         if (esitoGestione && gest.cercaSegnalazione(idSegnalazioneCorrente).getStato().getStatoToString().equals(StatoType.PRESA_IN_CARICO.name())) {
             return false;
