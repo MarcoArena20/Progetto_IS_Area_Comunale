@@ -175,5 +175,4 @@ public class GestoreAggiornamentoStato {
 
         return listaGestioni.get(listaGestioni.size()-1);//primo e ultimo elemento
     }
-
 }

@@ -51,7 +51,7 @@ public class FormVisualizzaDettaglioSegnalazione {
         }
 
         //Definiamo le 2 colonne della cronologia
-        String[] colonneStato = {"Data", "Stato"};
+        String[] colonneStato = {"Data", "Stato", "Titolo"};
 
         DefaultTableModel modelStati = new DefaultTableModel(colonneStato, 0) {
             @Override
