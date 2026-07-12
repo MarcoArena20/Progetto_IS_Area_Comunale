@@ -18,7 +18,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
     private JButton btnApplicaFiltri;
     private JTable tableSegnalazioni;
     private JButton btnVisualizzaDettaglio;
-
+    
     public FormVisualizzaSegnalazioniRicevute() {
 
         aggiornaTabella();
@@ -53,6 +53,8 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                 visualizzaFrame.dispose();
             }
         });
+
+
 
     }
 
