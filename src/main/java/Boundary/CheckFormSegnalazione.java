@@ -1,11 +1,38 @@
 package Boundary;
 
+import javax.swing.*;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class CheckFormSegnalazione {
+
+    public static Map<String, String> recuperaDatiSegnalazione(JTextField titoloField, JTextField descrizioneField, JComboBox categoriaBox, JComboBox posizioneBox,JTextField dataField, JTextField urlImmagineField){
+
+        // Caratteristiche obbligatorie che ogni segnalazione deve avere
+        String titolo = titoloField.getText();
+        String descrizione = descrizioneField.getText();
+        String categoria = (String) categoriaBox.getSelectedItem();
+        String posizione = (String) posizioneBox.getSelectedItem();
+
+        // Caratteristiche opzionali che una segnalazione può avere
+        String data = dataField.getText();
+        String urlImmagine = urlImmagineField.getText();
+
+        Map<String, String> dati = new HashMap<>();
+        dati.put("titolo", titolo);
+        dati.put("descrizione", descrizione);
+        dati.put("categoria", categoria);
+        dati.put("posizione", posizione);
+        dati.put("data", data);
+        dati.put("urlImmagine", urlImmagine);
+
+        return dati;
+
+    }
 
     public static boolean checkTitolo(String titolo){
 
@@ -95,6 +122,8 @@ public class CheckFormSegnalazione {
 
     public static boolean checkData(String data){
 
+        if(data.equalsIgnoreCase(""))
+            return true;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -114,6 +143,9 @@ public class CheckFormSegnalazione {
 
     public static boolean checkUrlImmagine(String urlImmagine){
 
+        if(urlImmagine.equalsIgnoreCase(""))
+            return true;
+
         if (urlImmagine.length() < 10 || urlImmagine.length() > 50){
 
             System.out.println("Errore nell'url");
@@ -123,6 +155,29 @@ public class CheckFormSegnalazione {
 
         return true;
 
+    }
+
+    public static boolean checkDatiSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+
+        if(!CheckFormSegnalazione.checkTitolo(titolo))
+            return false;
+
+        if(!CheckFormSegnalazione.checkDescrizione(descrizione))
+            return false;
+
+        if(!CheckFormSegnalazione.checkCategoria(categoria))
+            return false;
+
+        if(!CheckFormSegnalazione.checkPosizione(posizione))
+            return false;
+
+        if(!CheckFormSegnalazione.checkData(data))
+            return false;
+
+        if(!CheckFormSegnalazione.checkUrlImmagine(urlImmagine))
+            return false;
+
+        return true;
     }
 
 }

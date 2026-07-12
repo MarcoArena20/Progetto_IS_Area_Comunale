@@ -28,19 +28,19 @@ public class FormCreazioneSegnalazione {
     private JPanel posizionePanel;
     private JPanel dataPanel;
     private JPanel immaginePanel;
-    private JComboBox comboBox1;
+    private JComboBox posizioneComboBox;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Map<String, String> dati = recuperaDatiSegnalazione();
+                Map<String, String> dati = CheckFormSegnalazione.recuperaDatiSegnalazione(titoloField, descrizioneField, categoriaBox, posizioneComboBox, dataField, urlImmagineField);
 
                 boolean creata = creaSegnalazione(dati.get("titolo"),
                                                 dati.get("descrizione"),
                                                 dati.get("categoria"),
-                                                dati.get("posizzione"),
+                                                dati.get("posizione"),
                                                 dati.get("data"),
                                                 dati.get("urlImmagine"));
 
@@ -70,49 +70,9 @@ public class FormCreazioneSegnalazione {
 
     }
 
-    private Map<String, String> recuperaDatiSegnalazione(){
-
-        // Caratteristiche obbligatorie che ogni segnalazione deve avere
-        String titolo = titoloField.getText();
-        String descrizione = descrizioneField.getText();
-        String categoria = (String) categoriaBox.getSelectedItem();
-        String posizione = posizioneField.getText();
-
-        // Caratteristiche opzionali che una segnalazione può avere
-        String urlImmagine = urlImmagineField.getText();
-        String data = dataField.getText();
-
-        Map<String, String> dati = new HashMap<>();
-        dati.put("titolo", titolo);
-        dati.put("descrizione", descrizione);
-        dati.put("categoria", categoria);
-        dati.put("posizione", posizione);
-        dati.put("data", data);
-        dati.put("urlImmagine", urlImmagine);
-
-        return dati;
-
-    }
-
     public boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
-        if(!CheckFormSegnalazione.checkTitolo(titolo))
-            return false;
-
-        if(!CheckFormSegnalazione.checkDescrizione(descrizione))
-            return false;
-
-        if(!CheckFormSegnalazione.checkCategoria(categoria))
-            return false;
-
-        if(!CheckFormSegnalazione.checkPosizione(posizione))
-            return false;
-
-        if(!CheckFormSegnalazione.checkData(data))
-            return false;
-
-        if(!CheckFormSegnalazione.checkUrlImmagine(urlImmagine))
-            return false;
+        CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
 
         if (urlImmagine.equalsIgnoreCase(""))
             urlImmagine = null;
