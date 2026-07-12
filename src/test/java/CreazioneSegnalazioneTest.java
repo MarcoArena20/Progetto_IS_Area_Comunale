@@ -15,6 +15,8 @@ public class CreazioneSegnalazioneTest {
 
         // La prima cosa da fare è creare un utente e settare il config.txt
 
+        // Una volta creato l'utente posso andare a creare le segnalazioni
+
     }
 
     // Testiamo la creazione della segnalazione andando ad invocare il metodo di creaSegnalazione del controller
