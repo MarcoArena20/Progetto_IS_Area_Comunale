@@ -1,6 +1,8 @@
 package Boundary;
 
 import javax.swing.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +42,6 @@ public class CheckFormSegnalazione {
 
         if (titolo.length() < 5 || titolo.length() > 30 || !titolo.matches("^[\\p{L} ]+$")){
 
-            System.out.println("Errore nel titolo");
             return false;
 
         }
@@ -51,9 +52,8 @@ public class CheckFormSegnalazione {
 
     public static boolean checkDescrizione(String descrizione){
 
-        if (descrizione.length() < 50 || descrizione.length() > 200 || !descrizione.matches("^[\\p{L}\\p{N} .,']+$")) {
+        if (descrizione.length() < 50 || descrizione.length() > 200 || !descrizione.matches("^[\\p{L}\\p{N} .,;:']+$")) {
 
-            System.out.println("Errore nella descrizione");
             return false;
 
         }
@@ -116,7 +116,7 @@ public class CheckFormSegnalazione {
                 "Bagnoli: Via Miseno 12"
         );
 
-        return posizioni.contains(posizione);
+       return posizioni.contains(posizione);
 
     }
 
@@ -132,7 +132,6 @@ public class CheckFormSegnalazione {
 
         }catch(DateTimeException e){
 
-            System.out.println("Errore nella data");
             return false;
 
         }
@@ -146,38 +145,69 @@ public class CheckFormSegnalazione {
         if(urlImmagine.equalsIgnoreCase(""))
             return true;
 
-        if (urlImmagine.length() < 10 || urlImmagine.length() > 50){
+        try {
+            URI uri = new URI(urlImmagine);
 
-            System.out.println("Errore nell'url");
+            return uri.getScheme() != null && (uri.getScheme().equals("http") || uri.getScheme().equals("https")) && uri.getHost() != null;
+
+        } catch (URISyntaxException e) {
             return false;
-
         }
-
-        return true;
 
     }
 
-    public static boolean checkDatiSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public static void checkDatiSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine) throws IllegalArgumentException{
 
         if(!CheckFormSegnalazione.checkTitolo(titolo))
-            return false;
+            throw new IllegalArgumentException("La lunghezza del titolo deve essere compresa tra 5 e 30 caratteri e può contenere solo caratteri Unicode");
 
         if(!CheckFormSegnalazione.checkDescrizione(descrizione))
-            return false;
+            throw new IllegalArgumentException("La lunghezza della descrizione deve essere compresa tra 50 e 200 caratteri e può contenere solo caratteri Unicode compresi {.,;:'}");
 
         if(!CheckFormSegnalazione.checkCategoria(categoria))
-            return false;
+            throw new IllegalArgumentException("La categoria deve appartenere all'insieme {ILLUMINAZIONE_GUASTA," +
+                                                                                            " STRADA_DISSESTATA," +
+                                                                                            " RIFIUTI_ABBANDONATI," +
+                                                                                            " PERICOLO_GENERICO," +
+                                                                                            " ARREDO_URBANO_DANNEGGIATO}");
 
         if(!CheckFormSegnalazione.checkPosizione(posizione))
-            return false;
+            throw new IllegalArgumentException("La posizione deve appartenere all'insieme {\"Centro Storico: Via dei Tribunali 120\",\n" +
+                    "                \"Centro Storico: Spaccanapoli 35\",\n" +
+                    "                \"Centro Storico: Via San Gregorio Armeno 18\",\n" +
+                    "                \"Centro Storico: Via Benedetto Croce 42\",\n" +
+                    "                \"Centro Storico: Piazza Bellini 6\",\n" +
+                    "\n" +
+                    "                \"Chiaia: Via dei Mille 40\",\n" +
+                    "                \"Chiaia: Via Chiaia 75\",\n" +
+                    "                \"Chiaia: Via Carlo Poerio 21\",\n" +
+                    "                \"Chiaia: Riviera di Chiaia 180\",\n" +
+                    "                \"Chiaia: Via Cavallerizza a Chiaia 52\",\n" +
+                    "\n" +
+                    "                \"Vomero: Via Luca Giordano 85\",\n" +
+                    "                \"Vomero: Via Scarlatti 110\",\n" +
+                    "                \"Vomero: Piazza Vanvitelli 15\",\n" +
+                    "                \"Vomero: Via Cimarosa 44\",\n" +
+                    "                \"Vomero: Via Aniello Falcone 210\",\n" +
+                    "\n" +
+                    "                \"Fuorigrotta: Viale Augusto 110\",\n" +
+                    "                \"Fuorigrotta: Via Giulio Cesare 145\",\n" +
+                    "                \"Fuorigrotta: Via Leopardi 95\",\n" +
+                    "                \"Fuorigrotta: Via Consalvo 78\",\n" +
+                    "                \"Fuorigrotta: Piazzale Tecchio 50\",\n" +
+                    "\n" +
+                    "                \"Bagnoli: Via Coroglio 57\",\n" +
+                    "                \"Bagnoli: Via Nuova Bagnoli 65\",\n" +
+                    "                \"Bagnoli: Via Diocleziano 320\",\n" +
+                    "                \"Bagnoli: Via Eurialo 40\",\n" +
+                    "                \"Bagnoli: Via Miseno 12\"}");
 
         if(!CheckFormSegnalazione.checkData(data))
-            return false;
+            throw new IllegalArgumentException("La data deve avere formattazione dd/mm/yyyy HH:MM");
 
         if(!CheckFormSegnalazione.checkUrlImmagine(urlImmagine))
-            return false;
+            throw new IllegalArgumentException("L'url deve rispettare il formato htttp[s]://authority/path[?query][#fragment]");
 
-        return true;
     }
 
 }
