@@ -81,16 +81,23 @@ public class GestorePersistenza {
                 int contatore = 0;
 
                 for (String nomeCampo : campi.keySet()) {
+
+                    boolean like = nomeCampo.startsWith("LIKE:");
+
+                    String campoReale = like
+                            ? nomeCampo.substring(5)
+                            : nomeCampo;
+
+                    String nomeParametro = campoReale.replace(".", "");
+
                     if (contatore > 0) {
                         jpql.append(" AND ");
                     }
 
-                    String nomeParametro = nomeCampo.replace(".", "_");
-
                     jpql.append("e.")
-                            .append(nomeCampo)
-                            .append(" = :")
-                            .append(nomeParametro);
+                            .append(campoReale)
+                            .append(like ? " LIKE :" : " = :")
+                                    .append(nomeParametro);
 
                     contatore++;
                 }
@@ -102,8 +109,22 @@ public class GestorePersistenza {
             );
 
             for (String nomeCampo : campi.keySet()) {
-                String nomeParametro = nomeCampo.replace(".", "_");
-                query.setParameter(nomeParametro, campi.get(nomeCampo));
+
+                boolean like = nomeCampo.startsWith("LIKE:");
+
+                String campoReale = like
+                        ? nomeCampo.substring(5)
+                        : nomeCampo;
+
+                String nomeParametro = campoReale.replace(".", "");
+
+                Object valore = campi.get(nomeCampo);
+
+                if (like && valore instanceof String) {
+                    valore = "%" + valore + "%";
+                }
+
+                query.setParameter(nomeParametro, valore);
             }
 
             return query.getResultList();
