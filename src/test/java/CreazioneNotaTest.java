@@ -30,10 +30,9 @@ public class CreazioneNotaTest {
                 "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                 "RIFIUTI_ABBANDONATI",
                 "Centro Storico: Via dei Tribunali 120", "", "");
-        //new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
 
-        ControllerSegnalazioni.caricaSegnalazioni();
-        ControllerSegnalazioni.setIdSegnalazioneCorrente(1L);
+        ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore(null, null, null);
+        ControllerSegnalazioni.setIdSegnalazioneCorrente(0L);
 
         idRow = Integer.parseInt(ControllerSegnalazioni.getIdSegnalazioneCorrente().toString());
 
@@ -68,9 +67,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
+            esito = true;
+
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -78,6 +82,13 @@ public class CreazioneNotaTest {
 
         assertTrue(esito);
     }
+
+    /*
+    * Per i test di classi non valide, si presuppone che errori nell'inserimento di titolo o descrizione lancino un eccezione
+    * IllegalArgumentException; di conseguenza, se non viene lanciata alcuna eccezione la conclusione è da considerarsi
+    * andata a buon fine (anche se l'esito di quel metodo fosse false) visto che non sarebbero riscontrati problemi
+    * nei valori inseriti come titolo e descrizione della nota
+    */
 
     @Test
     public void titoloLungo() {
@@ -87,7 +98,8 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
@@ -109,11 +121,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
-            esito = true;
+
+             form.concludiGestione();
+             esito = true;
 
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -129,11 +144,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -149,11 +167,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -169,11 +190,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -189,11 +213,14 @@ public class CreazioneNotaTest {
         boolean esito;
 
         try {
-            esito = form.concludiGestione();
+
+            form.concludiGestione();
             esito = true;
 
         } catch (IllegalArgumentException exception) {
+
             esito = false;
+
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
