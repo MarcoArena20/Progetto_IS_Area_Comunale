@@ -14,6 +14,10 @@ import Entity.Gestori.GestoreUtenti;
 //Façade
 public class ControllerUtenti {
 
+    private static String uniformaEmail(String email){
+        return email.toLowerCase();
+    }
+
     private static Ruolo stringaToRuolo(String ruoloStringa){
         try {
             if (ruoloStringa == null) {
@@ -74,7 +78,7 @@ public class ControllerUtenti {
         }
         catch (NoSuchAlgorithmException e){
             e.printStackTrace();
-            return esitoAccesso;
+                return esitoAccesso;
         }
         return esitoAccesso;
     }
