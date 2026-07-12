@@ -19,7 +19,7 @@ public class VisualizzaSegnalazioniRicevuteTest {
     @DisplayName("TC1: Visualizzazione completa (nessun filtro)")
     void testTC1_NessunFiltro() {
         // Input: {"", "", ""}
-        List<String[]> risultati = ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore("", "", "");
+        List<String[]> risultati = ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore("", null, "");
 
         // Output Atteso: Elenco di tutte le segnalazioni ricevute
         assertNotNull(risultati, "La lista restituita non deve essere nulla");
@@ -30,7 +30,7 @@ public class VisualizzaSegnalazioniRicevuteTest {
     @DisplayName("TC2: Filtro singolo per Stato (con risultati)")
     void testTC2_FiltroStato() {
         // Input: {"Inviata", "", ""}
-        List<String[]> risultati = ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore("Inviata", "", "");
+        List<String[]> risultati = ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore("Inviata", null, "");
 
         // Output Atteso: Elenco filtrato (non vuoto, assumendo che esistano segnalazioni 'Inviata')
         assertNotNull(risultati);
