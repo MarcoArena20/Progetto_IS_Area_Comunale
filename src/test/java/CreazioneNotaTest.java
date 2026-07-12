@@ -1,14 +1,10 @@
 import Boundary.FormConclusioneGestione;
 import Boundary.FormCreazioneSegnalazione;
-import Boundary.FormVisualizzaDettaglioSegnalazioneRicevuta;
 
-import Boundary.FormVisualizzaSegnalazioniRicevute;
 import Controller.ControllerSegnalazioni;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
