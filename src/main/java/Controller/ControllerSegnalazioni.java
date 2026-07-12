@@ -319,6 +319,7 @@ public class ControllerSegnalazioni {
 
         return datiRimanenti;
     }
+
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
 
         //Traduzione dei parametri dal Boundary ai tipi Entity
@@ -386,6 +387,10 @@ public class ControllerSegnalazioni {
 
         //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
+
+        if(!bindingId.containsKey(idRow)) {
+            throw new IllegalArgumentException("Identificativo non trovato");
+        }
 
         Long idSegnalazione = bindingId.get(idRow);
         setIdSegnalazioneCorrente(idSegnalazione);

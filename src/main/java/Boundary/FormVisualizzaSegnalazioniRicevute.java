@@ -93,18 +93,31 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
         if (righe != null) {
             for (String[] riga : righe) {
+                if (riga[4] != null) {
+                    String rigaPulita = riga[4].replaceAll("(?i)STATO:", "").replace("_", " ").trim().toLowerCase();
+                    if (!rigaPulita.isEmpty()) {
+                        riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
+                    }
+                }
+
+                if (riga[5] != null) {
+                    String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
+                    if (!categoriaPulita.isEmpty()) {
+                        riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                    }
+                }
+
                 model.addRow(riga);
             }
         }
-
         tableSegnalazioni.setModel(model);
     }
-    /*
+
     public static void main(String[] args){
         FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
         form.apriVisualizzaFrame();
     }
 
-     */
+
 }
 
