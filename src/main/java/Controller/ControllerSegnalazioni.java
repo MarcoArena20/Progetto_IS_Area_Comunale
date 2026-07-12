@@ -265,7 +265,7 @@ public class ControllerSegnalazioni {
 
         String titolo = dettaglioCompleto.dettaglio().titolo().toString();
         String categoria = dettaglioCompleto.dettaglio().anteprima().categoria().toString();
-        String stato = dettaglioCompleto.dettaglio().anteprima().stato().toString();
+        String stato = dettaglioCompleto.dettaglio().anteprima().stato().getStatoToString();
         String data = (dettaglioCompleto.dettaglio().anteprima().data() != null) ? dettaglioCompleto.dettaglio().anteprima().data().toString(): "";
         String posizione = dettaglioCompleto.dettaglio().anteprima().posizione().toString();
 
