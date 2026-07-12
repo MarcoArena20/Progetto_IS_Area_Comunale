@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -21,7 +20,7 @@ public class AccessoTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Operatore", "Cittadino", ""})
+    @ValueSource(strings = {"Operatore", "Cittadino"})
     void testRuolo(String ruolo){
         boolean esito;
         try{
@@ -33,6 +32,19 @@ public class AccessoTest {
         }
         assertTrue(esito);
     }
+
+    @Test
+    void testRuoloInvalido(){
+        boolean esito;
+        try{
+            esito = formAccesso.accedi("","nome.cognome@comune.it", "MarioRossi-03");
+        }
+        catch (IllegalArgumentException ex){
+            esito = false;
+        }
+        assertFalse(esito);
+    }
+
 
     @ParameterizedTest
     @ValueSource(strings = {"nomeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.cognome@comune",

@@ -1,5 +1,6 @@
 import Boundary.FormRegistrazione;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,12 +21,24 @@ public class RegistrazioneTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"Operatore", "Cittadino", ""})
+    @ValueSource(strings = {"Operatore", "Cittadino"})
     void testRuolo(String ruolo) {
         boolean esito;
         esito = formRegistrazione.registra(ruolo, "Mario", "Rossi", "mario.rossi1@comune.it", "1234567890", "MarioRossi-03");
         assertTrue(esito);
     }
+    @Test
+    void testRuoloInvalido(){
+        boolean esito;
+        try{
+            esito = formRegistrazione.registra("", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
+        }
+        catch (IllegalArgumentException ex){
+            esito = false;
+        }
+        assertFalse(esito);
+    }
+
 
     @ParameterizedTest
     @ValueSource(strings = {"Marioooooooooooooooooooo", "Ma", "M4rio", })
