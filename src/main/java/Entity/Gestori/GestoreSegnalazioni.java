@@ -187,13 +187,13 @@ public class GestoreSegnalazioni {
         return true;
     }
 
-    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, Map<AggiornamentoStatoEntry, String> aggiornamentiStato) {}
+    public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, Map<AggiornamentoStatoEntry, String[]> aggiornamentiStato) {}
 
     public dettaglioCompleto visualizzaDettaglioSegnalazione(Long idSegnalazione){
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
 
         //mappa usata per tornare
-        Map<AggiornamentoStatoEntry, String> mappaRisultati = new HashMap<>();
+        Map<AggiornamentoStatoEntry, String[]> mappaRisultati = new LinkedHashMap<>();
 
         Segnalazione.Dettaglio dettaglio = segnalazione.getDettaglioSegnalazione();
         List<AggiornamentoStatoEntry> aggiornamentiStato = gestorePersistenza.cercaPerCampo(
@@ -202,27 +202,38 @@ public class GestoreSegnalazioni {
                 segnalazione
         );
 
-        aggiornamentiStato.sort(Comparator.comparing(AggiornamentoStatoEntry::getData));
-
         List<GestioneOperatoreEntry> gestioni = gestorePersistenza.cercaPerCampo(
                 GestioneOperatoreEntry.class,
                 "segnalazione",
                 segnalazione);
 
+        int index = 0;
         for(AggiornamentoStatoEntry aggiornamento: aggiornamentiStato){
-            int index = 0;
+
             if(aggiornamento.getStato() instanceof StatoRisolta || aggiornamento.getStato() instanceof StatoInviata){
 
                 GestioneOperatoreEntry gestione = gestioni.get(index);
+                System.out.println(gestione.getIdGestione());
+                if(gestione.getTitolo() != null){
 
-                if(gestione.getTitolo() != null)
-                    mappaRisultati.put(aggiornamento, gestione.getTitolo());
-                else
-                    mappaRisultati.put(aggiornamento, "");
+                    String[] nota = {gestione.getTitolo(), gestione.getDescrizione()};
+                    mappaRisultati.put(aggiornamento, nota);
+                }
+                else{
+
+                    String[] nota = {"", ""};
+                    mappaRisultati.put(aggiornamento, nota);
+                }
 
                 index++;
-            }else
-                mappaRisultati.put(aggiornamento, "");
+
+            }else{
+
+                String[] nota = {"", ""};
+                mappaRisultati.put(aggiornamento, nota);
+
+            }
+
         }
         return new dettaglioCompleto(dettaglio, mappaRisultati);
     }

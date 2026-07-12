@@ -32,11 +32,11 @@ public class CreazioneSegnalazioneTest {
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
+        em.createQuery("DELETE FROM AggiornamentoStatoEntry").executeUpdate();
+        em.createQuery("DELETE FROM GestioneOperatoreEntry").executeUpdate();
         em.createQuery("DELETE FROM Segnalazione").executeUpdate();
         em.createQuery("DELETE FROM Cittadino").executeUpdate();
         em.createQuery("DELETE FROM Operatore").executeUpdate();
-        em.createQuery("DELETE FROM AggiornamentoStatoEntry").executeUpdate();
-        em.createQuery("DELETE FROM GestioneOperatoreEntry").executeUpdate();
         tx.commit();
 
         em.close();

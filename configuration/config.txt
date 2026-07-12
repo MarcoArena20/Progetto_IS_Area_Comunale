@@ -1,2 +1,2 @@
-idUtente:1
-ruolo:OPERATORE
+idUtente:23
+ruolo:CITTADINO
