@@ -50,7 +50,7 @@ public class FormModificaSegnalazione {
 
                 }catch (IllegalArgumentException ex){
 
-                    JOptionPane.showMessageDialog(contentPanel, ex.getMessage());
+                    JOptionPane.showMessageDialog(contentPanel, ex.getMessage(), "Errore",JOptionPane.ERROR_MESSAGE);
 
                 }
 
