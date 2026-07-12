@@ -32,6 +32,7 @@ public class FormCreazioneSegnalazione {
     private JPanel posizionePanel;
     private JPanel dataPanel;
     private JPanel immaginePanel;
+    private JComboBox comboBox1;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
