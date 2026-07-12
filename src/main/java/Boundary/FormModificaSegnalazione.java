@@ -20,6 +20,7 @@ public class FormModificaSegnalazione {
     private JButton modificaButton;
     private JComboBox categoriaBox;
     private JComboBox posizioneBox;
+    private JButton annullaModificaButton;
 
     public FormModificaSegnalazione(int idRow){
 
@@ -53,6 +54,15 @@ public class FormModificaSegnalazione {
                     JOptionPane.showMessageDialog(contentPanel, ex.getMessage(), "Errore",JOptionPane.ERROR_MESSAGE);
 
                 }
+
+            }
+        });
+        annullaModificaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+                modificaFrame.dispose();
 
             }
         });
