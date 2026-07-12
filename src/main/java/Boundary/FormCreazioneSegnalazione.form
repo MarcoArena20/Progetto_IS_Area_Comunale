@@ -88,13 +88,40 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="4966d" class="javax.swing.JTextField" binding="posizioneField">
+              <component id="8067e" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <model>
+                    <item value=""/>
+                    <item value="Centro Storico: Via dei Tribunali 120"/>
+                    <item value="Centro Storico: Spaccanapoli 35"/>
+                    <item value="Centro Storico: Via San Gregorio Armeno 18"/>
+                    <item value="Centro Storico: Via Benedetto Croce 42"/>
+                    <item value="Centro Storico: Piazza Bellini 6"/>
+                    <item value="Chiaia: Via dei Mille 40"/>
+                    <item value="Chiaia: Via Chiaia 75"/>
+                    <item value="Chiaia: Via Carlo Poerio 21"/>
+                    <item value="Chiaia: Riviera di Chiaia 180"/>
+                    <item value="Chiaia: Via Cavallerizza a Chiaia 52"/>
+                    <item value="Vomero: Via Luca Giordano 85"/>
+                    <item value="Vomero: Via Scarlatti 110"/>
+                    <item value="Vomero: Piazza Vanvitelli 15"/>
+                    <item value="Vomero: Via Cimarosa 44"/>
+                    <item value="Vomero: Via Aniello Falcone 210"/>
+                    <item value="Fuorigrotta: Viale Augusto 110"/>
+                    <item value="Fuorigrotta: Via Giulio Cesare 145"/>
+                    <item value="Fuorigrotta: Via Leopardi 95"/>
+                    <item value="Fuorigrotta: Via Consalvo 78"/>
+                    <item value="Fuorigrotta: Piazzale Tecchio 50"/>
+                    <item value="Bagnoli: Via Coroglio 57"/>
+                    <item value="Bagnoli: Via Nuova Bagnoli 65"/>
+                    <item value="Bagnoli: Via Diocleziano 320"/>
+                    <item value="Bagnoli: Via Eurialo 40"/>
+                    <item value="Bagnoli: Via Miseno 12"/>
+                  </model>
+                </properties>
               </component>
             </children>
           </grid>

@@ -1,14 +1,10 @@
 package Boundary;
 
 import Controller.ControllerSegnalazioni;
-import Entity.Enum.Categoria;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +28,7 @@ public class FormCreazioneSegnalazione {
     private JPanel posizionePanel;
     private JPanel dataPanel;
     private JPanel immaginePanel;
+    private JComboBox comboBox1;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
