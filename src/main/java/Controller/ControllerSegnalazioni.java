@@ -7,10 +7,7 @@ import Entity.Enum.*;
 import Entity.StateMachine.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 
 //Façade
@@ -297,8 +294,10 @@ public class ControllerSegnalazioni {
             String[] riga = new String[] {
                     agg.getData().format(formatter),                 // Colonna 0: Data e Ora
                     agg.getStato().toString(),                       // Colonna 1: Nome dello Stato
-                    dettaglioCompleto.aggiornamentiStato().get(agg)  //titolo della nota
+                    dettaglioCompleto.aggiornamentiStato().get(agg)[0], // titolo della nota
+                    dettaglioCompleto.aggiornamentiStato().get(agg)[1] // descrizione nota
             };
+
             righeCronologia.add(riga);
         }
 
@@ -404,7 +403,7 @@ public class ControllerSegnalazioni {
             return null;
         }
 
-        Map<String, String> dettagli = new HashMap<>();
+        Map<String, String> dettagli = new LinkedHashMap<>();
 
         dettagli.put("titolo", s.getTitolo() != null ? s.getTitolo() : "");
         dettagli.put("descrizione", s.getDescrizione() != null ? s.getDescrizione() : "");
