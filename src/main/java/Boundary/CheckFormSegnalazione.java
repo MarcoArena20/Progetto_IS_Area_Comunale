@@ -1,7 +1,5 @@
 package Boundary;
 
-import Entity.Enum.Categoria;
-
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
