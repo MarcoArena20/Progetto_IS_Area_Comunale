@@ -27,6 +27,12 @@ public class FormAccesso {
 
                         boolean esito = Accedi(ruoloStringa, email, password);
                         if (esito) {
+                            if (ruoloStringa.equals("CITTADINO")) {
+                                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                            }
+                            else{
+                                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+                            }
                             accessoFrame.dispose();
                         }
                     } else {
@@ -34,30 +40,33 @@ public class FormAccesso {
                     }
                 }
                 catch (IllegalArgumentException ex){
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(accessoFrame, ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
     }
-    private boolean controlloFormatoDatiAccesso (String ruoloStringa, String email, String password) throws  IllegalArgumentException{
-        boolean esitoFormAccesso=false;
-        try{
-            esitoFormAccesso = CheckDatiFormAccessoRegistrazione.checkDatiFormAccesso(ruoloStringa, email, password);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(ex.getMessage());
-        }
-        return esitoFormAccesso;
-    }
+
     private void printFormAccesso(String ruoloStringa, String email, String password){
         System.out.println("Ruolo: "+ruoloStringa);
         System.out.println("Mail: "+email);
         System.out.println("Password: "+password);
     }
 
+    private boolean controlloFormatoDatiAccesso (String ruoloStringa, String email, String password) throws IllegalArgumentException {
+        boolean controlloFormatoAccesso = false;
+        try {
+            controlloFormatoAccesso = CheckDatiFormAccessoRegistrazione.checkDatiFormAccesso(ruoloStringa, email, password);
+            return controlloFormatoAccesso;
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+    }
+
+
     public JFrame apriFormAccesso(){
 
         accessoFrame = new JFrame();
-        accessoFrame.setTitle("AccediFrame");
+        accessoFrame.setTitle("Accesso");
         accessoFrame.setContentPane(contentPanel);
 
         accessoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,6 +87,7 @@ public class FormAccesso {
         printFormAccesso(ruoloStringa, email, password);
 
 
+
         try{
             esitoFormatoAccesso = controlloFormatoDatiAccesso(ruoloStringa, email, password);
         }
@@ -88,14 +98,6 @@ public class FormAccesso {
         if (esitoFormatoAccesso){
             try {
                 esitoAccesso = ControllerUtenti.accessoUtente(ruoloStringa, email, password);
-                if (esitoAccesso) {
-                    if (ruoloStringa.equals("CITTADINO")) {
-                        new FormAreaPersonaleCittadino().apriAreaPersonale();
-                    }
-                    else{
-                        new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
-                    }
-                }
             }
             catch (IllegalArgumentException ex){
                 throw new IllegalArgumentException(ex.getMessage());

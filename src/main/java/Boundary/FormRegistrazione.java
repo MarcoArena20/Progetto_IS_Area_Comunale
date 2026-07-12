@@ -32,8 +32,13 @@ public class FormRegistrazione {
                         String email = emailTextField.getText();
                         String password = passwordTextField.getText();
 
-                        boolean esito = Registra(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
+                        boolean esito = registra(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
                         if (esito) {
+                            if (ruoloStringa.equals("CITTADINO")) {
+                                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                            } else {
+                                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+                            }
                             registrazioneFrame.dispose();
                         }
                     } else {
@@ -69,7 +74,7 @@ public class FormRegistrazione {
     public JFrame apriFormRegistrazione(){
 
         registrazioneFrame = new JFrame();
-        registrazioneFrame.setTitle("RegistraFrame");
+        registrazioneFrame.setTitle("Registrazione");
         registrazioneFrame.setContentPane(contentPanel);
         registrazioneFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         registrazioneFrame.setResizable(true);
@@ -81,7 +86,7 @@ public class FormRegistrazione {
         return registrazioneFrame;
     }
 
-    public boolean Registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
+    public boolean registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
 
         printFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
         boolean esitoFormatoRegistrazione = false;
@@ -97,13 +102,6 @@ public class FormRegistrazione {
         if (esitoFormatoRegistrazione){
             try {
                 esitoRegistrazione = ControllerUtenti.salvaUtente(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-                if (esitoRegistrazione) {
-                    if (ruoloStringa.equals("CITTADINO")) {
-                        new FormAreaPersonaleCittadino().apriAreaPersonale();
-                    } else {
-                        new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
-                    }
-                }
             } catch (IllegalArgumentException ex) {
                 throw new IllegalArgumentException(ex.getMessage());
             }

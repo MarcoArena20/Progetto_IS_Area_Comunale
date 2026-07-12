@@ -10,25 +10,25 @@ public class RegistrazioneTest {
 
     // Arrange
     private FormRegistrazione formRegistrazione;
-
     @BeforeEach
     void setUp() {
         formRegistrazione = new FormRegistrazione();
     }
 
 
+
     // Act
     @Test
     void testCorrettoCittadino() {
         boolean esito;
-        esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi1@comune.it", "1234567890", "MarioRossi-03");
+        esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi1@comune.it", "1234567890", "MarioRossi-03");
         assertTrue(esito);
     }
 
     @Test
     void testCorrettoOperatore() {
         boolean esito=false;
-        esito = formRegistrazione.Registra("Operatore", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+        esito = formRegistrazione.registra("Operatore", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         System.out.println("ESITO CORRETTO OPERATORE:"+esito);
         assertTrue(esito);
     }
@@ -37,7 +37,7 @@ public class RegistrazioneTest {
     void testRuoloNonValido() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -48,7 +48,7 @@ public class RegistrazioneTest {
     void testNomeTroppoLungo() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Marioooooooooooooooooooo", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Marioooooooooooooooooooo", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -59,7 +59,7 @@ public class RegistrazioneTest {
     void testNomeTroppoCorto() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Ma", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Ma", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -70,7 +70,7 @@ public class RegistrazioneTest {
     void testNomeConCaratteriNonAlfabetici() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "M4rio", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "M4rio", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -81,7 +81,7 @@ public class RegistrazioneTest {
     void testCognomeTroppoLungo() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossiiiiiiiiiiiiiiiiiiii", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossiiiiiiiiiiiiiiiiiiii", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -92,7 +92,7 @@ public class RegistrazioneTest {
     void testCognomeTroppoCorto() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Ro", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Ro", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -103,7 +103,7 @@ public class RegistrazioneTest {
     void testCognomeConCaratteriNonAlfabetici() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "R0ss1", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "R0ss1", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -114,7 +114,7 @@ public class RegistrazioneTest {
     void testRecapitoTelefonicoTroppoCorto() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "12345678", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "12345678", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -125,7 +125,7 @@ public class RegistrazioneTest {
     void testRecapitoTelefonicoTroppoLungo() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890111", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890111", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -136,7 +136,7 @@ public class RegistrazioneTest {
     void testRecapitoTelefonicoNonNumerici() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "12345678ab", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "12345678ab", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -147,7 +147,7 @@ public class RegistrazioneTest {
     void testEmailTroppoLuga() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "nomeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.cognome@comune", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "nomeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.cognome@comune", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -158,7 +158,7 @@ public class RegistrazioneTest {
     void testEmailTroppoCorta() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "n@a.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "n@a.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -169,7 +169,7 @@ public class RegistrazioneTest {
     void testEmailSenzaChioccola() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "nome.cognomecomune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "nome.cognomecomune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -180,7 +180,7 @@ public class RegistrazioneTest {
     void testEmailContienePiuChiocciole() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "n@@me.cognomecomune.it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "n@@me.cognomecomune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -191,7 +191,7 @@ public class RegistrazioneTest {
     void testEmailSoliCarattSpecSoloUnaChiocc() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "---@??.!?!-", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "---@??.!?!-", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -201,7 +201,7 @@ public class RegistrazioneTest {
     void testEmailNoCarttSpec() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "nomecognome@it", "1234567890", "MarioRossi-03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "nomecognome@it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -212,7 +212,7 @@ public class RegistrazioneTest {
     void testPasswordTroppoCorta() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "Mar-01");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "Mar-01");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -223,7 +223,7 @@ public class RegistrazioneTest {
     void testPasswordTroppoLunga() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "Mariooooooooooooo-1999320132");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "Mariooooooooooooo-1999320132");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -234,7 +234,7 @@ public class RegistrazioneTest {
     void testPasswordNoMaiuscole() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "operatorepass-01");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "operatorepass-01");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -245,7 +245,7 @@ public class RegistrazioneTest {
     void testPasswordNoMinuscole() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MARIOROSS-01");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MARIOROSS-01");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -256,7 +256,7 @@ public class RegistrazioneTest {
     void testPasswordNoNumeri() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi!");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi!");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -267,7 +267,7 @@ public class RegistrazioneTest {
     void testPasswordNoCarattSpec() {
         boolean esito;
         try {
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi03");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi03");
         } catch (IllegalArgumentException ex) {
             esito = false;
         }
@@ -277,7 +277,7 @@ public class RegistrazioneTest {
     void testPasswordCarattSpecNonAmmessi(){
         boolean esito;
         try{
-            esito = formRegistrazione.Registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03[");
+            esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03[");
         }
         catch (IllegalArgumentException ex){
             esito= false;
