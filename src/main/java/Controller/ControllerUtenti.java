@@ -14,70 +14,70 @@ import Entity.Gestori.GestoreUtenti;
 //Façade
 public class ControllerUtenti {
 
-        private static Ruolo stringaToRuolo(String ruoloStringa){
-            try {
-                if (ruoloStringa == null) {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
-                    return Ruolo.CITTADINO;
-                } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
-                    return Ruolo.OPERATORE;
-                } else {
-                    throw new IllegalArgumentException("Ruolo non specificato.");
-                }
-            }catch (IllegalArgumentException e){
-                e.getMessage();
-                return null;
+    private static Ruolo stringaToRuolo(String ruoloStringa){
+        try {
+            if (ruoloStringa == null) {
+                throw new IllegalArgumentException("Ruolo non specificato.");
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Cittadino")) {
+                return Ruolo.CITTADINO;
+            } else if (ruoloStringa.trim().equalsIgnoreCase("Operatore")) {
+                return Ruolo.OPERATORE;
+            } else {
+                throw new IllegalArgumentException("Ruolo non specificato.");
             }
+        }catch (IllegalArgumentException e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+    private static String hashPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
         }
 
-        private static String hashPassword(String password) throws NoSuchAlgorithmException {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+        return sb.toString();
+    }
 
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b));
+    public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
+        GestoreUtenti gestoreUtenti = new GestoreUtenti();
+        boolean esitoRegistrazione = false;
+        try {
+            Ruolo ruolo = stringaToRuolo(ruoloStringa);
+            String passwordHash = hashPassword(password);
+            String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
+            if (idUtente != null) {
+                esitoRegistrazione = true;
+                setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
             }
-
-            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            //TODO
+            e.printStackTrace();
         }
-        public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) {
-            GestoreUtenti gestoreUtenti = new GestoreUtenti();
-            boolean esitoRegistrazione = false;
-            try {
-                Ruolo ruolo = stringaToRuolo(ruoloStringa);
-                String passwordHash = hashPassword(password);
-                String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
-                if (idUtente != null) {
-                    esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
-                }
-            } catch (NoSuchAlgorithmException e) {
-                //TODO
-                e.printStackTrace();
+        return esitoRegistrazione;
+    }
+
+    public static boolean accessoUtente(String ruoloStringa, String email, String password){
+        GestoreUtenti gestoreUtenti = new GestoreUtenti();
+        boolean esitoAccesso=false;
+        try{
+            Ruolo ruolo = stringaToRuolo(ruoloStringa);
+            String passwordHash =hashPassword(password);
+
+            if (gestoreUtenti.accessoUtente(ruolo, email, passwordHash)!=null){
+                esitoAccesso=true;
             }
-            return esitoRegistrazione;
         }
-
-
-        public static boolean accessoUtente(String ruoloStringa, String email, String password){
-            GestoreUtenti gestoreUtenti = new GestoreUtenti();
-            boolean esitoAccesso=false;
-            try{
-                Ruolo ruolo = stringaToRuolo(ruoloStringa);
-                String passwordHash =hashPassword(password);
-
-                if (gestoreUtenti.accessoUtente(ruolo, email, passwordHash)!=null){
-                    esitoAccesso=true;
-                }
-            }
-            catch (NoSuchAlgorithmException e){
-                e.printStackTrace();
-                return esitoAccesso;
-            }
+        catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
             return esitoAccesso;
         }
+        return esitoAccesso;
+    }
 
     public static Long getIdUtenteCorrente(){
         Path path = Path.of("configuration/config.txt");
@@ -111,37 +111,50 @@ public class ControllerUtenti {
         }
     }
 
+    public static boolean verificaRuoloUtenteCorrente(Ruolo ruolo) {
+
+        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
+        if (!ruoloUtente.equals(ruolo.name())) {
+            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     public static void setIdUtenteCorrente(Long idUtenteCorrente, String ruolo){
-            // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-                // di default, ovvero
-                    // idUtente:
-                    // ruolo:
-                    // idSegnalazione:
+        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
+        // di default, ovvero
+        // idUtente:
+        // ruolo:
+        // idSegnalazione:
 
-                    Path path = Path.of("configuration/config.txt");
+        Path path = Path.of("configuration/config.txt");
 
-                    try {
-                        Files.createDirectories(Path.of("configuration"));
+        try {
+            Files.createDirectories(Path.of("configuration"));
 
-                        if (!Files.exists(path)) {
+            if (!Files.exists(path)) {
 
-                            Files.createFile(path);
-                            Files.writeString(path, "idUtente:" + idUtenteCorrente + "\nruolo:" + ruolo + "\nidSegnalazione:\n", StandardOpenOption.APPEND);
+                Files.createFile(path);
+                Files.writeString(path, "idUtente:" + idUtenteCorrente + "\nruolo:" + ruolo + "\nidSegnalazione:\n", StandardOpenOption.APPEND);
 
-                        } else {
+            } else {
 
-                            List<String> lines = Files.readAllLines(path);
-                            lines.set(0, "idUtente:" + idUtenteCorrente);
-                            lines.set(1, "ruolo:" + ruolo);
+                List<String> lines = Files.readAllLines(path);
+                lines.set(0, "idUtente:" + idUtenteCorrente);
+                lines.set(1, "ruolo:" + ruolo);
 
-                            Files.write(path, lines);
+                Files.write(path, lines);
 
-                        }
+            }
 
 
-                    } catch (IOException e) {
+        } catch (IOException e) {
 
-                        e.printStackTrace();
-                    }
+            e.printStackTrace();
         }
     }
+}
+
