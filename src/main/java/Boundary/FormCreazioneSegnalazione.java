@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FormCreazioneSegnalazione {
 
@@ -36,7 +38,16 @@ public class FormCreazioneSegnalazione {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(creaSegnalazione()) {
+                Map<String, String> dati = recuperaDatiSegnalazione();
+
+                boolean creata = creaSegnalazione(dati.get("titolo"),
+                                                dati.get("descrizione"),
+                                                dati.get("categoria"),
+                                                dati.get("posizzione"),
+                                                dati.get("data"),
+                                                dati.get("urlImmagine"));
+
+                if(creata) {
                     creazioneFrame.dispose();
                     new FormAreaPersonaleCittadino().apriAreaPersonale();
                 }
@@ -62,7 +73,7 @@ public class FormCreazioneSegnalazione {
 
     }
 
-    private boolean creaSegnalazione(){
+    private Map<String, String> recuperaDatiSegnalazione(){
 
         // Caratteristiche obbligatorie che ogni segnalazione deve avere
         String titolo = titoloField.getText();
@@ -70,15 +81,41 @@ public class FormCreazioneSegnalazione {
         String categoria = (String) categoriaBox.getSelectedItem();
         String posizione = posizioneField.getText();
 
-        if(!verificaCampiObbligatori(titolo, descrizione, posizione, categoria)){
-
-            return false;
-
-        }
-
         // Caratteristiche opzionali che una segnalazione può avere
         String urlImmagine = urlImmagineField.getText();
         String data = dataField.getText();
+
+        Map<String, String> dati = new HashMap<>();
+        dati.put("titolo", titolo);
+        dati.put("descrizione", descrizione);
+        dati.put("categoria", categoria);
+        dati.put("posizione", posizione);
+        dati.put("data", data);
+        dati.put("urlImmagine", urlImmagine);
+
+        return dati;
+
+    }
+
+    public boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+
+        if(!CheckFormSegnalazione.checkTitolo(titolo))
+            return false;
+
+        if(!CheckFormSegnalazione.checkDescrizione(descrizione))
+            return false;
+
+        if(!CheckFormSegnalazione.checkCategoria(categoria))
+            return false;
+
+        if(!CheckFormSegnalazione.checkPosizione(posizione))
+            return false;
+
+        if(!CheckFormSegnalazione.checkData(data))
+            return false;
+
+        if(!CheckFormSegnalazione.checkUrlImmagine(urlImmagine))
+            return false;
 
         if (urlImmagine.equalsIgnoreCase(""))
             urlImmagine = null;
@@ -86,84 +123,7 @@ public class FormCreazioneSegnalazione {
         if(data.equalsIgnoreCase(""))
             data = null;
 
-        if (!verificaCampiOpzionali(urlImmagine, data)){
-            return false;
-        }
-        else
-        {
-            boolean esito = ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
-            return esito;
-        }
-
+        return ControllerSegnalazioni.creaSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
     }
 
-    private boolean verificaCampiObbligatori(String titolo, String descrizione, String posizione, String categoria){
-
-        if (titolo.length() < 5 || titolo.length() > 15){
-
-            System.out.println("Errore nel titolo");
-            return false;
-
-        }
-
-        if (descrizione.length() < 50 || descrizione.length() > 200) {
-
-            System.out.println("Errore nella descrizione");
-            return false;
-
-        }
-
-        if (posizione.length() < 10 || posizione.length() > 20){
-
-            System.out.println("Errore nella posizione");
-            return false;
-
-        }
-
-        try{
-
-            Categoria.valueOf(categoria);
-
-        }catch (IllegalArgumentException e){
-
-            System.out.println("Errore nella categoria");
-            return false;
-        }
-
-        return true;
-
-    }
-
-    private boolean verificaCampiOpzionali(String urlImmagine, String data){
-
-        if (urlImmagine != null && (urlImmagine.length() < 10 || urlImmagine.length() > 50)){
-
-            System.out.println("Errore nell'url");
-            return false;
-
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        try{
-
-            if(data != null)
-                LocalDateTime.parse(data, formatter);
-
-        }catch(DateTimeException e){
-
-            System.out.println("Errore nella data");
-            return false;
-
-        }
-
-        return true;
-
-    }
-
-    public static void main(String[] args){
-
-        new FormCreazioneSegnalazione().apriCreazioneFrame();
-
-    }
 }
