@@ -74,13 +74,13 @@ public class GestoreSegnalazioni {
         );
     }
 
-    public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String posizione) {
+    public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String area) {
 
         java.util.Map<String, Object> filtri = new java.util.HashMap<>();
 
         if (stato != null) {filtri.put("stato", stato);}
         if (categoria != null) {filtri.put("categoria", categoria);}
-        if (posizione != null && !posizione.trim().isEmpty()) {filtri.put("posizione", posizione);}
+        if (area != null && !area.trim().isEmpty()) {filtri.put("LIKE:posizione", area);}
 
         return gestorePersistenza.cercaPerCampi(Segnalazione.class, filtri);
     }
