@@ -1,5 +1,6 @@
 package Entity;
 
+import Entity.Enum.Ruolo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,16 +34,13 @@ public class Operatore extends UtenteAutenticato {
     //Metodi
     @Override
     public String getRuolo() {
-        //TODO
-        return "";
+        return Ruolo.OPERATORE.name();
     }
 
     @Override
     public String toString() {
-        //TODO
         return"Operatore {\n" +
                     "*\tidOperatore=" + idOperatore + ",\n" +
-                    //"*\ttitolo=" + titolo + ",\n" +
                     '}';
     }
 }
