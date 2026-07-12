@@ -2,10 +2,10 @@ package Boundary;
 
 import static Boundary.ValidatorePassword.validaPassword;
 
-public class CheckDatiForm {
+public class CheckDatiFormAccessoRegistrazione {
     public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws  IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
+        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {
             throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore'.");
         }
 
@@ -41,12 +41,12 @@ public class CheckDatiForm {
 
         // Controllo formato Email
         if (!ValidatoreEmail.validaEmail(email)){
-            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
+            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio .");
         }
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
         if (!validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
@@ -54,15 +54,15 @@ public class CheckDatiForm {
     }
     public static boolean checkDatiFormAccesso(String ruoloStringa, String email, String password) throws IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
-        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equals(ruoloStringa)) {
+        if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {
             throw new IllegalArgumentException("Il ruolo selezionato non è valido. Scegliere 'Cittadino' o 'Operatore'.");
         }
         if (!ValidatoreEmail.validaEmail(email)){
-            throw  new IllegalArgumentException("La mail non è nel formato corretto.");
+            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio .");
         }
 
         if (!ValidatorePassword.validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni

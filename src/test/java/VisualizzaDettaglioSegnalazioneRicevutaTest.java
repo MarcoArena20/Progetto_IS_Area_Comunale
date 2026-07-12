@@ -14,7 +14,7 @@ public class VisualizzaDettaglioSegnalazioneRicevutaTest {
     @BeforeEach
     void setUp() {
         //Pre-Condizione: L'operatore ha effettuato l'accesso
-        ControllerUtenti.setIdUtenteCorrente(1L,Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.valueOf(Ruolo.OPERATORE.name()));
 
         //Pre-Condizione: L'operatore si trova nell'elenco
         ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore("Tutti","Tutte","Tutte");
@@ -37,7 +37,7 @@ public class VisualizzaDettaglioSegnalazioneRicevutaTest {
 
         String note = dettagli.get("note");
         assertNotNull(note);
-        assertFalse(note.isEmpty(), "L'elenco delle note deve essere presente (n > 0)");
+        assertFalse(note.isEmpty(), "L'elenco delle note deve essere presente");
     }
 
     @Test

@@ -19,29 +19,54 @@ public class FormAccesso {
         accessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Accedi();
+                try {
+                    if (accessoFrame != null) {
+                        String ruoloStringa = (String) ruoloAccesso.getSelectedItem();
+                        String email = emailField.getText();
+                        String password = passwordField.getText();
+
+                        boolean esito = Accedi(ruoloStringa, email, password);
+                        if (esito) {
+                            if (ruoloStringa.equals("CITTADINO")) {
+                                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                            }
+                            else{
+                                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+                            }
+                            accessoFrame.dispose();
+                        }
+                    } else {
+                        accessoFrame = apriFormAccesso();
+                    }
+                }
+                catch (IllegalArgumentException ex){
+                    JOptionPane.showMessageDialog(accessoFrame, ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
-    private boolean controlloFormatoDatiAccesso (String ruoloStringa, String email, String password) throws  IllegalArgumentException{
-        boolean esitoFormAccesso=false;
-        try{
-            esitoFormAccesso = CheckDatiForm.checkDatiFormAccesso(ruoloStringa, email, password);
+
+    private void printFormAccesso(String ruoloStringa, String email, String password){
+        System.out.println("Ruolo: "+ruoloStringa);
+        System.out.println("Mail: "+email);
+        System.out.println("Password: "+password);
+    }
+
+    private boolean controlloFormatoDatiAccesso (String ruoloStringa, String email, String password) throws IllegalArgumentException {
+        boolean controlloFormatoAccesso = false;
+        try {
+            controlloFormatoAccesso = CheckDatiFormAccessoRegistrazione.checkDatiFormAccesso(ruoloStringa, email, password);
+            return controlloFormatoAccesso;
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
-        return esitoFormAccesso;
     }
-    private void printFormAccesso(){
-        System.out.println("Ruolo: "+ruoloAccesso.getSelectedItem());
-        System.out.println("Mail: "+emailField.getText());
-        System.out.println("Password: "+passwordField.getText());
-    }
+
 
     public JFrame apriFormAccesso(){
 
         accessoFrame = new JFrame();
-        accessoFrame.setTitle("AccediFrame");
+        accessoFrame.setTitle("Accesso");
         accessoFrame.setContentPane(contentPanel);
 
         accessoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,32 +80,30 @@ public class FormAccesso {
         return accessoFrame;
     }
 
-    private void Accedi() {
-        String ruoloStringa = (String) ruoloAccesso.getSelectedItem();
-        String email = emailField.getText();
-        String password = passwordField.getText();
+    public boolean Accedi(String ruoloStringa, String email, String password) throws IllegalArgumentException{
 
-        printFormAccesso();
+        boolean esitoFormatoAccesso=false;
         boolean esitoAccesso = false;
-        boolean esitoFormatoAccesso = false;
+        printFormAccesso(ruoloStringa, email, password);
 
-        try {
+
+
+        try{
             esitoFormatoAccesso = controlloFormatoDatiAccesso(ruoloStringa, email, password);
-            if (esitoFormatoAccesso) {
-                esitoAccesso = ControllerUtenti.accessoUtente(ruoloStringa, email, password);
-
-                if(ruoloStringa.equals("CITTADINO"))
-                    new FormAreaPersonaleCittadino().apriAreaPersonale();
-                else if(ruoloStringa.equals("OPERATORE"))
-                    new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
-
-                accessoFrame.dispose();
-                System.out.println("Esito Registrazione: " + esitoAccesso);
-            } else {
-                JOptionPane.showMessageDialog(null, "Email o password errati.");
-            }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+        catch (IllegalArgumentException ex){
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+
+        if (esitoFormatoAccesso){
+            try {
+                esitoAccesso = ControllerUtenti.accessoUtente(ruoloStringa, email, password);
+            }
+            catch (IllegalArgumentException ex){
+                throw new IllegalArgumentException(ex.getMessage());
+            }
+        }
+        return esitoAccesso;
     }
+
 }

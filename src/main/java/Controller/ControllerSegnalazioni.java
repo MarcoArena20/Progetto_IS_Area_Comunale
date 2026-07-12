@@ -109,7 +109,7 @@ public class ControllerSegnalazioni {
         return esitoAggiuntaNota;
     }
 
-    public static boolean verificaModificabilità(Integer idRow){
+    public static boolean verificaModificabilita(Integer idRow){
 
         // La prima cosa da fare è ottenere l'id della segnalazione corrente
         // e chiamare il gestore segnalazioni
@@ -241,7 +241,7 @@ public class ControllerSegnalazioni {
                     anteprima.categoria().toString(),
                     (anteprima.data() != null)? anteprima.data().toString(): "",
                     anteprima.posizione().toString(),
-                    anteprima.stato().toString(),
+                    anteprima.stato().getStatoToString(),
             };
 
             righe.add(riga);
@@ -290,13 +290,13 @@ public class ControllerSegnalazioni {
         List<String[]> righeCronologia = new ArrayList<>();
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        for (AggiornamentoStatoEntry agg : dettaglioCompleto.aggiornamentiStato()) {
+        for (AggiornamentoStatoEntry agg : dettaglioCompleto.aggiornamentiStato().keySet()) {
 
             String[] riga = new String[] {
-                    agg.getData().format(formatter),          // Colonna 0: Data e Ora
-                    agg.getStato().toString(),                // Colonna 1: Nome dello Stato (es. INVIATA)
+                    agg.getData().format(formatter),                 // Colonna 0: Data e Ora
+                    agg.getStato().toString(),                       // Colonna 1: Nome dello Stato
+                    dettaglioCompleto.aggiornamentiStato().get(agg)  //titolo della nota
             };
-
             righeCronologia.add(riga);
         }
 
@@ -428,7 +428,7 @@ public class ControllerSegnalazioni {
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
 
 
         //1. flusso normale
@@ -445,23 +445,23 @@ public class ControllerSegnalazioni {
 
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE);
         iniziaGestioneSegnalazione();
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
         concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
 
         //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
         System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO);
         iniziaGestioneSegnalazione();
 
 
         //4. tentativo di prendere in carico una segnalazione risolta
         System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
 
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
+        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE);
         setIdSegnalazioneCorrente(4L);
         iniziaGestioneSegnalazione();
 
