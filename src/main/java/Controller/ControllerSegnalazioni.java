@@ -3,9 +3,10 @@ package Controller;
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Gestori.GestoreAggiornamentoStato;
 import Entity.Gestori.GestoreSegnalazioni;
+import Entity.Enum.StatoType;
+import Entity.Gestori.GestoreAggiornamentoStato;
 import Entity.Segnalazione;
 import Entity.Enum.Ruolo;
-import Entity.Gestori.GestoreSegnalazioni;
 import Entity.Enum.Categoria;
 import Entity.StateMachine.*;
 
@@ -65,7 +66,7 @@ public class ControllerSegnalazioni {
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        if (!verificaRuoloUtenteCorrente(Ruolo.OPERATORE)) {
+        if (!ControllerUtenti.verificaRuoloUtenteCorrente(Ruolo.OPERATORE)) {
             return false;
         }
 
@@ -97,10 +98,14 @@ public class ControllerSegnalazioni {
             return false;
         }
 
-        //TODO controllo nel boundary per verificare che non si può concludere con esito positivo una segnalazione con stato presaInCarico (si deve prima aggiornare)
+        //TODO è una buona pratica?
+        //Se si vuole concludere la gestione con esito positivo e lo stato corrente è presaInCarico, errore
+        if (esitoGestione && gest.cercaSegnalazione(idSegnalazioneCorrente).getStato().getStatoToString().equals(StatoType.PRESA_IN_CARICO.name())) {
+            return false;
+        }
 
         boolean esitoAggiornamento = gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, esitoGestione);
-        boolean esitoAggiuntaNota = false;
+        boolean esitoAggiuntaNota = true;
 
         if (esitoAggiornamento && titolo!=null && descrizione != null) {//Aggiornamento effettuato correttamente e posso aggiungere nota
             esitoAggiuntaNota = gest.aggiungiNota(idSegnalazioneCorrente, idOperatore, titolo, descrizione);
@@ -128,18 +133,6 @@ public class ControllerSegnalazioni {
             return false;
         else
             return true;
-
-    }
-
-    public static boolean verificaRuoloUtenteCorrente(Ruolo ruolo) {
-
-        String ruoloUtente = ControllerUtenti.getRuoloUtenteCorrente();
-        if (!ruoloUtente.equals(ruolo.name())) {
-            System.err.println("[ControllerSegnalazioni] Non si hanno i permessi per effettuare questa azione!");
-            return false;
-        } else {
-            return true;
-        }
 
     }
 

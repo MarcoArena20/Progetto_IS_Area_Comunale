@@ -8,6 +8,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
     private JPanel contentPanel;
     private JLabel lblTitolo;
+    private JLabel lblId;
     private JLabel lblPosizione;
     private JLabel lblStato;
     private JLabel lblData;
@@ -55,7 +56,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private void configuraAzioni(Integer idRow) {
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
-        btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
+        btnConcludiGestione.addActionListener(e -> new FormConclusioneGestione().apriConclusioneFrame());
     }
 
     // Metodo helper per ridurre la duplicazione del codice
