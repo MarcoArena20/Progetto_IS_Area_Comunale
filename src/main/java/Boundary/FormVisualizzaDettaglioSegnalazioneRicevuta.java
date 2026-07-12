@@ -8,6 +8,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
     private JPanel contentPanel;
     private JLabel lblTitolo;
+    private JLabel lblId;
     private JLabel lblPosizione;
     private JLabel lblStato;
     private JLabel lblData;
@@ -18,9 +19,9 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private JTextArea txtDescrizione;
     private JScrollPane scrollPaneDescrizione;
 
-    private JButton btnPrendiInCarico;
-    private JButton btnAggiornaStato;
-    private JButton btnConcludiGestione;
+    public JButton btnPrendiInCarico;
+    public JButton btnAggiornaStato;
+    public JButton btnConcludiGestione;
 
     private JFrame dettaglioFrame;
 
@@ -55,11 +56,11 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private void configuraAzioni(Integer idRow) {
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
-        btnConcludiGestione.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.concludiGestioneSegnalazione(null,null,false),idRow));
+        btnConcludiGestione.addActionListener(e -> new FormConclusioneGestione(idRow).apriConclusioneFrame());
     }
 
     // Metodo helper per ridurre la duplicazione del codice
-    private void eseguiAzione(java.util.function.Supplier<Boolean> operazione,Integer idRow) {
+    public void eseguiAzione(java.util.function.Supplier<Boolean> operazione,Integer idRow) {
         if (operazione.get()) {
             JOptionPane.showMessageDialog(dettaglioFrame, "Operazione eseguita con successo.");
             caricaDettagliSegnalazione(idRow);
