@@ -86,4 +86,16 @@ public class GestioneOperatoreEntry {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
+
+    @Override
+    public String toString() {
+        return "Gestione Operatore {\n" +
+                "*\tidGestione=" + this.idGestione + ",\n" +
+                "*\ttitolo=" + this.titolo + ",\n" +
+                "*\tdescrizione=" + this.descrizione + ",\n" +
+                "*\tidSegnalazione=" + segnalazione.getIdSegnalazione() + ",\n" +
+                "*\tidOperatore=" + operatore.getIdOperatore() + ",\n" +
+                '}';
+    }
 }
