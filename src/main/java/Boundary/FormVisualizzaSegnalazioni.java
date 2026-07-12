@@ -111,9 +111,6 @@ public class FormVisualizzaSegnalazioni {
                     visualizzaFrame.dispose();
 
                 }
-
-
-
             }
         });
 
