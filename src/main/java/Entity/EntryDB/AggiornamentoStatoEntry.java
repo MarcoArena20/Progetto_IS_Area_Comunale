@@ -74,4 +74,15 @@ public class AggiornamentoStatoEntry {
     public void setOperatore(Operatore operatore) {
         this.operatore = operatore;
     }
+
+    @Override
+    public String toString() {
+        return "AggiornamentoStato {\n" +
+                "*\tidAggiornamento=" + this.idAggiornamento + ",\n" +
+                "*\tdata=" + this.data.toString() + ",\n" +
+                "*\tstato=" + stato.getStatoToString() + ",\n" +
+                "*\tidSegnalazione=" + segnalazione.getIdSegnalazione() + ",\n" +
+                "*\tidOperatore=" + operatore.getIdOperatore() + ",\n" +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package Entity;
 
+import Entity.Enum.Ruolo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,8 +36,14 @@ public class Cittadino extends UtenteAutenticato {
     //Metodi
     @Override
     public String getRuolo() {
-        //TODO
-        return "";
+        return Ruolo.CITTADINO.name();
+    }
+
+    @Override
+    public String toString() {
+        return"Operatore {\n" +
+                "*\tidCittadino=" + idCittadino + ",\n" +
+                '}';
     }
 
 }
