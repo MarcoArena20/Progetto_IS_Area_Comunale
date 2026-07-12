@@ -214,7 +214,7 @@ public class ControllerSegnalazioni {
          */
         bindingId = new HashMap<>();
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
-
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         //Recuperiamo l'id del cittadino
         Long id = ControllerUtenti.getIdUtenteCorrente();
 
@@ -239,7 +239,7 @@ public class ControllerSegnalazioni {
 
             String[] riga = new String[]{
                     anteprima.categoria().toString(),
-                    (anteprima.data() != null)? anteprima.data().toString(): "",
+                    (anteprima.data() != null)? anteprima.data().format(formatter): "",
                     anteprima.posizione().toString(),
                     anteprima.stato().getStatoToString(),
             };
@@ -257,17 +257,19 @@ public class ControllerSegnalazioni {
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
         Long idSegnalazione = bindingId.get(indiceRiga);
 
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         // Recuperiamo le segnalazioni associate al cittadino.
         GestoreSegnalazioni.dettaglioCompleto dettaglioCompleto =
                 gestore.visualizzaDettaglioSegnalazione(idSegnalazione);
 
         List<String[]> righeTabellaInvertita = new ArrayList<>();
 
-        String titolo = dettaglioCompleto.dettaglio().titolo().toString();
+        String titolo = dettaglioCompleto.dettaglio().titolo();
         String categoria = dettaglioCompleto.dettaglio().anteprima().categoria().toString();
         String stato = dettaglioCompleto.dettaglio().anteprima().stato().getStatoToString();
-        String data = (dettaglioCompleto.dettaglio().anteprima().data() != null) ? dettaglioCompleto.dettaglio().anteprima().data().toString(): "";
-        String posizione = dettaglioCompleto.dettaglio().anteprima().posizione().toString();
+        String data = (dettaglioCompleto.dettaglio().anteprima().data() != null) ? dettaglioCompleto.dettaglio().anteprima().data().format(formatter): "";
+        String posizione = dettaglioCompleto.dettaglio().anteprima().posizione();
 
         righeTabellaInvertita.add(new String[]{"Titolo:", titolo});
         righeTabellaInvertita.add(new String[]{"Categoria:", categoria});
