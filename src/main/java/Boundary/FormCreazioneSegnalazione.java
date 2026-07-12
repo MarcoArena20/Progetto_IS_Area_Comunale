@@ -28,7 +28,7 @@ public class FormCreazioneSegnalazione {
     private JPanel posizionePanel;
     private JPanel dataPanel;
     private JPanel immaginePanel;
-    private JComboBox comboBox1;
+    private JComboBox posizioneComboBox;
 
     public FormCreazioneSegnalazione() {
         creaSegnalazioneButton.addActionListener(new ActionListener() {
@@ -40,7 +40,7 @@ public class FormCreazioneSegnalazione {
                 boolean creata = creaSegnalazione(dati.get("titolo"),
                                                 dati.get("descrizione"),
                                                 dati.get("categoria"),
-                                                dati.get("posizzione"),
+                                                dati.get("posizione"),
                                                 dati.get("data"),
                                                 dati.get("urlImmagine"));
 
@@ -76,7 +76,7 @@ public class FormCreazioneSegnalazione {
         String titolo = titoloField.getText();
         String descrizione = descrizioneField.getText();
         String categoria = (String) categoriaBox.getSelectedItem();
-        String posizione = posizioneField.getText();
+        String posizione = (String) posizioneComboBox.getSelectedItem();
 
         // Caratteristiche opzionali che una segnalazione può avere
         String urlImmagine = urlImmagineField.getText();

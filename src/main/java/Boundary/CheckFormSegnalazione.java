@@ -95,6 +95,8 @@ public class CheckFormSegnalazione {
 
     public static boolean checkData(String data){
 
+        if(data.equalsIgnoreCase(""))
+            return true;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -113,6 +115,9 @@ public class CheckFormSegnalazione {
     }
 
     public static boolean checkUrlImmagine(String urlImmagine){
+
+        if(urlImmagine.equalsIgnoreCase(""))
+            return true;
 
         if (urlImmagine.length() < 10 || urlImmagine.length() > 50){
 
