@@ -10,20 +10,38 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ *
+ * Rappresenta una classe di utilità per la gestione dei campi di una segnalazione
+ *
+ */
+
 public class CheckFormSegnalazione {
+
+    /**
+     * Recupera i dati della segnalazione da un form di inserimento/modifica
+     * @param titoloField text field per inserire il titolo (obbligatorio)
+     * @param descrizioneField text field per inserire la descrizione (obbligatorio)
+     * @param categoriaBox combo box per inserire la categoria (obbligatorio)
+     * @param posizioneBox combo box per inserire la posizione (obbligatorio)
+     * @param dataField text field per inserire la data (opzionale)
+     * @param urlImmagineField text field per inserire l'url dell'immagine (opzionale)
+     * @return una map con i campi della segnalazione e i relativi valori
+     */
 
     public static Map<String, String> recuperaDatiSegnalazione(JTextField titoloField, JTextField descrizioneField, JComboBox categoriaBox, JComboBox posizioneBox,JTextField dataField, JTextField urlImmagineField){
 
-        // Caratteristiche obbligatorie che ogni segnalazione deve avere
+        // Raccogliamo gli attributi obbligatori
         String titolo = titoloField.getText();
         String descrizione = descrizioneField.getText();
         String categoria = (String) categoriaBox.getSelectedItem();
         String posizione = (String) posizioneBox.getSelectedItem();
 
-        // Caratteristiche opzionali che una segnalazione può avere
+        // Raccogliamo gli attributi opzionali
         String data = dataField.getText();
         String urlImmagine = urlImmagineField.getText();
 
+        // Inseriamo gli attributi in una map
         Map<String, String> dati = new HashMap<>();
         dati.put("titolo", titolo);
         dati.put("descrizione", descrizione);
@@ -36,9 +54,15 @@ public class CheckFormSegnalazione {
 
     }
 
+    /**
+     * Verifica che il titolo abbia lunghezza compresa tra 5 e 30 e sia formata solo da caratteri Unicode e spazi
+     * @param titolo titolo della segnalazione
+     * @return true se il titolo è conforme, false altrimenti
+     */
+
     public static boolean checkTitolo(String titolo){
 
-        // Il titolo deve avere lunghezza compresa tra 5 e 30 e può contenere solo caratteri, spazi e numeri
+        // Il titolo deve avere lunghezza compresa tra 5 e 30 e può contenere solo caratteri
 
         if (titolo.length() < 5 || titolo.length() > 30 || !titolo.matches("^[\\p{L} ]+$")){
 
@@ -49,6 +73,13 @@ public class CheckFormSegnalazione {
         return true;
 
     }
+
+    /**
+     * Verifica che la descrizione abbia lunghezza compresa tra 50 e 200 e sia formata solo da caratteri Unicode,
+     * spazi, virgole, punti, punti e virgola, due punti, apostrofi
+     * @param descrizione descrizione della segnalazione
+     * @return true se la descrizione è conforme, false altrimenti
+     */
 
     public static boolean checkDescrizione(String descrizione){
 
@@ -61,6 +92,12 @@ public class CheckFormSegnalazione {
         return true;
 
     }
+
+    /**
+     * Verifica che la categoria appartenga all'insieme specificato
+     * @param categoria categoria della segnalazione
+     * @return true se la categoria è conforme, false altrimenti
+     */
 
     public static boolean checkCategoria(String categoria){
 
@@ -75,6 +112,12 @@ public class CheckFormSegnalazione {
         return valori.contains(categoria);
 
     }
+
+    /**
+     * Verifica che la posizone appartenga all'insieme specificato
+     * @param posizione posizione della segnalazione
+     * @return true se la posizione è conforme, false altrimenti
+     */
 
     public static boolean checkPosizione(String posizione){
 
@@ -120,6 +163,12 @@ public class CheckFormSegnalazione {
 
     }
 
+    /**
+     * Verifica che la data venga salvata nel formato dd/MM/yyyy HH:mm
+     * @param data data della segnalazione
+     * @return true se la data è conforme, false altrimenti
+     */
+
     public static boolean checkData(String data){
 
         if(data.equalsIgnoreCase(""))
@@ -140,6 +189,12 @@ public class CheckFormSegnalazione {
 
     }
 
+    /**
+     * Verifica che l'url dell'immagine abbia formato http[s]://authority/path[?query][#fragment]
+     * @param urlImmagine url dell'immagine della segnalazione
+     * @return true se l'url è conforme, false altrimenti
+     */
+
     public static boolean checkUrlImmagine(String urlImmagine){
 
         if(urlImmagine.equalsIgnoreCase(""))
@@ -155,6 +210,17 @@ public class CheckFormSegnalazione {
         }
 
     }
+
+    /**
+     * Verifica che tutti i campi di una segnalazione siano conformi
+     * @param titolo titolo della segnalazione
+     * @param descrizione descrizione della segnalazione
+     * @param categoria categoria della segnalazione
+     * @param posizione posizione della segnalazione
+     * @param data data della segnalazione
+     * @param urlImmagine url dell'immagine della segnalazione
+     * @throws IllegalArgumentException con la descrizione del parametro non conforme
+     */
 
     public static void checkDatiSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine) throws IllegalArgumentException{
 
