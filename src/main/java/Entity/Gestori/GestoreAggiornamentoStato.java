@@ -162,7 +162,7 @@ public class GestoreAggiornamentoStato {
 
         this.gestorePersistenza.aggiorna(gestioneOperatoreEntry);
 
-        System.out.println("[GestoreAggiornamentoStato] Salvato operatore:\n"+ operatore.toString());
+        System.out.println("[GestoreAggiornamentoStato] Nota aggiunta correttamente");
         return true;
     }
 
