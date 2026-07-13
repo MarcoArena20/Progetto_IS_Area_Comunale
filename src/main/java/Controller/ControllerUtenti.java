@@ -12,12 +12,40 @@ import java.util.List;
 import Entity.Gestori.GestoreUtenti;
 
 //Façade
+
+/**
+ * Fornisce un punto di accesso per le operazioni
+ * relative alla gestione degli utenti dell'applicazione.
+ *
+ * La classe permette alle classi del livello Boundary di interagire
+ * con il sottosistema di gestione degli utenti senza conoscere i
+ * dettagli implementativi.
+ *
+ *
+ * @version 1.0
+ */
 public class ControllerUtenti {
 
+    /**
+     * Uniforma il formato dell'indirizzo email convertendolo
+     * in caratteri minuscoli in modo da offrire all'entity un
+     * formato prestabilito.
+     *
+     * @param email indirizzo email da convertire
+     * @return indirizzo email convertito in minuscolo
+     */
     private static String uniformaEmail(String email){
         return email.toLowerCase();
     }
 
+    /**
+     * Uniforma il formato del ruolo convertendolo nella
+     * classe specifica dei ruoli, in modo da fornire all'
+     * entity formato prestabilito.
+     * @param ruoloStringa ruolo espresso come stringa
+     * @return il valore corrispondente dell'enum {@code Ruolo},
+     *         oppure {@code null} se il ruolo non è valido
+     */
     private static Ruolo stringaToRuolo(String ruoloStringa){
         try {
             if (ruoloStringa == null) {
@@ -35,6 +63,17 @@ public class ControllerUtenti {
         }
     }
 
+    /**
+     * Calcola l'hash SHA-256 della password fornita.
+     *
+     * La password viene convertita in una sequenza di byte utilizzando
+     * la codifica UTF-8 e successivamente trasformata in una stringa
+     * esadecimale rappresentante l'hash generato in modo da non far viaggiare in chiaro la suddetta.
+     *
+     * @param password password da cifrare tramite algoritmo di hashing
+     * @return stringa contenente l'hash SHA-256 della password
+     * @throws NoSuchAlgorithmException se l'algoritmo SHA-256 non è disponibile
+     */
     private static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -46,6 +85,23 @@ public class ControllerUtenti {
 
             return sb.toString();
         }
+    /**
+     * Registra un nuovo utente nel sistema.
+     *
+     * Il metodo converte il ruolo ricevuto e delega
+     * al gestore degli utenti il salvataggio dei dati.
+     *
+     * @param ruoloStringa ruolo dell'utente espresso come stringa
+     * @param nome nome dell'utente
+     * @param cognome cognome dell'utente
+     * @param email indirizzo email dell'utente
+     * @param recapitoTelefonico numero telefonico dell'utente
+     * @param password password dell'utente
+     * @return {@code true} se la registrazione è completata correttamente,
+     *         {@code false} altrimenti
+     * @throws IllegalArgumentException se l'utente risulta già registrato
+     *         oppure se i dati forniti non sono validi
+     */
         public static boolean salvaUtente(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico ,String password) throws IllegalArgumentException{
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoRegistrazione = false;
@@ -66,7 +122,17 @@ public class ControllerUtenti {
             return esitoRegistrazione;
         }
 
-
+    /**
+     * Effettua l'autenticazione di un utente tramite le credenziali fornite.
+     *
+     * @param ruoloStringa ruolo dell'utente espresso come stringa
+     * @param email indirizzo email dell'utente
+     * @param password password dell'utente
+     * @return {@code true} se l'autenticazione ha esito positivo,
+     *         {@code false} altrimenti
+     * @throws IllegalArgumentException se le credenziali fornite
+     *         non risultano corrette
+     */
         public static boolean accessoUtente(String ruoloStringa, String email, String password){
             GestoreUtenti gestoreUtenti = new GestoreUtenti();
             boolean esitoAccesso=false;
@@ -145,11 +211,16 @@ public class ControllerUtenti {
     }
 
     public static void setIdUtenteCorrente(Long idUtenteCorrente, String ruolo){
-        // Il primo controllo da fare è verificare se il file esiste, altrimenti va creato da zero con la configurazione
-        // di default, ovvero
-        // idUtente:
-        // ruolo:
-        // idSegnalazione:
+        /**
+         * Aggiorna le informazioni relative all'utente corrente
+         * nella configurazione locale dell'applicazione.
+         *
+         * Il metodo salva l'identificativo dell'utente e il relativo ruolo
+         * nel file di configurazione utilizzato dall'applicazione.
+         *
+         * @param idUtenteCorrente identificativo dell'utente corrente
+         * @param ruolo ruolo associato all'utente corrente
+         */
 
         Path path = Path.of("configuration/config.txt");
 
@@ -173,7 +244,7 @@ public class ControllerUtenti {
 
 
         } catch (IOException e) {
-
+            System.err.println("Errore critico, la creazione della sessione locale è fallita!");
             e.printStackTrace();
         }
     }

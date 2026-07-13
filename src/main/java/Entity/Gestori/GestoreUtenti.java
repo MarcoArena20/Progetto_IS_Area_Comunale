@@ -24,6 +24,15 @@ public class GestoreUtenti {
 
     }
 
+    /**
+     * Verifica se esiste già un utente registrato con il ruolo
+     * e l'indirizzo email specificati.
+     *
+     * @param ruolo ruolo dell'utente da verificare
+     * @param email indirizzo email associato all'utente
+     * @return {@code true} se esiste già un utente con il ruolo
+     *         e l'email specificati, {@code false} altrimenti
+     */
     private boolean verificaUtenteGiaRegistrato(Ruolo ruolo, String email)  {
         if(ruolo == Ruolo.CITTADINO) {
             return !gestorePersistenza.cercaPerCampo(Cittadino.class, "email", email).isEmpty();
@@ -33,6 +42,24 @@ public class GestoreUtenti {
     }
 
     //Metodi
+    /**
+     * Registra un nuovo utente nel sistema.
+     * Prima della registrazione viene verificato che non esista già
+     * un utente dello stesso ruolo associato all'indirizzo email fornito.
+     * In base al ruolo specificato viene creata un'istanza di
+     * {@link Cittadino} oppure di {@link Operatore}.
+     *
+     * @param ruolo ruolo del nuovo utente
+     * @param nome nome dell'utente
+     * @param cognome cognome dell'utente
+     * @param email indirizzo email dell'utente
+     * @param recapitoTelefonico numero telefonico dell'utente
+     * @param passwordHash hash della password dell'utente
+     * @return identificativo dell'utente registrato
+     * @throws IllegalArgumentException se esiste già un utente
+     *         registrato con gli stessi criteri oppure se la registrazione
+     *         non può essere completata
+     */
     public String registraUtente(Ruolo ruolo, String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         //verifico che non ci sia un Utente(Cittadino/Operatore) che si sta registrando con un email gia registrata per il ruolo scelto
         try {
@@ -57,7 +84,20 @@ public class GestoreUtenti {
             throw new IllegalArgumentException();
         }
     }
-
+    /**
+     * Effettua la ricerca di un utente e verifica le credenziali
+     * fornite per consentire l'accesso al sistema.
+     *
+     * La ricerca viene effettuata in base al ruolo selezionato,
+     * distinguendo tra utenti di tipo {@link Cittadino} e {@link Operatore}.
+     *
+     * @param ruolo ruolo dell'utente che tenta l'accesso
+     * @param email indirizzo email dell'utente
+     * @param passwordHash hash della password dell'utente
+     * @return identificativo dell'utente autenticato
+     * @throws IllegalArgumentException se non viene trovato
+     *         un utente corrispondente alle credenziali fornite
+     */
     public String accessoUtente(Ruolo ruolo, String email, String passwordHash) throws  IllegalArgumentException{
         if (ruolo == Ruolo.OPERATORE) {
             Operatore operatoreAccesso = cercaUtenteOperatore(email, passwordHash);
@@ -76,6 +116,16 @@ public class GestoreUtenti {
         }
     }
 
+    /**
+     * Cerca un cittadino sulla base dell'indirizzo email
+     * e dell'hash della password forniti.
+     *
+     * @param email indirizzo email del cittadino
+     * @param passwordHash hash della password del cittadino
+     * @return istanza del {@link Cittadino} trovato,
+     *         oppure {@code null} se nessun utente corrisponde
+     *         ai criteri di ricerca
+     */
     public Cittadino cercaUtenteCittadino(String email, String passwordHash) {
         //creo i criteri per cercare nel DB(email e pass)
         Map<String, Object> criteriRicercaUtenteCittadino = new HashMap<>();
@@ -94,6 +144,16 @@ public class GestoreUtenti {
         }
     }
 
+    /**
+     * Cerca un operatore sulla base dell'indirizzo email
+     * e dell'hash della password forniti.
+     *
+     * @param email indirizzo email dell'operatore
+     * @param passwordHash hash della password dell'operatore
+     * @return istanza dell'{@link Operatore} trovato,
+     *         oppure {@code null} se nessun utente corrisponde
+     *         ai criteri di ricerca
+     */
     public Operatore cercaUtenteOperatore(String email, String passwordHash) {
         //creo i criteri per cercare nel DB(email e pass)
         Map<String, Object> criteriRicercaUtenteOperatore = new HashMap<>();

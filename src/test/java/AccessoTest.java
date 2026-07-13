@@ -41,6 +41,7 @@ public class AccessoTest {
         }
         catch (IllegalArgumentException ex){
             esito = false;
+            System.out.println(ex.getMessage());
         }
         assertFalse(esito);
     }
@@ -61,6 +62,7 @@ public class AccessoTest {
             esito = formAccesso.accedi("Cittadino", email, "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
+            System.out.println(ex.getMessage());
         }
         assertFalse(esito);
     }
@@ -82,6 +84,7 @@ public class AccessoTest {
             esito = formAccesso.accedi("Cittadino", "nome.cognome@comune.it",password);
         } catch (IllegalArgumentException ex) {
             esito = false;
+            System.out.println(ex.getMessage());
         }
         assertFalse(esito);
     }

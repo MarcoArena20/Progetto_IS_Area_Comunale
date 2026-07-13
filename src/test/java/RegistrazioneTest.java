@@ -14,7 +14,6 @@ public class RegistrazioneTest {
     @BeforeEach
 
     void setUp() {
-        CreazioneSegnalazioneTest.puliziaDatabase();
         formRegistrazione = new FormRegistrazione();
     }
 
@@ -23,6 +22,7 @@ public class RegistrazioneTest {
     @ParameterizedTest
     @ValueSource(strings = {"Operatore", "Cittadino"})
     void testRuolo(String ruolo) {
+        CreazioneSegnalazioneTest.puliziaDatabase();
         boolean esito;
         esito = formRegistrazione.registra(ruolo, "Mario", "Rossi", "mario.rossi1@comune.it", "1234567890", "MarioRossi-03");
         assertTrue(esito);
@@ -34,6 +34,7 @@ public class RegistrazioneTest {
             esito = formRegistrazione.registra("", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890", "MarioRossi-03");
         }
         catch (IllegalArgumentException ex){
+            System.out.println(ex.getMessage());
             esito = false;
         }
         assertFalse(esito);
@@ -48,6 +49,7 @@ public class RegistrazioneTest {
             esito = formRegistrazione.registra("Cittadino", nome, "Rossi", "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
             esito = false;
+            System.out.println(ex.getMessage());
         }
         assertFalse(esito);
     }
@@ -59,6 +61,7 @@ public class RegistrazioneTest {
         try {
             esito = formRegistrazione.registra("Cittadino", "Mario", cognome, "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
             esito = false;
         }
         assertFalse(esito);
@@ -71,6 +74,7 @@ public class RegistrazioneTest {
         try {
             esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "mario.rossi@comune.it", recapitoTelefonico, "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
             esito = false;
         }
         assertFalse(esito);
@@ -89,6 +93,7 @@ public class RegistrazioneTest {
         try {
             esito = formRegistrazione.registra("Cittadino","Mario", "Rossi",  email,"1234567890", "MarioRossi-03");
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
             esito = false;
         }
         assertFalse(esito);
@@ -111,6 +116,7 @@ public class RegistrazioneTest {
         try {
             esito = formRegistrazione.registra("Cittadino", "Mario", "Rossi", "nome.cognome@comune.it", "1234567890",password);
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
             esito = false;
         }
         assertFalse(esito);
