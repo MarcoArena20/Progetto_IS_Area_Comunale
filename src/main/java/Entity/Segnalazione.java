@@ -36,9 +36,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     private String urlImmagine;
 
     //Costruttori
-    public Segnalazione(){
-        this.attach(ConcreteObserver.getInstance());
-    }
+    public Segnalazione(){}
 
     public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
 
@@ -49,8 +47,6 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         this.posizione = posizione;
         this.stato = new StatoInviata();
 
-        //TODO modificare
-        this.attach(ConcreteObserver.getInstance());
     }
 
     // Getter e Setter

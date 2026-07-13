@@ -93,7 +93,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
             }
         };
 
-        if (righe != null) {
+        if (!righe.isEmpty()) {
             for (String[] riga : righe) {
                 if (riga[4] != null) {
                     String rigaPulita = riga[4].replaceAll("(?i)STATO:", "").replace("_", " ").trim().toLowerCase();
