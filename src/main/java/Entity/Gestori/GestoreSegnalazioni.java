@@ -26,36 +26,62 @@ public class GestoreSegnalazioni {
 
     }
 
-    //Metodi
+    /**
+     * CASO D'USO: CreazioneSegnalazione
+     * Crea una segnalazione e invoca il GestorePersistenza dello strado Database
+     * per salvare la segnalazione
+     * @param idCittadino id del cittadino associato alla segnalazione
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     */
     public boolean inserisciSegnalazione(Long idCittadino, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
 
-        // Bisogna trovare il cittadino corrispondente
+        // Otteniamo il riferimento al cittadino corrispondente
         Cittadino cittadino = new GestoreUtenti().cercaCittadino(idCittadino);
 
-        //if(cittadino == null)
-            //return false;
+        if(cittadino == null)
+            return false;
 
-
+        // Creiamo la segnalazione
         Segnalazione segnalazione = new Segnalazione(cittadino, titolo, descrizione, categoria, posizione);
 
+        // Aggiungiamo i parametri opzionali
         if(data != null)
             segnalazione.setData(data);
 
         if (urlImmagine != null)
            segnalazione.setUrlImmagine(urlImmagine);
 
-        System.out.println("[GestoreSegnalazioni] Inserita nuova segnalazione:\n"+segnalazione.toString());
-
         return gestorePersistenza.salva(segnalazione);
     }
 
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Invoca il gestore persistenza per modificare la segnalazione corrente
+     * @param idSegnalazione id della segnalazione
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la modifica è andata a buon fine, false altrimenti
+     */
+
     public boolean modificaSegnalazione(Long idSegnalazione, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine){
 
-        Segnalazione segnalazione= gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
+        // Otteniamo il riferimento alla segnalazione corrente
+        Segnalazione segnalazione = gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
 
-        if (segnalazione == null)
+        if(segnalazione == null)
             return false;
 
+        // Modifichiamo i campi della segnalazione
         segnalazione.setTitolo(titolo);
         segnalazione.setDescrizione(descrizione);
         segnalazione.setCategoria(categoria);

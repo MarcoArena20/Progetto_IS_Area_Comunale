@@ -20,154 +20,94 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="d0d50" binding="titoloPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <component id="d5353" class="javax.swing.JTextField" binding="titoloField">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="cb606" class="javax.swing.JTextField" binding="descrizioneField">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
             </constraints>
             <properties/>
-            <border type="none"/>
-            <children>
-              <component id="d5353" class="javax.swing.JTextField" binding="titoloField">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="8b78f" binding="descrizionePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          </component>
+          <component id="e021a" class="javax.swing.JComboBox" binding="categoriaBox">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="cb606" class="javax.swing.JTextField" binding="descrizioneField">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-            </children>
-          </grid>
-          <grid id="2e324" binding="categoriaPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+            <properties>
+              <model>
+                <item value="--SELEZIONA CATEGORIA"/>
+                <item value="ILLUMINAZIONE_GUASTA"/>
+                <item value="STRADA_DISSESTATA"/>
+                <item value="RIFIUTI_ABBANDONATI"/>
+                <item value="PERICOLO_GENERICO"/>
+                <item value="ARREDO_URBANO_DANNEGGIATO"/>
+              </model>
+            </properties>
+          </component>
+          <component id="8067e" class="javax.swing.JComboBox" binding="posizioneComboBox">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="e021a" class="javax.swing.JComboBox" binding="categoriaBox">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="--SELEZIONA CATEGORIA"/>
-                    <item value="ILLUMINAZIONE_GUASTA"/>
-                    <item value="STRADA_DISSESTATA"/>
-                    <item value="RIFIUTI_ABBANDONATI"/>
-                    <item value="PERICOLO_GENERICO"/>
-                    <item value="ARREDO_URBANO_DANNEGGIATO"/>
-                  </model>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="a4ca8" binding="posizionePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+            <properties>
+              <model>
+                <item value="--SELEZIONA POSIZIONE"/>
+                <item value="Centro Storico: Via dei Tribunali 120"/>
+                <item value="Centro Storico: Spaccanapoli 35"/>
+                <item value="Centro Storico: Via San Gregorio Armeno 18"/>
+                <item value="Centro Storico: Via Benedetto Croce 42"/>
+                <item value="Centro Storico: Piazza Bellini 6"/>
+                <item value="Chiaia: Via dei Mille 40"/>
+                <item value="Chiaia: Via Chiaia 75"/>
+                <item value="Chiaia: Via Carlo Poerio 21"/>
+                <item value="Chiaia: Riviera di Chiaia 180"/>
+                <item value="Chiaia: Via Cavallerizza a Chiaia 52"/>
+                <item value="Vomero: Via Luca Giordano 85"/>
+                <item value="Vomero: Via Scarlatti 110"/>
+                <item value="Vomero: Piazza Vanvitelli 15"/>
+                <item value="Vomero: Via Cimarosa 44"/>
+                <item value="Vomero: Via Aniello Falcone 210"/>
+                <item value="Fuorigrotta: Viale Augusto 110"/>
+                <item value="Fuorigrotta: Via Giulio Cesare 145"/>
+                <item value="Fuorigrotta: Via Leopardi 95"/>
+                <item value="Fuorigrotta: Via Consalvo 78"/>
+                <item value="Fuorigrotta: Piazzale Tecchio 50"/>
+                <item value="Bagnoli: Via Coroglio 57"/>
+                <item value="Bagnoli: Via Nuova Bagnoli 65"/>
+                <item value="Bagnoli: Via Diocleziano 320"/>
+                <item value="Bagnoli: Via Eurialo 40"/>
+                <item value="Bagnoli: Via Miseno 12"/>
+              </model>
+            </properties>
+          </component>
+          <component id="c869d" class="javax.swing.JTextField" binding="dataField">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="8067e" class="javax.swing.JComboBox" binding="posizioneComboBox">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <model>
-                    <item value="--SELEZIONA POSIZIONE"/>
-                    <item value="Centro Storico: Via dei Tribunali 120"/>
-                    <item value="Centro Storico: Spaccanapoli 35"/>
-                    <item value="Centro Storico: Via San Gregorio Armeno 18"/>
-                    <item value="Centro Storico: Via Benedetto Croce 42"/>
-                    <item value="Centro Storico: Piazza Bellini 6"/>
-                    <item value="Chiaia: Via dei Mille 40"/>
-                    <item value="Chiaia: Via Chiaia 75"/>
-                    <item value="Chiaia: Via Carlo Poerio 21"/>
-                    <item value="Chiaia: Riviera di Chiaia 180"/>
-                    <item value="Chiaia: Via Cavallerizza a Chiaia 52"/>
-                    <item value="Vomero: Via Luca Giordano 85"/>
-                    <item value="Vomero: Via Scarlatti 110"/>
-                    <item value="Vomero: Piazza Vanvitelli 15"/>
-                    <item value="Vomero: Via Cimarosa 44"/>
-                    <item value="Vomero: Via Aniello Falcone 210"/>
-                    <item value="Fuorigrotta: Viale Augusto 110"/>
-                    <item value="Fuorigrotta: Via Giulio Cesare 145"/>
-                    <item value="Fuorigrotta: Via Leopardi 95"/>
-                    <item value="Fuorigrotta: Via Consalvo 78"/>
-                    <item value="Fuorigrotta: Piazzale Tecchio 50"/>
-                    <item value="Bagnoli: Via Coroglio 57"/>
-                    <item value="Bagnoli: Via Nuova Bagnoli 65"/>
-                    <item value="Bagnoli: Via Diocleziano 320"/>
-                    <item value="Bagnoli: Via Eurialo 40"/>
-                    <item value="Bagnoli: Via Miseno 12"/>
-                  </model>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="370d7" binding="dataPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="55bfb" class="javax.swing.JTextField" binding="urlImmagineField">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
             </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="c869d" class="javax.swing.JTextField" binding="dataField">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="249e4" binding="immaginePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="55bfb" class="javax.swing.JTextField" binding="urlImmagineField">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
-            </children>
-          </grid>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="87e29" binding="labelPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -203,7 +143,7 @@
               <text value="categoria"/>
             </properties>
           </component>
-          <component id="987f3" class="javax.swing.JLabel" binding="l">
+          <component id="987f3" class="javax.swing.JLabel">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
