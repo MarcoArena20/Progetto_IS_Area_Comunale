@@ -104,6 +104,12 @@ public class ControllerUtenti {
             return null;
         }
     }
+
+    /**
+     * Metodo utilizzato per leggere da file il ruolo dell'utente corrente e restituirlo
+     *
+     * @return stringa contenente ruolo dell'utente corrente
+     */
     public static String getRuoloUtenteCorrente(){
         Path path = Path.of("configuration/config.txt");
         try {
@@ -118,6 +124,13 @@ public class ControllerUtenti {
             return null;
         }
     }
+
+    /**
+     * Metodo utilizzato per verificare che l'utente corrente abbia il ruolo specificato in ingresso
+     *
+     * @param ruolo ruolo specificato in ingresso
+     * @return true se i ruoli corrispondono, false altrimenti
+     */
 
     public static boolean verificaRuoloUtenteCorrente(Ruolo ruolo) {
 

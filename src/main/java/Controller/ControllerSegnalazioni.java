@@ -2,7 +2,6 @@ package Controller;
 
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Gestori.*;
-import Entity.Observer.ConcreteObserver;
 import Entity.Segnalazione;
 import Entity.Enum.*;
 import Entity.StateMachine.*;
@@ -175,6 +174,15 @@ public class ControllerSegnalazioni {
 
     }
 
+    /**
+     * CADO D'USO: iniziaGestioneSegnalazione
+     * Invocato dal button btnPrendiInCarico @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'utente sia un'operatore, invoca il gestoreSegnalazioni per iniziare la gestione della segnalazione,
+     * specificando l'id della segnalazione corrente
+     *
+     * @return true se la segnalazione è stata presa in carico correttamente, false altrimenti
+     */
+
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -186,6 +194,15 @@ public class ControllerSegnalazioni {
 
         return gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente);
     }
+
+    /**
+     * CADO D'USO: aggiornaStatoSegnalazione
+     * Invocato dal button btnAggiornaStato @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente, invoca il gestoreSegnalazioni per aggiornare lo stato,
+     * specificando l'esito dell'aggiornamento (positivo)
+     *
+     * @return true se la segnalazione è stata aggiornata correttamente, false altrimenti
+     */
 
     public static boolean aggiornaStatoSegnalazione() {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -199,6 +216,19 @@ public class ControllerSegnalazioni {
 
         return gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
     }
+
+    /**
+     * CADO D'USO: concludiGestioneSegnalazione, aggiungiNotaInterna
+     * Invocato dal button confermaEConcludiButton @see FormConclusioneGestione
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente e che l'operazione di conclusione sia effettuabile,
+     * invoca il gestoreSegnalazioni per aggiornare lo stato della segnalazione (con esito specificato in ingresso alla funzione)
+     * e, se l'aggiornamento va a buon fine e si vuole aggiungere una nota, per aggiungere la nota
+     *
+     * @param titolo titolo della nota, null se non la si vuole aggiungere
+     * @param descrizione descrizione della nota, null se non la si vuole aggiungere
+     * @param esitoGestione specifica se la gestione è stata risolutiva oppure no
+     * @return true se la segnalazione è stata conclusa correttamente (ed eventualmente la nota è stata aggiunta), false altrimenti
+     */
 
     public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -225,6 +255,16 @@ public class ControllerSegnalazioni {
 
         return esitoAggiuntaNota;
     }
+
+    /**
+     * CADO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
+     * Invocato dai metodi utilizzati dai suddetti casi d'uso, precedentemente commentati
+     * Invoca il gestoreAggiornamento per verificare che l'operatore stia gestendo la segnalazione che intende aggiornare o concludere
+     *
+     * @param idOperatore id dell'operatore corrente
+     * @param idSegnalazione id della segnalazione corrente
+     * @return true se l'operatore sta gestendo quella segnalazione, false altrimenti
+     */
 
     public static boolean verificaPermessiOperatore(Long idOperatore, Long idSegnalazione){
         GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
@@ -461,8 +501,11 @@ public class ControllerSegnalazioni {
         return dettagli;
     }
 
-
+    /*
+    //main usato per testing del flusso principale di gestione di una segnalazione e alcuni scenari alternativi
     public static void main(String[] args) {
+
+
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
@@ -513,7 +556,6 @@ public class ControllerSegnalazioni {
         //concludiGestioneSegnalazione(null, null, false);
         //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
-
     }
-
+     */
 }

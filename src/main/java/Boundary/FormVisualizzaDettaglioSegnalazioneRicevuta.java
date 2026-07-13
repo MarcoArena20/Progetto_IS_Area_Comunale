@@ -90,7 +90,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
         /*
         * Visto che lo stato della segnalazione può avanzare o ritornare allo stato iniziale (senza dipendere da input dell'utente)
         * l'azione invocata al click dei button sarà una chiamata al ControllerSegnalazioni o l'apertura del formConclusioneGestione
-        * (specificando la riga visualizzata al dettaglio) nel caso in cui si vuole concludere la gestione.
+        * nel caso in cui si vuole concludere la gestione.
         */
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
