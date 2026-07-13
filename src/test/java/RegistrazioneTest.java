@@ -54,7 +54,7 @@ public class RegistrazioneTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"Rossiiiiiiiiiiiiiiiiiiii", "Ro", "R0ss1"})
-    void testCognomeTroppoLungo(String cognome) {
+    void testCognome(String cognome) {
         boolean esito;
         try {
             esito = formRegistrazione.registra("Cittadino", "Mario", cognome, "mario.rossi@comune.it", "1234567890", "MarioRossi-03");
