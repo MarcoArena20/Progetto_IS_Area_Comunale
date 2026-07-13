@@ -2,6 +2,7 @@ package Controller;
 
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Gestori.*;
+import Entity.Observer.ConcreteObserver;
 import Entity.Segnalazione;
 import Entity.Enum.*;
 import Entity.StateMachine.*;

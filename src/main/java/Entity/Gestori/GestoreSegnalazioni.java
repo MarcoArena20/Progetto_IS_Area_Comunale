@@ -6,6 +6,7 @@ import Entity.*;
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.EntryDB.GestioneOperatoreEntry;
 import Entity.Enum.Categoria;
+import Entity.Observer.ConcreteObserver;
 import Entity.StateMachine.StatoInviata;
 import Entity.StateMachine.StatoRisolta;
 import Entity.StateMachine.StatoSegnalazione;
@@ -163,6 +164,9 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
 
+        //attach observer in modo da visualizzare i cambi stato
+        segnalazione.attach(ConcreteObserver.getInstance());
+
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
@@ -177,6 +181,8 @@ public class GestoreSegnalazioni {
         }
 
         System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
+
+        segnalazione.detach();
 
         return true;
     }
@@ -193,6 +199,8 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
 
+        //attach observer in modo da visualizzare i cambi stato
+        segnalazione.attach(ConcreteObserver.getInstance());
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
@@ -209,6 +217,8 @@ public class GestoreSegnalazioni {
         }
 
         System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
+
+        segnalazione.detach();
 
         return true;
     }

@@ -64,7 +64,7 @@ public class CreazioneNotaTest {
 
         form = new FormConclusioneGestione(idRow);
 
-        form.presenzaNota = true;
+        form.setPresenzaNota(true);
 
     }
 
@@ -77,8 +77,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void tuttiInputValidi() {
-        form.titoloTextField.setText("Risolta");
-        form.descrizioneTextField.setText("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
+        form.setTitoloNota("Risolta");
+        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
 
         boolean esito;
 
@@ -101,8 +101,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void titoloLungo() {
-        form.titoloTextField.setText("La Segnalazione è stata risolta");
-        form.descrizioneTextField.setText("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
+        form.setTitoloNota("La Segnalazione è stata risolta");
+        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
 
         boolean esito;
 
@@ -124,8 +124,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void titoloCorto() {
-        form.titoloTextField.setText("Ok");
-        form.descrizioneTextField.setText("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
+        form.setTitoloNota("Ok");
+        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
 
         boolean esito;
 
@@ -147,8 +147,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void titoloSpeciale() {
-        form.titoloTextField.setText("Ris@lta");
-        form.descrizioneTextField.setText("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
+        form.setTitoloNota("Ris@lta");
+        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
 
         boolean esito;
 
@@ -170,8 +170,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void descrizioneLunga() {
-        form.titoloTextField.setText("Check parziale");
-        form.descrizioneTextField.setText("La segnalazione è stata ricevuta, verificata e inoltrata agli enti competenti. Sono state predisposte misure cautelari per la risoluzione del problema; saranno obbligatori altri interventi di controllo");
+        form.setTitoloNota("Check parziale");
+        form.setDescrizioneNota("La segnalazione è stata ricevuta, verificata e inoltrata agli enti competenti. Sono state predisposte misure cautelari per la risoluzione del problema; saranno obbligatori altri interventi di controllo");
 
         boolean esito;
 
@@ -193,8 +193,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void descrizioneCorta() {
-        form.titoloTextField.setText("Risolta");
-        form.descrizioneTextField.setText("Ok");
+        form.setTitoloNota("Risolta");
+        form.setDescrizioneNota("Ok");
 
         boolean esito;
 
@@ -216,8 +216,8 @@ public class CreazioneNotaTest {
 
     @Test
     public void descrizioneSpeciale() {
-        form.titoloTextField.setText("Risolta");
-        form.descrizioneTextField.setText("Segnalazione gestita! correttamente#");
+        form.setTitoloNota("Risolta");
+        form.setDescrizioneNota("Segnalazione gestita! correttamente#");
 
         boolean esito;
 

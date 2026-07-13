@@ -23,9 +23,25 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     private JTextArea txtDescrizione;
     private JScrollPane scrollPaneDescrizione;
 
+    /**
+     *  button utilizzato per la presa in carico di una segnalazione libera
+     */
+
     public JButton btnPrendiInCarico;
+
+    /**
+     *  button usato per l'aggiornamento dello stato della segnalazione in gestione
+     */
+
     public JButton btnAggiornaStato;
+
+    /**
+     *  button usato per la conclusione della gestione della segnalazione @see FormConclusioneGestione
+     */
+
     public JButton btnConcludiGestione;
+
+
     private JTable tableStati;
 
     private JScrollPane scrollStati;
@@ -71,6 +87,11 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
 
     private void configuraAzioni(Integer idRow) {
+        /*
+        * Visto che lo stato della segnalazione può avanzare o ritornare allo stato iniziale (senza dipendere da input dell'utente)
+        * l'azione invocata al click dei button sarà una chiamata al ControllerSegnalazioni o l'apertura del formConclusioneGestione
+        * (specificando la riga visualizzata al dettaglio) nel caso in cui si vuole concludere la gestione.
+        */
         btnPrendiInCarico.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.iniziaGestioneSegnalazione(),idRow));
         btnAggiornaStato.addActionListener(e -> eseguiAzione(() -> ControllerSegnalazioni.aggiornaStatoSegnalazione(),idRow));
         btnConcludiGestione.addActionListener(e -> {
@@ -153,7 +174,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
         List<String[]> datiCronologia = ControllerSegnalazioni.caricaStoricoStatiSegnalazione(idRow);
 
-        if (datiCronologia != null) {
+        if (!datiCronologia.isEmpty()) {
             for (String[] riga : datiCronologia) {
 
                 String statoPulito = "";
