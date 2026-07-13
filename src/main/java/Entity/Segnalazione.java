@@ -129,9 +129,17 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         }
     }
 
-    //record usato per tornare in modo pulito l'anteprima
+    /**
+     * Record Java di supporto utilizzato per accorpare in un unico oggetto immutabile
+     * i dati essenziali di riepilogo di una segnalazione
+     */
     public record InfoAnteprima(Categoria categoria, LocalDateTime data, String posizione, StatoSegnalazione stato, Long idSegnalazione) {}
 
+    /**
+     * Estrae e restituisce l'anteprima sintetica dei dati informativi della segnalazione corrente.
+     *
+     * @return un'istanza di InfoAnteprima
+     */
     public InfoAnteprima getInfoAnteprima(){
         if(verificaPresenzaData()){
             LocalDateTime date = getData();
@@ -140,9 +148,18 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         return new InfoAnteprima(this.categoria, this.data, this.posizione, this.stato, this.idSegnalazione);
     }
 
-    //record usato per tornare in modo pulito i dettagli
+    /**
+     * Record Java di supporto utilizzato per accorpare in un unico oggetto immutabile
+     * i dettagli della segnalazione
+     */
     public record Dettaglio(InfoAnteprima anteprima, String titolo, String descrizone, String urlImmagine) {}
 
+    /**
+     * Estrae e restituisce il dettaglio completo associato alla segnalazione.
+     * Se l'immagine allegata non è presente o è vuota, valorizza il relativo campo con una stringa di default.
+     *
+     * @return un'istanza di Dettaglio
+     */
     public Dettaglio getDettaglioSegnalazione(){
         String url;
         if(verificaPresenzaImmagine()){
@@ -155,6 +172,11 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), url);
     }
 
+    /**
+     * Verifica la presenza effettiva di un percorso valido per l'immagine allegata.
+     *
+     * @return true se l'url è valorizzato e non vuoto, false altrimenti
+     */
     private boolean verificaPresenzaImmagine(){
         if (this.urlImmagine == null) {
             return false;
@@ -162,6 +184,11 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         return !(this.urlImmagine.isEmpty());
     }
 
+    /**
+     * Verifica l'avvenuta valorizzazione del campo data.
+     *
+     * @return true se l'attributo data non è nullo, false altrimenti
+     */
     private boolean verificaPresenzaData(){
         if(this.data == null){
             return false;

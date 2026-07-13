@@ -67,6 +67,12 @@ public class GestoreSegnalazioni {
 
     }
 
+    /**
+     * Invoca il gestorePersistenza per recuperare tutte le segnalazioni inviate da uno specifico cittadino.
+     *
+     * @param idCittadino l'identificativo univoco del cittadino
+     * @return una List contenente le istanze di Segnalazione estratte
+     */
     public List<Segnalazione> cercaSegnalazioni(Long idCittadino) {
 
         return gestorePersistenza.cercaPerCampo(
@@ -187,8 +193,21 @@ public class GestoreSegnalazioni {
         return true;
     }
 
+    /**
+     * Record Java di supporto utilizzato per accorpare in un unico oggetto immutabile
+     * i dettagli principali di una segnalazione, l'intera mappa della sua cronologia degli stati
+     * e l'eventuale titolo di una eventuale nota
+     */
     public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, Map<AggiornamentoStatoEntry, String[]> aggiornamentiStato) {}
 
+    /**
+     * Ricostruisce il dettaglio informativo completo, lo storico dei passaggi di stato di una segnalazione,
+     * e l'eventuale titolo di una eventuale nota associata alla conclusione di una segnalazione,
+     * recuperando ed incrociando i dati dalle rispettive tabelle di tracciamento storico.
+     *
+     * @param idSegnalazione l'identificativo univoco della segnalazione da esaminare
+     * @return un oggetto dettaglioCompleto contenente i dati accorpati e pronti all'esportazione
+     */
     public dettaglioCompleto visualizzaDettaglioSegnalazione(Long idSegnalazione){
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
 
@@ -213,7 +232,6 @@ public class GestoreSegnalazioni {
             if(aggiornamento.getStato() instanceof StatoRisolta || aggiornamento.getStato() instanceof StatoInviata){
 
                 GestioneOperatoreEntry gestione = gestioni.get(index);
-                System.out.println(gestione.getIdGestione());
                 if(gestione.getTitolo() != null){
 
                     String[] nota = {gestione.getTitolo(), gestione.getDescrizione()};
@@ -238,6 +256,12 @@ public class GestoreSegnalazioni {
         return new dettaglioCompleto(dettaglio, mappaRisultati);
     }
 
+    /**
+     * Estrae le informazioni in formato InfoAnteprima per tutte le segnalazioni inoltrate da un cittadino.
+     *
+     * @param idCittadino l'identificativo univoco del cittadino
+     * @return una List di Segnalazione.InfoAnteprima
+     */
     public List<Segnalazione.InfoAnteprima> visualizzaSegnalazioniPerCittadino(Long idCittadino) {
         List<Segnalazione> segnalazioni = cercaSegnalazioni(idCittadino);
         List<Segnalazione.InfoAnteprima> anteprime = new ArrayList<>();

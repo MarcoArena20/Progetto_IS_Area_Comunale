@@ -18,7 +18,7 @@ public class FormAreaPersonaleCittadino {
             @Override
             public void actionPerformed(ActionEvent e) {
                 areaPersonale.dispose();
-                FormVisualizzaSegnalazioni visualizzaFrame = new FormVisualizzaSegnalazioni();
+                FormVisualizzaSegnalazioniInviate visualizzaFrame = new FormVisualizzaSegnalazioniInviate();
                 visualizzaFrame.apriFormVisualizzaSegnalazioni();
             }
         });
