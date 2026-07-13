@@ -112,7 +112,7 @@ public class FormModificaSegnalazione {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                new FormVisualizzaSegnalazioni().apriFormVisualizzaSegnalazioni();
+                new FormVisualizzaSegnalazioniInviate().apriFormVisualizzaSegnalazioni();
                 modificaFrame.dispose();
 
             }

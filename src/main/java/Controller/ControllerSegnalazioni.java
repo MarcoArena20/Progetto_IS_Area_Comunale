@@ -13,6 +13,7 @@ import java.util.*;
 //Façade
 public class ControllerSegnalazioni {
 
+    /** Mappa che associa l'indice numerico della riga della JTable (Integer) all'ID reale della segnalazione (Long). */
     private static Map<Integer,Long> bindingId;
     private static Long idSegnalazioneCorrente;
 
@@ -26,7 +27,7 @@ public class ControllerSegnalazioni {
 
 
     /**
-     * CADO D'USO: CreazioneSegnalazione
+     * CASO D'USO: CreazioneSegnalazione
      * Converte categoria e data nei formati Categoria e LocalDateTime prima di contattare
      * il GestoreSegnalazioni del package Entity per creare la segnalazione
      *
@@ -272,20 +273,27 @@ public class ControllerSegnalazioni {
         return gestoreAggiornamentoStato.verificaOperatoreInGestioneCorrente(idOperatore, idSegnalazione);
     }
 
+    /**
+     * CASO D'USO: visualizzaSegnlazioniInviate
+     * Questo metodo svolge il ruolo di "adapter" tra:
+     *
+     * - il livello applicativo, che lavora con oggetti del dominio
+     *   come Segnalazione;
+     *
+     * - la GUI, che invece non dovrebbe conoscere direttamente
+     *   le Entity del sistema.
+     *
+     * In altre parole, il metodo adatta una lista di oggetti
+     * Segnalazione.InfoAnteprima in una lista di array di String, cioè in un formato
+     * semplice e già pronto per essere visualizzato in una JTable.
+     *
+     * Invoca il GestoreSegnalazioni per recuperare una lista di anteprime
+     * di ogni segnalazione associata al CITTADINO corrente
+     *
+     * @return una List di array di Stringhe rappresentanti le righe sintetiche delle segnalazioni
+     */
     public static List<String[]> caricaSegnalazioni(){
-        /*
-         * Questo metodo svolge il ruolo di "adapter" tra:
-         *
-         * - il livello applicativo, che lavora con oggetti del dominio
-         *   come Imbarcazione;
-         *
-         * - la GUI, che invece non dovrebbe conoscere direttamente
-         *   le Entity del sistema.
-         *
-         * In altre parole, il metodo adatta una lista di oggetti
-         * Segnalazione.InfoAnteprima in una lista di array di String, cioè in un formato
-         * semplice e già pronto per essere visualizzato in una JTable.
-         */
+
         bindingId = new HashMap<>();
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -307,7 +315,6 @@ public class ControllerSegnalazioni {
          * In questo modo la GUI riceverà solo dati testuali,
          * non oggetti Entity.
          */
-
         int indiceRiga = 0;
         for (Segnalazione.InfoAnteprima anteprima : anteprime) {
 
@@ -326,6 +333,25 @@ public class ControllerSegnalazioni {
         return righe;
     }
 
+    /**
+     * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
+     * Questo metodo svolge il ruolo di "adapter" tra:
+     *
+     * - il livello applicativo, che lavora con oggetti del dominio
+     *   come Segnalazione;
+     *
+     * - la GUI, che invece non dovrebbe conoscere direttamente
+     *   le Entity del sistema.
+     *
+     * In altre parole, il metodo adatta una lista di oggetti
+     * GestoreSegnalazioni.dettaglioCompleto in una lista di array di String, cioè in un formato
+     * semplice e già pronto per essere visualizzato in una JTable.
+     *
+     * Invoca il GestoreSegnalazioni per caricare i dettagli informativi di una determinata segnalazione.
+     *
+     * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
+     * @return una List di array di stringhe idonea a popolare una tabella invertita verticalmente
+     */
     public static List<String[]> caricaDettaglioSegnalazione(int indiceRiga){
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
@@ -354,7 +380,26 @@ public class ControllerSegnalazioni {
         return righeTabellaInvertita;
     }
 
-    public static List<String[]> caricaStoricoStatiSegnalazione(int indiceRiga){
+    /**
+     * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
+     * Questo metodo svolge il ruolo di "adapter" tra:
+     *
+     * - il livello applicativo, che lavora con oggetti del dominio
+     *   come Segnalazione;
+     *
+     * - la GUI, che invece non dovrebbe conoscere direttamente
+     *   le Entity del sistema.
+     *
+     * In altre parole, il metodo adatta una lista di oggetti
+     * GestoreSegnalazioni.dettaglioCompleto in una lista di array di String, cioè in un formato
+     * semplice e già pronto per essere visualizzato in una JTable.
+     *
+     * Invoca il GestoreSegnalazioni per recuperare lo storico cronologico complessivo dei cambi di stato subiti dalla segnalazione selezionata.
+     *
+     * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
+     * @return una List di array di stringhe
+     */
+    public static List<String[]> caricaStoricoStatiSegnalazione(int indiceRiga) {
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
         Long idSegnalazione = bindingId.get(indiceRiga);
@@ -368,7 +413,7 @@ public class ControllerSegnalazioni {
 
         for (AggiornamentoStatoEntry agg : dettaglioCompleto.aggiornamentiStato().keySet()) {
 
-            String[] riga = new String[] {
+            String[] riga = new String[]{
                     agg.getData().format(formatter),                 // Colonna 0: Data e Ora
                     agg.getStato().toString(),                       // Colonna 1: Nome dello Stato
                     dettaglioCompleto.aggiornamentiStato().get(agg)[0], // titolo della nota
@@ -381,6 +426,21 @@ public class ControllerSegnalazioni {
         return righeCronologia;
     }
 
+    /**
+     * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
+     * Questo metodo svolge il ruolo di "adapter" tra:
+     *
+     * - il livello applicativo, che lavora con oggetti del dominio
+     *   come Segnalazione;
+     *
+     * - la GUI, che invece non dovrebbe conoscere direttamente
+     *   le Entity del sistema.
+     *
+     * Invoca il GestoreSegnalazioni per recuperare le informazioni relative alla descrizione testuale estesa e al link dell'immagineallegata di una segnalazione.
+     *
+     * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
+     * @return un array di stringhe di dimensione fissa (= 2), dove l'indice 0 rappresenta la descrizione e l'indice 1 l'URL dell'immagine
+     */
     public static String[] caricaDescrizioneEImmagineSegnalazione(int indiceRiga){
 
         GestoreSegnalazioni gestore = new GestoreSegnalazioni();
