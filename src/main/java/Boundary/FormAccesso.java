@@ -29,10 +29,10 @@ public class FormAccesso {
                         boolean esito = accedi(ruoloStringa, email, password);
                         if (esito) {
                             if (ruoloStringa.equals("CITTADINO")) {
-                                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                                new FormAreaPersonaleCittadino().apriAreaPersonaleCittadino();
                             }
                             else{
-                                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+                                new FormAreaPersonaleOperatore().apriAreaPersonaleOperatore();
                             }
                             accessoFrame.dispose();
                         }

@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Interfaccia grafica (Boundary) per la visualizzazione dell'area personale per il Cittadino.
+ *
+ * @author Ciorra Alessandro
+ * @version 1.0
+ */
 public class FormAreaPersonaleCittadino {
 
     private JFrame areaPersonale;
@@ -11,9 +17,12 @@ public class FormAreaPersonaleCittadino {
     private JButton visualizzaButton;
     private JButton creaSegnalazioneButton;
 
+    /**
+     * Costruisce il form impostando i listener per i pulsanti di navigazione.
+     */
     public FormAreaPersonaleCittadino(){
 
-
+        //Listener per il pulsante visualizza
         visualizzaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -22,6 +31,8 @@ public class FormAreaPersonaleCittadino {
                 visualizzaFrame.apriFormVisualizzaSegnalazioni();
             }
         });
+
+        //Listener per il pulsante creazione
         creaSegnalazioneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,21 +42,23 @@ public class FormAreaPersonaleCittadino {
         });
     }
 
-    public JFrame apriAreaPersonale(){
+    /**
+     * Inizializza e rende visibile la finestra principale
+     *
+     * @return l'istanza del JFrame configurato e visualizzato a schermo
+     */
+    public JFrame apriAreaPersonaleCittadino(){
 
-        JFrame frame = new JFrame();
-        frame.setTitle("CreazioneFrame");
-        frame.setContentPane(contentPanel);
+        areaPersonale = new JFrame("CreazioneFrame");
+        areaPersonale.setContentPane(contentPanel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        areaPersonale.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        areaPersonale.setResizable(false);
+        areaPersonale.pack();
+        areaPersonale.setLocationRelativeTo(null);
+        areaPersonale.setVisible(true);
 
-        areaPersonale = frame;
-
-        return frame;
+        return areaPersonale;
 
     }
 }

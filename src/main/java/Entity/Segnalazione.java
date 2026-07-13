@@ -141,9 +141,6 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
      * @return un'istanza di InfoAnteprima
      */
     public InfoAnteprima getInfoAnteprima(){
-        if(verificaPresenzaData()){
-            LocalDateTime date = getData();
-        }
 
         return new InfoAnteprima(this.categoria, this.data, this.posizione, this.stato, this.idSegnalazione);
     }
@@ -182,18 +179,6 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             return false;
         }
         return !(this.urlImmagine.isEmpty());
-    }
-
-    /**
-     * Verifica l'avvenuta valorizzazione del campo data.
-     *
-     * @return true se l'attributo data non è nullo, false altrimenti
-     */
-    private boolean verificaPresenzaData(){
-        if(this.data == null){
-            return false;
-        }
-        return true;
     }
 
     @Override

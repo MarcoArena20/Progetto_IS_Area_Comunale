@@ -80,7 +80,7 @@ public class FormVisualizzaSegnalazioniInviate {
                 visualizzaFrame.dispose();
                 // Apriamo il form di dettaglio passando il numero della riga selezionata
                 FormVisualizzaDettaglioSegnalazioneInviata dettaglioFrame = new FormVisualizzaDettaglioSegnalazioneInviata();
-                dettaglioFrame.apriFormVisualizzaDettaglioSegnalazioni(rigaSelezionata);
+                dettaglioFrame.apriFormVisualizzaDettaglioSegnalazione(rigaSelezionata);
 
             }
         });
@@ -140,7 +140,7 @@ public class FormVisualizzaSegnalazioniInviate {
             public void actionPerformed(ActionEvent e) {
                 visualizzaFrame.dispose();
                 FormAreaPersonaleCittadino areaPersonaleFrame = new FormAreaPersonaleCittadino();
-                areaPersonaleFrame.apriAreaPersonale();
+                areaPersonaleFrame.apriAreaPersonaleCittadino();
             }
         });
 
