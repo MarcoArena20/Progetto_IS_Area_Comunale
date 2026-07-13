@@ -70,59 +70,29 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     public String getUrlImmagine() { return urlImmagine; }
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
-    public synchronized boolean aggiornaStato(boolean avanzamento) {
+    public boolean aggiornaStato(boolean avanzamento) {
 
-        //1. Distinguo i due aggiornamenti
+       // 1. aggiorna stato
+        boolean esito = this.stato.aggiornaStato(this, avanzamento);
 
-        if (!avanzamento) {
-            //aggiornamento con esito false
-
-            //1.1 aggiorno stato con esito false
-            boolean esito = this.stato.aggiornaStato(this, false);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
-                return false;
-            }
-
-            //1.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this, this.stato);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
-                return false;
-            }
-
-            System.out.println("[Segnalazione "+this.idSegnalazione+"] Regressione stato..\n" +
-                    this.toString()
-            );
-
-            return true;//Modifica andata a buon fine
-
-
-        } else {
-            //avanzamento positivo
-
-            //2.1 aggiorno stato con esito true
-            boolean esito = this.stato.aggiornaStato(this, true);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
-                return false;
-            }
-
-            //2.2 Notifico observer, segnalando il nuovo stato
-            esito = notifyObserver(this, this.stato);
-            if (esito == false) {
-                System.err.println("[Segnalazione "+this.idSegnalazione+"] Osservatori assenti!");
-                return false;
-            }
-
-            //TODO NOTIFICA
-
-            System.out.println("[Segnalazione "+this.idSegnalazione+"] Avanzamento stato..\n" +
-                    this.toString()
-            );
-
-            return true;
+        if (esito == false) {
+            System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
         }
+
+        if (esito) {
+            //2. notifico osservatore
+            esito = notifyObserver(this, this.stato);
+
+            if (esito == false) {
+                System.err.println("[Segnalazione " + this.idSegnalazione + "] Osservatori assenti!");
+            }
+        }
+
+        System.out.println("[Segnalazione "+this.idSegnalazione+"] Avanzamento stato: "+avanzamento+"..\n" +
+                this.toString()
+        );
+
+        return esito;
     }
 
     /**
