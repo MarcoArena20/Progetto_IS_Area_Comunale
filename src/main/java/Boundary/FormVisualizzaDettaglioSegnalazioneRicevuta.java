@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Map;
+import Entity.Cittadino;
+import Entity.Gestori.GestoreUtenti;
 
 /**
  *
@@ -212,7 +214,7 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
 
             lblPosizione.setText(mappaDettagli.get("posizione"));
             lblData.setText(mappaDettagli.get("data"));
-            lblCittadino.setText(mappaDettagli.get("idCittadino"));
+            lblCittadino.setText(mappaDettagli.get("nomeCittadino"));
 
             String url = mappaDettagli.get("urlImmagine");
             lblUrlImmagine.setText(url != null && !url.isEmpty() ? url : "Nessun allegato presente");
