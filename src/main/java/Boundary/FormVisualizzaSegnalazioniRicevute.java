@@ -146,11 +146,13 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
             }
         };
 
-        for (String[] riga : righe) {
-            if (riga[4] != null) {
-                String rigaPulita = riga[4].replaceAll("(?i)STATO:", "").replace("_", " ").trim().toLowerCase();
-                if (!rigaPulita.isEmpty()) {
-                    riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
+        if (!righe.isEmpty()) {
+            for (String[] riga : righe) {
+                if (riga[4] != null) {
+                    String rigaPulita = riga[4].replaceAll("(?i)STATO:", "").replace("_", " ").trim().toLowerCase();
+                    if (!rigaPulita.isEmpty()) {
+                        riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
+                    }
                 }
             }
 

@@ -6,6 +6,7 @@ import Entity.*;
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.EntryDB.GestioneOperatoreEntry;
 import Entity.Enum.Categoria;
+import Entity.Observer.ConcreteObserver;
 import Entity.StateMachine.StatoInviata;
 import Entity.StateMachine.StatoRisolta;
 import Entity.StateMachine.StatoSegnalazione;
@@ -14,11 +15,24 @@ import Entity.Enum.StatoType;
 import java.time.LocalDateTime;
 import java.util.*;
 
-//Façade
+/**
+ * E' una façade utilizzata per gestire le segnalazioni
+ */
+
 public class GestoreSegnalazioni {
 
     //Attributi
+
+    /**
+     * attributo che si riferisce al gestorePersistenza in modo da poter salvare le segnalazioni create, modificate o aggiornate
+     * su database
+     */
+
     private GestorePersistenza gestorePersistenza;
+
+    /**
+     * Costruttore per creare ed inizializzare il gestore
+     */
 
     public GestoreSegnalazioni(){
 
@@ -26,36 +40,62 @@ public class GestoreSegnalazioni {
 
     }
 
-    //Metodi
+    /**
+     * CASO D'USO: CreazioneSegnalazione
+     * Crea una segnalazione e invoca il GestorePersistenza dello strado Database
+     * per salvare la segnalazione
+     * @param idCittadino id del cittadino associato alla segnalazione
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     */
     public boolean inserisciSegnalazione(Long idCittadino, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine) {
 
-        // Bisogna trovare il cittadino corrispondente
+        // Otteniamo il riferimento al cittadino corrispondente
         Cittadino cittadino = new GestoreUtenti().cercaCittadino(idCittadino);
 
-        //if(cittadino == null)
-            //return false;
+        if(cittadino == null)
+            return false;
 
-
+        // Creiamo la segnalazione
         Segnalazione segnalazione = new Segnalazione(cittadino, titolo, descrizione, categoria, posizione);
 
+        // Aggiungiamo i parametri opzionali
         if(data != null)
             segnalazione.setData(data);
 
         if (urlImmagine != null)
            segnalazione.setUrlImmagine(urlImmagine);
 
-        System.out.println("[GestoreSegnalazioni] Inserita nuova segnalazione:\n"+segnalazione.toString());
-
         return gestorePersistenza.salva(segnalazione);
     }
 
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Invoca il gestore persistenza per modificare la segnalazione corrente
+     * @param idSegnalazione id della segnalazione
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la modifica è andata a buon fine, false altrimenti
+     */
+
     public boolean modificaSegnalazione(Long idSegnalazione, String titolo, String descrizione, Categoria categoria, String posizione, LocalDateTime data, String urlImmagine){
 
-        Segnalazione segnalazione= gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
+        // Otteniamo il riferimento alla segnalazione corrente
+        Segnalazione segnalazione = gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
 
-        if (segnalazione == null)
+        if(segnalazione == null)
             return false;
 
+        // Modifichiamo i campi della segnalazione
         segnalazione.setTitolo(titolo);
         segnalazione.setDescrizione(descrizione);
         segnalazione.setCategoria(categoria);
@@ -87,11 +127,30 @@ public class GestoreSegnalazioni {
         return gestorePersistenza.cercaPerCampi(Segnalazione.class, filtri);
     }
 
-    public Segnalazione cercaSegnalazione(Long idSegnalazione) {
-        Segnalazione segnalazione = gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
+    /**
+     * Metodo che invoca il gestorePersistenza per ottenere il riferimento ad una segnalazione, fornendo l'id in ingresso
+     *
+     * @param idSegnalazione id della segnalazione
+     * @return riferimento alla segnalazione
+     */
 
-        return segnalazione;
+    public Segnalazione cercaSegnalazione(Long idSegnalazione) {
+
+        return gestorePersistenza.trovaPerId(Segnalazione.class, idSegnalazione);
     }
+
+    /**
+     * CASO D'USO: aggiungiNotaInterna
+     * Invocato dal ControllerSegnalazioni nel caso in cui si vuole aggiungere una nota in conclusione della gestione,
+     * il metodo (dopo aver verificato che la segnalazione esista e che lo stato sia "Inviata" o "Risolta")
+     * invoca il gestorePersistenzaPersistenza per aggiungere la nota corrispondente
+     *
+     * @param idSegnalazione id della segnalazione
+     * @param idOperatore id dell'operatore
+     * @param titolo titolo della nota
+     * @param descrizione descrizione della nota
+     * @return true se la creazione della nota è andata a buon fine, false altrimenti
+     */
 
     public boolean aggiungiNota(Long idSegnalazione, Long idOperatore, String titolo, String descrizione) {
         //Bisogna controllare che: 0. la segnalazione esiste, 1. lo stato sia Inviata o Risolta
@@ -127,8 +186,18 @@ public class GestoreSegnalazioni {
         return true;
     }
 
+    /**
+     * CASO D'USO: iniziaGestioneSegnalazione
+     * Invocato dal ControllerSegnalazioni nel caso in cui si vuole iniziare la gestione di una segnalazione,
+     * il metodo dopo aver verificato che la segnalazione esiste e che è nello stato Inviata,
+     * aggiorna lo stato della segnalazione
+     *
+     * @param idSegnalazione id della segnalazione
+     * @return true se l'inizio della gestione è andato a buon fine, false altrimenti
+     */
+
     public boolean iniziaGestioneSegnalazione(Long idSegnalazione) {
-        //Bisogna controllare che: 0. la segnalazione esiste, 1. accesso in mutua esclusione, 2. la segnalazione ha stato inviata
+        //Bisogna controllare che: 0. la segnalazione esiste, 1. la segnalazione ha stato inviata
         Segnalazione segnalazione = cercaSegnalazione(idSegnalazione);
         if (segnalazione == null) {
             System.err.println("[GestoreSegnalazioni] Nessuna segnalazione trovata..");
@@ -136,6 +205,9 @@ public class GestoreSegnalazioni {
         }
 
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+
+        //attach observer in modo da visualizzare i cambi stato
+        segnalazione.attach(ConcreteObserver.getInstance());
 
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
@@ -152,10 +224,25 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
 
+        segnalazione.detach();
+
         return true;
     }
 
     //metodo invocato sia per aggiornare lo stato che per concludere la gestione
+
+    /**
+     * CASO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
+     * Invocato dal ControllerSegnalazioni nel caso in cui si vuole aggiornare lo stato di una segnalazione,
+     * il metodo dopo aver verificato che la segnalazione esiste e che non ha stato "Inviata" o "Risolta",
+     * aggiorna lo stato della segnalazione dopo aver effettuato l'attach dell'observer (all'istanziazione)
+     *
+     * @param idSegnalazione id della segnalazione
+     * @param idOperatore id dell'operatore
+     * @param esito true se l'avanzamento è positivo, false se è negativo (ovvero stato prossimo "Inviata")
+     * @return true se la segnalazione ha cambiato stato correttamente, false altrimenti
+     */
+
     public boolean aggiornaStatoSegnalazione(Long idSegnalazione, Long idOperatore, boolean esito) {
         //Bisogna controllare che: 0. la segnalazione esiste, 1. la segnalazione non ha ne stato inviata ne stato risolta
 
@@ -167,6 +254,8 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
 
+        //attach observer in modo da visualizzare i cambi stato
+        segnalazione.attach(ConcreteObserver.getInstance());
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
@@ -183,6 +272,8 @@ public class GestoreSegnalazioni {
         }
 
         System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
+
+        segnalazione.detach();
 
         return true;
     }

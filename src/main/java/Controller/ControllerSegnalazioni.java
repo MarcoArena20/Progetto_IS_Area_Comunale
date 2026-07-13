@@ -25,13 +25,129 @@ public class ControllerSegnalazioni {
     }
 
 
-
-    // Metodo per creare una segnalazione
+    /**
+     * CADO D'USO: CreazioneSegnalazione
+     * Converte categoria e data nei formati Categoria e LocalDateTime prima di contattare
+     * il GestoreSegnalazioni del package Entity per creare la segnalazione
+     *
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     */
     public static final boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
-        // Prima di effettuare la chiamata al Façade dello strato Entity, convertiamo il valore di categoria
-        Categoria categoriaEnum = Categoria.valueOf(categoria);
+        // Prima di effettuare la chiamata al GestoreSegnalazioni dello strato Entity effettuiamo
+        // il typecasting di categoria e data
 
+        Categoria categoriaEnum = Categoria.valueOf(categoria);
+        LocalDateTime localData;
+
+        if(data != null) {
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            localData = LocalDateTime.parse(data, formatter);
+
+        }else
+            localData = null;
+
+        // Otteniamo l'id del cittadino corrente per associarlo alla segnalazione creata
+        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
+
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+        boolean esito = gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
+
+        return esito;
+
+    }
+
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Verifica la modificabilità di una segnalazione controllando se essa si trova
+     * nello stato RISOLTA (non modificabile) o no
+     * @param idRow indice della riga della segnalazione corrente --> permette al controller di associare
+     *              l'indice della riga all'id della segnalazione
+     *
+     * @return true se la segnalazione è modificabile, false altrimenti
+     */
+
+    public static final boolean verificaModificabilita(Integer idRow){
+
+        // Effettuiamo il binding tra idRow e idSegnalazione
+        Long idSegnalazione = bindingId.get(idRow);
+
+        // Invochiamo il GestoreSegnalazioni per ottenere il riferimento alla segnalazione corrente
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        // Controlliamo lo stato della segnalazione corrente
+        return !segnalazione.getStato().getStatoToString().equals("RISOLTA");
+
+    }
+
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Restituisce al chiamante i parametri della segnalazione che possono essere modificati
+     * dal cittadino
+     * @param idRow indice della riga della segnalazione corrente --> permette al controller di associare
+     *              l'indice della riga all'id della segnalazione
+     * @return una map che effettua il binding tra attributo della segnalazione e valore
+     */
+
+    public static final Map<String, String> ottieniParametriModificabili(Integer idRow){
+
+        // Effettuiamo il binding tra idRow e idSegnalazione
+        Long idSegnalazione = bindingId.get(idRow);
+
+        // Invochiamo il GestoreSegnalazioni per ottenere il riferimento alla segnalazione corrente
+        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
+
+        // Creiamo la map dei parametri
+        Map<String, String> parametri = new HashMap<>();
+
+        // Otteniamo i parametri della segnalazione
+        parametri.put("titolo",segnalazione.getTitolo());
+        parametri.put("descrizione", segnalazione.getDescrizione());
+        parametri.put("categoria", segnalazione.getCategoria().name());
+        parametri.put("posizione", segnalazione.getPosizione());
+
+        // Verifichiamo la presenza dei parametri opzionali
+        if (segnalazione.getData() != null)
+            parametri.put("data", segnalazione.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        else
+            parametri.put("data", "");
+
+        if (segnalazione.getUrlImmagine() != null)
+            parametri.put("immagine", segnalazione.getUrlImmagine());
+        else
+            parametri.put("immagine", "");
+
+        return parametri;
+
+    }
+
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Converte categoria e data nei formati Categoria e LocalDateTime prima di contattare
+     * il GestoreSegnalazioni del package Entity per modificare la segnalazione
+     * @param idRow indice della riga della segnalazione corrente --> permette al controller di associare
+     *              l'indice della riga all'id della segnalazione
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     */
+
+    public static final boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+
+        // Prima di effettuare la chiamata al GestoreSegnalazioni dello strato Entity effettuiamo
+        // il typecasting di categoria e data
+        Categoria categoriaEnum = Categoria.valueOf(categoria);
         LocalDateTime localData;
 
         if(data != null) {
@@ -45,15 +161,27 @@ public class ControllerSegnalazioni {
 
         }
 
-        // Otteniamo l'id del cittadino per poter verificare la sua esistenza
+        GestoreSegnalazioni gest = new GestoreSegnalazioni();
+
+        // Otteniamo l'id dell'utente corrente per associarlo alla segnalazione
         Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
 
-        GestoreSegnalazioni gest = new GestoreSegnalazioni();
-        boolean esito = gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
+        // Effettuiamo il binding tra idRow e idSegnalazione
+        Long idSegnalazione = bindingId.get(idRow);
 
+        boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
         return esito;
 
     }
+
+    /**
+     * CASO D'USO: iniziaGestioneSegnalazione
+     * Invocato dal button btnPrendiInCarico @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'utente sia un'operatore, invoca il gestoreSegnalazioni per iniziare la gestione della segnalazione,
+     * specificando l'id della segnalazione corrente
+     *
+     * @return true se la segnalazione è stata presa in carico correttamente, false altrimenti
+     */
 
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -67,6 +195,15 @@ public class ControllerSegnalazioni {
         return gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente);
     }
 
+    /**
+     * CASO D'USO: aggiornaStatoSegnalazione
+     * Invocato dal button btnAggiornaStato @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente, invoca il gestoreSegnalazioni per aggiornare lo stato,
+     * specificando l'esito dell'aggiornamento (positivo)
+     *
+     * @return true se la segnalazione è stata aggiornata correttamente, false altrimenti
+     */
+
     public static boolean aggiornaStatoSegnalazione() {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -79,6 +216,19 @@ public class ControllerSegnalazioni {
 
         return gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
     }
+
+    /**
+     * CASO D'USO: concludiGestioneSegnalazione, aggiungiNotaInterna
+     * Invocato dal button confermaEConcludiButton @see FormConclusioneGestione
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente e che l'operazione di conclusione sia effettuabile,
+     * invoca il gestoreSegnalazioni per aggiornare lo stato della segnalazione (con esito specificato in ingresso alla funzione)
+     * e, se l'aggiornamento va a buon fine e si vuole aggiungere una nota, per aggiungere la nota
+     *
+     * @param titolo titolo della nota, null se non la si vuole aggiungere
+     * @param descrizione descrizione della nota, null se non la si vuole aggiungere
+     * @param esitoGestione specifica se la gestione è stata risolutiva oppure no
+     * @return true se la segnalazione è stata conclusa correttamente (ed eventualmente la nota è stata aggiunta), false altrimenti
+     */
 
     public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -106,93 +256,20 @@ public class ControllerSegnalazioni {
         return esitoAggiuntaNota;
     }
 
-    public static boolean verificaModificabilita(Integer idRow){
-
-        // La prima cosa da fare è ottenere l'id della segnalazione corrente
-        // e chiamare il gestore segnalazioni
-
-        Long idSegnalazione = bindingId.get(idRow);
-
-        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
-        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
-
-        if (segnalazione == null)
-            return false;
-
-        // Dopo aver trovato la segnalazione abbiamo bisogno di verificare il suo stato
-        if (segnalazione.getStato().getStatoToString().equals("RISOLTA"))
-            return false;
-        else
-            return true;
-
-    }
+    /**
+     * CASO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
+     * Invocato dai metodi utilizzati dai suddetti casi d'uso, precedentemente commentati
+     * Invoca il gestoreAggiornamento per verificare che l'operatore stia gestendo la segnalazione che intende aggiornare o concludere
+     *
+     * @param idOperatore id dell'operatore corrente
+     * @param idSegnalazione id della segnalazione corrente
+     * @return true se l'operatore sta gestendo quella segnalazione, false altrimenti
+     */
 
     public static boolean verificaPermessiOperatore(Long idOperatore, Long idSegnalazione){
         GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
 
         return gestoreAggiornamentoStato.verificaOperatoreInGestioneCorrente(idOperatore, idSegnalazione);
-    }
-
-    public static Map<String, String> ottieniParametriModificabili(Integer idRow){
-
-        // La prima cosa da fare è ottenere l'id della segnalazione corrente
-        // e chiamare il gestore segnalazioni
-
-        Long idSegnalazione = bindingId.get(idRow);
-
-        // Andiamo a chiamare il gestore segnalazioni per ottenere la segnalazione
-        Segnalazione segnalazione = new GestoreSegnalazioni().cercaSegnalazione(idSegnalazione);
-
-        if (segnalazione == null)
-            return null;
-
-        Map<String, String> parametri = new HashMap<>();
-
-        parametri.put("titolo",segnalazione.getTitolo());
-        parametri.put("descrizione", segnalazione.getDescrizione());
-        parametri.put("categoria", segnalazione.getCategoria().name());
-        parametri.put("posizione", segnalazione.getPosizione());
-
-        if (segnalazione.getData() != null)
-            parametri.put("data", segnalazione.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-        else
-            parametri.put("data", "");
-
-        if (segnalazione.getUrlImmagine() != null)
-            parametri.put("immagine", segnalazione.getUrlImmagine());
-        else
-            parametri.put("immagine", "");
-
-        return parametri;
-
-    }
-
-    public static boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
-
-        // Prima di effettuare la chiamata al Façade dello strato Entity, convertiamo il valore di categoria
-        Categoria categoriaEnum = Categoria.valueOf(categoria);
-
-        LocalDateTime localData;
-
-        if(data != null) {
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            localData = LocalDateTime.parse(data, formatter);
-
-        }else{
-
-            localData = null;
-
-        }
-
-        GestoreSegnalazioni gest = new GestoreSegnalazioni();
-
-        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
-        Long idSegnalazione = bindingId.get(idRow);
-
-        boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
-        return esito;
-
     }
 
     public static List<String[]> caricaSegnalazioni(){
@@ -446,8 +523,11 @@ public class ControllerSegnalazioni {
         return dettagli;
     }
 
-
+    /*
+    //main usato per testing del flusso principale di gestione di una segnalazione e alcuni scenari alternativi
     public static void main(String[] args) {
+
+
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
@@ -498,7 +578,6 @@ public class ControllerSegnalazioni {
         //concludiGestioneSegnalazione(null, null, false);
         //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
-
     }
-
+     */
 }
