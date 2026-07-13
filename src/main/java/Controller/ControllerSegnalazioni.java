@@ -1,5 +1,6 @@
 package Controller;
 
+import Entity.Cittadino;
 import Entity.EntryDB.AggiornamentoStatoEntry;
 import Entity.Gestori.*;
 import Entity.Segnalazione;
@@ -577,7 +578,19 @@ public class ControllerSegnalazioni {
             dettagli.put("data", "");
         }
 
-        dettagli.put("idCittadino", s.getIdCittadino() != null ? String.valueOf(s.getIdCittadino()) : "");
+        String nomeCittadino = "Utente Sconosciuto";
+        if (s.getIdCittadino() != null) {
+            GestoreUtenti gestoreUtenti = new GestoreUtenti();
+            Cittadino cittadino = gestoreUtenti.cercaCittadino(s.getIdCittadino());
+
+            if (cittadino != null) {
+                nomeCittadino = cittadino.getNome() + " " + cittadino.getCognome();
+            } else {
+                nomeCittadino = String.valueOf(s.getIdCittadino()); // Fallback all'ID se non trovato
+            }
+        }
+        dettagli.put("nomeCittadino", nomeCittadino);
+
         dettagli.put("urlImmagine", s.getUrlImmagine() != null ? s.getUrlImmagine() : "");
 
         return dettagli;

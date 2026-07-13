@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * E' una façade utilizzata per gestire gli Utenti
+ * E' una faç3ade utilizzata per gestire gli Utenti
  */
 
 public class GestoreUtenti {
