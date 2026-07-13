@@ -61,6 +61,11 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
     private JButton btnVisualizzaDettaglio;
 
     /**
+     * button per tornare indietro nell'area personale dell'operatore
+     */
+    private JButton btnIndietro;
+
+    /**
      * Costruisci un nuovo frame popolando la tabella iniziale e creando gli action listener
      * legati all'applicazione dei filtri e all'apertura del dettaglio della segnalazione.
      */
@@ -73,7 +78,21 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         btnApplicaFiltri.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                aggiornaTabella();
+
+            }
+        });
+
+        btnIndietro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Chiude la finestra corrente
+                if (visualizzaFrame != null) {
+                    visualizzaFrame.dispose();
+                }
+
+                // Apre la schermata dell'Area Personale
+                FormAreaPersonaleOperatore form = new FormAreaPersonaleOperatore();
+                form.apriAreaPersonaleOperatore();
             }
         });
 
@@ -154,19 +173,19 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                         riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
                     }
                 }
-            }
 
-            if (riga[5] != null) {
-                String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
-                if (!categoriaPulita.isEmpty()) {
-                    riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                if (riga[5] != null) {
+                    String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
+                    if (!categoriaPulita.isEmpty()) {
+                        riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                    }
                 }
-            }
 
-            model.addRow(riga);
+                model.addRow(riga);
+            }
+            tableSegnalazioni.setModel(model);
         }
-        tableSegnalazioni.setModel(model);
-    }
+   }
 
     public static void main(String[] args){
         FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
