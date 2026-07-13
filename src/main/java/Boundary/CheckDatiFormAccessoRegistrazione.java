@@ -83,18 +83,7 @@ public class CheckDatiFormAccessoRegistrazione {
         // Se tutti i controlli passano senza lanciare eccezioni
         return true;
     }
-    /**
-     * Verifica che tutti i dati inseriti nel form di accesso
-     * rispettino i vincoli previsti dall'applicazione.
-     * In particolare vengono controllati:
-     *
-     * @param ruoloStringa il ruolo selezionato
-     * @param email l'indirizzo email
-     * @param password la password
-     * @return {@code true} se tutti i dati rispettano i criteri di validazione
-     * @throws IllegalArgumentException se almeno uno dei dati non rispetta
-     *          i vincoli previsti
-     */
+
     public static boolean checkDatiFormAccesso(String ruoloStringa, String email, String password) throws IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {

@@ -164,7 +164,6 @@ public class FormRegistrazione {
      */
     public boolean registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
 
-        printFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
         boolean esitoFormatoRegistrazione = false;
         boolean esitoRegistrazione = false;
 
