@@ -8,16 +8,62 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ *
+ * Rappresenta un'interfaccia grafica per la visualizzazione delle segnalazioni ricevute
+ * da parte di un operatore. Permette di filtrare i risultati e accedere ai dettagli.
+ *
+ * @author Alessandro Galasso
+ * @version 1.0
+ *
+ */
+
 public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
+    /**
+     * frame di visualizzazione
+     */
     private JFrame visualizzaFrame;
+
+    /**
+     * panel per il contenuto del frame
+     */
     private JPanel contentPanel;
+
+    /**
+     * combo box per filtrare in base allo stato della segnalazione
+     */
     private JComboBox<String> comboStato;
+
+    /**
+     * combo box per filtrare in base alla categoria della segnalazione
+     */
     private JComboBox<String> comboCategoria;
+
+    /**
+     * combo box per filtrare in base all'area di competenza
+     */
     private JComboBox<String> comboArea;
+
+    /**
+     * button per applicare i filtri selezionati alla tabella
+     */
     private JButton btnApplicaFiltri;
+
+    /**
+     * tabella per mostrare l'elenco delle segnalazioni
+     */
     private JTable tableSegnalazioni;
+
+    /**
+     * button per visualizzare il dettaglio di una singola segnalazione selezionata
+     */
     private JButton btnVisualizzaDettaglio;
+
+    /**
+     * Costruisci un nuovo frame popolando la tabella iniziale e creando gli action listener
+     * legati all'applicazione dei filtri e all'apertura del dettaglio della segnalazione.
+     */
 
     public FormVisualizzaSegnalazioniRicevute() {
 
@@ -53,10 +99,14 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                 visualizzaFrame.dispose();
             }
         });
-
-
-
     }
+
+    /**
+     *
+     * Imposta le proprietà del frame di visualizzazione e lo rende visibile all'utente.
+     *
+     * @return il frame appena configurato e mostrato
+     */
 
     public JFrame apriVisualizzaFrame() {
         JFrame frame = new JFrame();
@@ -75,7 +125,10 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         return frame;
     }
 
-
+    /**
+     * Legge i valori dei filtri attualmente selezionati e interroga il
+     * ControllerSegnalazioni per aggiornare i dati mostrati nella tabella.
+     */
     private void aggiornaTabella() {
         String stato = comboStato.getSelectedItem() != null ? comboStato.getSelectedItem().toString() : "Tutti";
         String categoria = comboCategoria.getSelectedItem() != null ? comboCategoria.getSelectedItem().toString() : "Tutte";
@@ -101,16 +154,16 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                         riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
                     }
                 }
-
-                if (riga[5] != null) {
-                    String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
-                    if (!categoriaPulita.isEmpty()) {
-                        riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
-                    }
-                }
-
-                model.addRow(riga);
             }
+
+            if (riga[5] != null) {
+                String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
+                if (!categoriaPulita.isEmpty()) {
+                    riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                }
+            }
+
+            model.addRow(riga);
         }
         tableSegnalazioni.setModel(model);
     }

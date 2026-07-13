@@ -398,6 +398,18 @@ public class ControllerSegnalazioni {
         return datiRimanenti;
     }
 
+    /**
+     *
+     * Converte i filtri in formato stringa provenienti dall'interfaccia grafica nei corrispondenti
+     * tipi del livello Entity, interroga il GestoreSegnalazioni e mappa la lista di oggetti risultante
+     * in una struttura dati primitiva adatta al popolamento della JTable dell'operatore, aggiornando
+     * contestualmente la mappa di binding degli identificativi.
+     *
+     * @param statoStr stringa per filtrare lo stato della segnalazione ("Tutti", "inviata", "in lavorazione", "risolta", "presa in carico")
+     * @param categoriaStr stringa per filtrare la categoria della segnalazione ("Tutte" o nome specifico della categoria dell'enum)
+     * @param areaStr stringa per filtrare la posizione geografica o area di competenza ("Tutte" o area specifica)
+     * @return una lista di array di stringhe contenente i dati testuali delle segnalazioni pronti per essere visualizzati nella GUI
+     */
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
 
         //Traduzione dei parametri dal Boundary ai tipi Entity
@@ -461,6 +473,16 @@ public class ControllerSegnalazioni {
         return righeTabella;
     }
 
+    /**
+     *
+     * Recupera i dettagli completi di una segnalazione partendo dall'indice della riga selezionata nella GUI,
+     * imposta l'identificativo associato come segnalazione corrente del sistema e inserisce tutti i suoi
+     * attributi all'interno di una mappa strutturata per non esporre l'oggetto Entity alla Boundary.
+     *
+     * @param idRow indice della riga della segnalazione corrente nella tabella che permette al controller di risalire all'identificativo reale
+     * @return una map ordinata che effettua il binding tra il nome dell'attributo della segnalazione ed il relativo valore in formato stringa, oppure null se la segnalazione non viene trovata
+     * @throws IllegalArgumentException se l'indice della riga passato come parametro non è presente nella mappa di binding interna
+     */
     public static Map<String, String> getDettagliSegnalazione(Integer idRow) {
 
         //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
