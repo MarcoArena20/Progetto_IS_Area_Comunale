@@ -1,14 +1,28 @@
+import Boundary.FormCreazioneSegnalazione;
+import Boundary.FormRegistrazione;
 import Controller.ControllerSegnalazioni;
 import Controller.ControllerUtenti;
 import Entity.Enum.Ruolo;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 public class VisualizzaSegnalazioniRicevuteTest {
+
+    @BeforeAll
+    static void initDB() {
+        // Puliamo il DB e inseriamo i dati per i test
+        CreazioneSegnalazioneTest.puliziaDatabase();
+        new FormRegistrazione().registra("OPERATORE", "Mario", "Rossi", "operatore@comune.it", "3331112222", "Password123!");
+        new FormRegistrazione().registra("CITTADINO", "Luigi", "Verdi", "luigi@gmail.com", "3331430979", "Password234!");
+
+        FormCreazioneSegnalazione form = new FormCreazioneSegnalazione();
+
+        // Inseriamo Segnalazioni di test
+        form.creaSegnalazione("Rifiuti strada", "Spazzatura varia per terra trovata di fronte al bar principale della piazza.", "RIFIUTI_ABBANDONATI", "Centro Storico: Piazza Bellini 6", "", "");
+        form.creaSegnalazione("Strada rotta", "Buca pericolosa sul manto stradale trovata a via consalvo 78.", "STRADA_DISSESTATA", "Fuorigrotta: Via Consalvo 78", "", "");
+    }
 
     @BeforeEach
     void setUp() {
