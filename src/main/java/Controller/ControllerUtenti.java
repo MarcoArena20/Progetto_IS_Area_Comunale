@@ -111,7 +111,7 @@ public class ControllerUtenti {
                 String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
                 if (idUtente != null) {
                     esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Utente Già registrato!");
@@ -139,9 +139,10 @@ public class ControllerUtenti {
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password.trim());
-
-                if (gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash)!=null){
+                String idUtente = gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash);
+                if (idUtente!=null){
                     esitoAccesso=true;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
                 }
             }
             catch (IllegalArgumentException ex){

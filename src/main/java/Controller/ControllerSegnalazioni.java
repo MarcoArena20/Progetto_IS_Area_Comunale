@@ -164,9 +164,6 @@ public class ControllerSegnalazioni {
 
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
-        // Otteniamo l'id dell'utente corrente per associarlo alla segnalazione
-        Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
-
         // Effettuiamo il binding tra idRow e idSegnalazione
         Long idSegnalazione = bindingId.get(idRow);
 
