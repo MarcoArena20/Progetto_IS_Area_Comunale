@@ -59,6 +59,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
      * button per visualizzare il dettaglio di una singola segnalazione selezionata
      */
     private JButton btnVisualizzaDettaglio;
+    private JButton btnIndietro;
 
     /**
      * Costruisci un nuovo frame popolando la tabella iniziale e creando gli action listener
@@ -71,6 +72,13 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
         // Listener per l'applicazione dei filtri di ricerca
         btnApplicaFiltri.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        btnIndietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 aggiornaTabella();
