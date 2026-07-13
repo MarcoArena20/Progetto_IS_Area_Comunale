@@ -7,20 +7,96 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ *
+ *  Rappresenta un'interfaccia grafica per la modifica di una segnalazione
+ *
+ * @author Marco Arena
+ * @version 1.0
+ *
+ */
+
 public class FormModificaSegnalazione {
 
+    /**
+     *  frame di modifica
+     */
+
     private JFrame modificaFrame;
+
+    /**
+     * panel per il contenuto del frame
+     */
+
     private JPanel contentPanel;
+
+    /**
+     * panel per i label
+     */
+
     private JPanel labelPanel;
-    private JPanel fieldPanel;
-    private JTextField dataField;
-    private JTextField urlImmagineField;
-    private JTextField descrizioneField;
+
+    /**
+     *  panel per i campi d'inserimento
+     */
+
+    private JPanel insertPanel;
+
+    /**
+     *  text field per inserire il titolo
+     */
+
     private JTextField titoloField;
-    private JButton modificaButton;
+
+    /**
+     *  text field per inserire la descrizione
+     */
+
+    private JTextField descrizioneField;
+
+    /**
+     *  combo box per inserire la categoria
+     */
+
     private JComboBox categoriaBox;
+
+    /**
+     * combo box per inserire la posizione
+     */
+
     private JComboBox posizioneBox;
+
+    /**
+     *  text field per inserire la posizione
+     */
+
+    private JTextField dataField;
+
+    /**
+     *  text field per inserire l'url dell'immagine
+     */
+
+    private JTextField urlImmagineField;
+
+    /**
+     *  button per modificare la segnalazione
+     */
+
+    private JButton modificaButton;
+
+    /**
+     * button per annullare le modifiche
+     */
+
     private JButton annullaModificaButton;
+
+    /**
+     * Costruisce un nuovo frame creando:
+     * - un action listener legato al button per la modifica della segnalazione
+     * - un action listener legato al button per annullare la modifica
+     *
+     * @param idRow indice della riga della segnalazione corrente --> identifica la segnalazione nel FormVisualizzaSegnalazioni
+     */
 
     public FormModificaSegnalazione(int idRow){
 
@@ -28,32 +104,7 @@ public class FormModificaSegnalazione {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Map<String, String> dati = CheckFormSegnalazione.recuperaDatiSegnalazione(titoloField, descrizioneField, categoriaBox, posizioneBox, dataField, urlImmagineField);
-
-                try{
-
-                    boolean modificata = modificaSegnalazione(idRow,
-                            dati.get("titolo"),
-                            dati.get("descrizione"),
-                            dati.get("categoria"),
-                            dati.get("posizione"),
-                            dati.get("data"),
-                            dati.get("urlImmagine"));
-
-                    if(!modificata)
-                        JOptionPane.showMessageDialog(contentPanel, "Errore inatteso");
-                    else{
-
-                        modificaFrame.dispose();
-                        new FormAreaPersonaleCittadino().apriAreaPersonale();
-
-                    }
-
-                }catch (IllegalArgumentException ex){
-
-                    JOptionPane.showMessageDialog(contentPanel, ex.getMessage(), "Errore",JOptionPane.ERROR_MESSAGE);
-
-                }
+                modificaSegnalazioneButton(idRow);
 
             }
         });
@@ -68,7 +119,20 @@ public class FormModificaSegnalazione {
         });
     }
 
-    public JFrame apriModificaForm(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    /**
+     * Imposta le proprietà del frame di modifica inserendo nei field
+     * i campi della segnalazione già esistenti
+     *
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     *
+     */
+
+    public void apriModificaForm(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         JFrame frame = new JFrame();
         frame.setTitle("ModificaFrame");
@@ -89,28 +153,93 @@ public class FormModificaSegnalazione {
 
         modificaFrame = frame;
 
-        return frame;
-
     }
 
-    public boolean modificaSegnalazione(int idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    /**
+     * CASO D'USO: ModificaSegnalazione
+     * Verifica che i dati d'ingresso siano validi e in caso affermativo contatta il
+     * ControllerSegnalazioni per modificare una segnalazione
+     *
+     * @param idRow indice della riga della segnalazione corrente --> identifica la segnalazione nel FormVisualizzaSegnalazioni
+     * @param titolo titolo della segnalazione (campo obbligatorio)
+     * @param descrizione descrizione della segnalazione (campo obbligatorio)
+     * @param categoria categoria della segnalazione (campo obbligatorio)
+     * @param posizione posizione della segnalazione (campo obbligatorio)
+     * @param data data della segnalazione (campo opzionale)
+     * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     * @throws IllegalArgumentException se uno dei campi non ha rispettato i vincoli della classe @see CheckFormSegnalazione
+     */
+
+    public boolean modificaSegnalazione(int idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine) throws IllegalArgumentException{
 
         try{
 
+            // Controlliamo i parametri d'ingresso
             CheckFormSegnalazione.checkDatiSegnalazione(titolo, descrizione, categoria, posizione, data, urlImmagine);
 
-            if (urlImmagine.equalsIgnoreCase(""))
-                urlImmagine = null;
-
+            // Verifichiamo la presenza della data
             if(data.equalsIgnoreCase(""))
                 data = null;
 
+            // Verifichiamo la presenza dell'url dell'immagine
+            if (urlImmagine.equalsIgnoreCase(""))
+                urlImmagine = null;
+
+            // Invochiamo il ControllerSegnalazioni
             return ControllerSegnalazioni.modificaSegnalazione(idRow, titolo, descrizione, categoria, posizione, data, urlImmagine);
 
         }catch(IllegalArgumentException e){
 
             System.err.println(e.getMessage());
             throw e;
+
+        }
+
+    }
+
+    /**
+     *  Legge i valori passati dall'utente e avvia il caso d'uso ModificaSegnalazione
+     * @param idRow indice della riga della segnalazione corrente --> identifica la segnalazione nel FormVisualizzaSegnalazioni
+     */
+
+    private void modificaSegnalazioneButton(int idRow){
+
+        // Leggiamo i valori passati dall'utente
+        Map<String, String> dati = CheckFormSegnalazione.recuperaDatiSegnalazione(titoloField, descrizioneField, categoriaBox, posizioneBox, dataField, urlImmagineField);
+
+        try{
+
+            // Modifichiamo la segnalazione
+            boolean modificata = modificaSegnalazione(idRow,
+                    dati.get("titolo"),
+                    dati.get("descrizione"),
+                    dati.get("categoria"),
+                    dati.get("posizione"),
+                    dati.get("data"),
+                    dati.get("urlImmagine"));
+
+            if(!modificata){
+
+                // In caso di errore non legato ai parametri d'ingresso mostriamo un errore inatteso.
+                // Rientrano in questa casistica tutti i problemi che si possono presentare dal package Controller
+                // fino al package Database
+
+                JOptionPane.showMessageDialog(contentPanel, "Errore inatteso");
+
+            }
+            else{
+
+                // Se la modifica è andata a buon fine il cittadino ritorna alla schermata di visualizza dettaglio
+                modificaFrame.dispose();
+                new FormVisualizzaDettaglioSegnalazione().apriFormVisualizzaDettaglioSegnalazioni(idRow);
+
+            }
+
+        }catch (IllegalArgumentException ex){
+
+            // In caso di errore legato ai parametri d'ingresso mostriamo al descrizione dei vincoli su tale campo
+            JOptionPane.showMessageDialog(contentPanel, ex.getMessage(), "Errore",JOptionPane.ERROR_MESSAGE);
 
         }
 
