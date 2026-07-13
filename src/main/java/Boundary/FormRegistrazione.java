@@ -48,9 +48,9 @@ public class FormRegistrazione {
                         boolean esito = registra(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
                         if (esito) {
                             if (ruoloStringa.equals("CITTADINO")) {
-                                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                                new FormAreaPersonaleCittadino().apriAreaPersonaleCittadino();
                             } else {
-                                new FormVisualizzaSegnalazioniRicevute().apriVisualizzaFrame();
+                                new FormAreaPersonaleOperatore().apriAreaPersonaleOperatore();
                             }
                             registrazioneFrame.dispose();
                         }

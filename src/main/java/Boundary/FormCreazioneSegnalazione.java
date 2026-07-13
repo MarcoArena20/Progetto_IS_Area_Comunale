@@ -82,6 +82,7 @@ public class FormCreazioneSegnalazione {
      */
 
     private JButton creaSegnalazioneButton;
+    private JButton INDIETROButton;
 
     /**
      * Costruisce un nuovo frame creando un action listener legato al
@@ -95,6 +96,16 @@ public class FormCreazioneSegnalazione {
 
                 creaSegnalazioneButton();
 
+            }
+        });
+
+        // Listener per il pulsante INDIETRO
+        INDIETROButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                creazioneFrame.dispose();
+                FormAreaPersonaleCittadino areaPersonaleFrame = new FormAreaPersonaleCittadino();
+                areaPersonaleFrame.apriAreaPersonaleCittadino();
             }
         });
     }
@@ -193,7 +204,7 @@ public class FormCreazioneSegnalazione {
 
                 // Se la creazione è andata a buon fine il cittadino accede alla propria area personale
                 creazioneFrame.dispose();
-                new FormAreaPersonaleCittadino().apriAreaPersonale();
+                new FormAreaPersonaleCittadino().apriAreaPersonaleCittadino();
 
             }
 

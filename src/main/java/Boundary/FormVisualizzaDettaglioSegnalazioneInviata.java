@@ -107,7 +107,7 @@ public class FormVisualizzaDettaglioSegnalazioneInviata {
      * @param riga l'indice della riga selezionata nel form precedente, corrispondente alla segnalazione
      * @return l'istanza del JFrame configurato e mostrato a schermo
      */
-    public JFrame apriFormVisualizzaDettaglioSegnalazioni(int riga){
+    public JFrame apriFormVisualizzaDettaglioSegnalazione(int riga){
 
         frame = new JFrame("Visualizza dettaglio segnalazione");
         frame.setContentPane(contentPanel);

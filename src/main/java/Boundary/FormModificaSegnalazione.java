@@ -232,7 +232,7 @@ public class FormModificaSegnalazione {
 
                 // Se la modifica è andata a buon fine il cittadino ritorna alla schermata di visualizza dettaglio
                 modificaFrame.dispose();
-                new FormVisualizzaDettaglioSegnalazione().apriFormVisualizzaDettaglioSegnalazioni(idRow);
+                new FormVisualizzaDettaglioSegnalazioneInviata().apriFormVisualizzaDettaglioSegnalazione(idRow);
 
             }
 
