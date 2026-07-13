@@ -59,6 +59,10 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
      * button per visualizzare il dettaglio di una singola segnalazione selezionata
      */
     private JButton btnVisualizzaDettaglio;
+
+    /**
+     * button per tornare indietro nell'area personale dell'operatore
+     */
     private JButton btnIndietro;
 
     /**
@@ -81,7 +85,14 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         btnIndietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                aggiornaTabella();
+                // Chiude la finestra corrente
+                if (visualizzaFrame != null) {
+                    visualizzaFrame.dispose();
+                }
+
+                // Apre la schermata dell'Area Personale
+                FormAreaPersonaleOperatore form = new FormAreaPersonaleOperatore();
+                form.apriAreaPersonaleOperatore();
             }
         });
 
@@ -162,19 +173,19 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
                         riga[4] = rigaPulita.substring(0, 1).toUpperCase() + rigaPulita.substring(1);
                     }
                 }
-            }
 
-            if (riga[5] != null) {
-                String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
-                if (!categoriaPulita.isEmpty()) {
-                    riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                if (riga[5] != null) {
+                    String categoriaPulita = riga[5].replace("_", " ").trim().toLowerCase();
+                    if (!categoriaPulita.isEmpty()) {
+                        riga[5] = categoriaPulita.substring(0, 1).toUpperCase() + categoriaPulita.substring(1);
+                    }
                 }
-            }
 
-            model.addRow(riga);
+                model.addRow(riga);
+            }
+            tableSegnalazioni.setModel(model);
         }
-        tableSegnalazioni.setModel(model);
-    }
+   }
 
     public static void main(String[] args){
         FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
