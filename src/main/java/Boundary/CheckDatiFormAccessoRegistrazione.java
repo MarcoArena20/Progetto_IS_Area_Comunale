@@ -2,7 +2,38 @@ package Boundary;
 
 import static Boundary.ValidatorePassword.validaPassword;
 
+/**
+ * Fornisce metodi statici per la validazione dei dati inseriti
+ * nei form di registrazione e di accesso dell'applicazione.
+ *
+ * La classe verifica che i dati rispettino i vincoli di formato
+ * previsti, come il ruolo selezionato, il nome, il cognome,
+ * l'indirizzo email, il recapito telefonico e la password.
+ *
+ * In caso di dati non validi viene sollevata un'eccezione
+ * IllegalArgumentException contenente un messaggio
+ * descrittivo dell'errore riscontrato.
+ *
+ * @author Antonio Falcone
+ * @version 1.0
+ */
 public class CheckDatiFormAccessoRegistrazione {
+
+    /**
+     * Verifica che tutti i dati inseriti nel form di registrazione
+     * rispettino i vincoli previsti dall'applicazione.
+     * In particolare vengono controllati:
+     *
+     * @param ruoloStringa il ruolo selezionato
+     * @param nome il nome
+     * @param cognome il cognome
+     * @param email l'indirizzo email
+     * @param recapitoTelefonico il recapito telefonico
+     * @param password la password
+     * @return {@code true} se tutti i dati rispettano i criteri di validazione
+     * @throws IllegalArgumentException se almeno uno dei dati non rispetta
+     *          i vincoli previsti
+     */
     public static boolean checkDatiFormRegistrazione(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws  IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {
@@ -41,7 +72,7 @@ public class CheckDatiFormAccessoRegistrazione {
 
         // Controllo formato Email
         if (!ValidatoreEmail.validaEmail(email)){
-            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio .");
+            throw  new IllegalArgumentException("La mail deve essere nel formato: alfanumerico.alfanumerico@dominio oppure alfanumerico@dominio.");
         }
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
@@ -52,6 +83,18 @@ public class CheckDatiFormAccessoRegistrazione {
         // Se tutti i controlli passano senza lanciare eccezioni
         return true;
     }
+    /**
+     * Verifica che tutti i dati inseriti nel form di accesso
+     * rispettino i vincoli previsti dall'applicazione.
+     * In particolare vengono controllati:
+     *
+     * @param ruoloStringa il ruolo selezionato
+     * @param email l'indirizzo email
+     * @param password la password
+     * @return {@code true} se tutti i dati rispettano i criteri di validazione
+     * @throws IllegalArgumentException se almeno uno dei dati non rispetta
+     *          i vincoli previsti
+     */
     public static boolean checkDatiFormAccesso(String ruoloStringa, String email, String password) throws IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {
