@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//Façade
+/**
+ * E' una façade utilizzata per gestire gli Utenti
+ */
+
 public class GestoreUtenti {
 
     //Attributi
@@ -109,13 +112,15 @@ public class GestoreUtenti {
         }
     }
 
+    /**
+     * metodo per ricavare il riferimento all'oggetto cittadino, fornendo in ingresso l'id
+     *
+     * @param idCittadino id del cittadino ricercato
+     * @return riferimento al cittadino
+     */
     public Cittadino cercaCittadino(Long idCittadino) {
 
         return gestorePersistenza.trovaPerId(Cittadino.class, idCittadino);
-    }
-
-    public Operatore cercaOperatore(Long idOperatore) {
-        return gestorePersistenza.trovaPerId(Operatore.class, idOperatore);
     }
 }
 

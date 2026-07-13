@@ -175,7 +175,7 @@ public class ControllerSegnalazioni {
     }
 
     /**
-     * CADO D'USO: iniziaGestioneSegnalazione
+     * CASO D'USO: iniziaGestioneSegnalazione
      * Invocato dal button btnPrendiInCarico @see FormVisualizzaDettaglioSegnalazioneRicevuta
      * Dopo aver verificato che l'utente sia un'operatore, invoca il gestoreSegnalazioni per iniziare la gestione della segnalazione,
      * specificando l'id della segnalazione corrente
@@ -196,7 +196,7 @@ public class ControllerSegnalazioni {
     }
 
     /**
-     * CADO D'USO: aggiornaStatoSegnalazione
+     * CASO D'USO: aggiornaStatoSegnalazione
      * Invocato dal button btnAggiornaStato @see FormVisualizzaDettaglioSegnalazioneRicevuta
      * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente, invoca il gestoreSegnalazioni per aggiornare lo stato,
      * specificando l'esito dell'aggiornamento (positivo)
@@ -218,7 +218,7 @@ public class ControllerSegnalazioni {
     }
 
     /**
-     * CADO D'USO: concludiGestioneSegnalazione, aggiungiNotaInterna
+     * CASO D'USO: concludiGestioneSegnalazione, aggiungiNotaInterna
      * Invocato dal button confermaEConcludiButton @see FormConclusioneGestione
      * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente e che l'operazione di conclusione sia effettuabile,
      * invoca il gestoreSegnalazioni per aggiornare lo stato della segnalazione (con esito specificato in ingresso alla funzione)
@@ -257,7 +257,7 @@ public class ControllerSegnalazioni {
     }
 
     /**
-     * CADO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
+     * CASO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
      * Invocato dai metodi utilizzati dai suddetti casi d'uso, precedentemente commentati
      * Invoca il gestoreAggiornamento per verificare che l'operatore stia gestendo la segnalazione che intende aggiornare o concludere
      *
