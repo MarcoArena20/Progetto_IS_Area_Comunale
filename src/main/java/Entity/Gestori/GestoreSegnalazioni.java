@@ -260,6 +260,7 @@ public class GestoreSegnalazioni {
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
         //Se la segnalazione è INVIATA, è RISOLTA
+        boolean esitoAggiornamento;
         if (statoSegnalazione.getStatoToString().equals(StatoType.INVIATA.name())
                 || statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
 
@@ -268,14 +269,14 @@ public class GestoreSegnalazioni {
             return false;
         } else {
 
-            segnalazione.aggiornaStato(esito);
+            esitoAggiornamento = segnalazione.aggiornaStato(esito);
         }
 
         System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
 
         segnalazione.detach();
 
-        return true;
+        return esitoAggiornamento;
     }
 
     public record dettaglioCompleto(Segnalazione.Dettaglio dettaglio, Map<AggiornamentoStatoEntry, String[]> aggiornamentiStato) {}
