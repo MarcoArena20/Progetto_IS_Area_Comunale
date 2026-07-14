@@ -18,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreazioneSegnalazioneTest {
 
+    /**
+     * Inizializza lo stato del database per permettere un corretto funzionamento dei test
+     */
+
     @BeforeAll
      static void setUp(){
 
@@ -28,7 +32,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
-    // Testiamo la creazione della segnalazione andando ad invocare il metodo di creaSegnalazione del controller
+    /**
+     * Test corretto con i soli campi obbligatori
+     */
+
     @Test
     void testCorrettoObbligatori(){
 
@@ -51,6 +58,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test corretto con campi obbligatori e opzionali
+     */
+
     @Test
     void testCorrettoOpzionali(){
 
@@ -72,6 +83,11 @@ public class CreazioneSegnalazioneTest {
         assertTrue(esito);
 
     }
+
+    /**
+     * Test parametrico al variare del titolo nelle classi di equivalenza non valide
+     * @param titolo titolo della descrizione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Titolo vuoto
@@ -99,6 +115,11 @@ public class CreazioneSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test parametrico al variare della descrizione nelle classi di equivalenza non valide
+     * @param descrizione descrizione della segnalazione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Descrizione vuota
@@ -131,6 +152,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sulla categoria della segnalazione non valida
+     */
+
     @Test
     void categoriaErrata(){
 
@@ -153,6 +178,9 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sulla posizione della segnalazione non valida
+     */
 
     @Test
     void posizioneErrata(){
@@ -176,6 +204,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sul formato della data non valido
+     */
+
     @Test
     void dataErrata(){
 
@@ -197,6 +229,10 @@ public class CreazioneSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test sul formato dell'url dell'immagine non valido
+     */
 
     @Test
     void urlImmagineErrato(){
