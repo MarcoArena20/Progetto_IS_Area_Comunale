@@ -174,6 +174,15 @@ public class ControllerSegnalazioni {
 
     }
 
+    /**
+     * CASO D'USO: iniziaGestioneSegnalazione
+     * Invocato dal button btnPrendiInCarico @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'utente sia un'operatore, invoca il gestoreSegnalazioni per iniziare la gestione della segnalazione,
+     * specificando l'id della segnalazione corrente
+     *
+     * @return true se la segnalazione è stata presa in carico correttamente, false altrimenti
+     */
+
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -185,6 +194,15 @@ public class ControllerSegnalazioni {
 
         return gest.iniziaGestioneSegnalazione(idSegnalazioneCorrente);
     }
+
+    /**
+     * CASO D'USO: aggiornaStatoSegnalazione
+     * Invocato dal button btnAggiornaStato @see FormVisualizzaDettaglioSegnalazioneRicevuta
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente, invoca il gestoreSegnalazioni per aggiornare lo stato,
+     * specificando l'esito dell'aggiornamento (positivo)
+     *
+     * @return true se la segnalazione è stata aggiornata correttamente, false altrimenti
+     */
 
     public static boolean aggiornaStatoSegnalazione() {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -198,6 +216,19 @@ public class ControllerSegnalazioni {
 
         return gest.aggiornaStatoSegnalazione(idSegnalazioneCorrente, idOperatore, true);
     }
+
+    /**
+     * CASO D'USO: concludiGestioneSegnalazione, aggiungiNotaInterna
+     * Invocato dal button confermaEConcludiButton @see FormConclusioneGestione
+     * Dopo aver verificato che l'operatore stia gestendo la segnalazione corrente e che l'operazione di conclusione sia effettuabile,
+     * invoca il gestoreSegnalazioni per aggiornare lo stato della segnalazione (con esito specificato in ingresso alla funzione)
+     * e, se l'aggiornamento va a buon fine e si vuole aggiungere una nota, per aggiungere la nota
+     *
+     * @param titolo titolo della nota, null se non la si vuole aggiungere
+     * @param descrizione descrizione della nota, null se non la si vuole aggiungere
+     * @param esitoGestione specifica se la gestione è stata risolutiva oppure no
+     * @return true se la segnalazione è stata conclusa correttamente (ed eventualmente la nota è stata aggiunta), false altrimenti
+     */
 
     public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
@@ -224,6 +255,16 @@ public class ControllerSegnalazioni {
 
         return esitoAggiuntaNota;
     }
+
+    /**
+     * CASO D'USO: aggiornaStatoSegnalazione, concludiGestioneSegnalazione
+     * Invocato dai metodi utilizzati dai suddetti casi d'uso, precedentemente commentati
+     * Invoca il gestoreAggiornamento per verificare che l'operatore stia gestendo la segnalazione che intende aggiornare o concludere
+     *
+     * @param idOperatore id dell'operatore corrente
+     * @param idSegnalazione id della segnalazione corrente
+     * @return true se l'operatore sta gestendo quella segnalazione, false altrimenti
+     */
 
     public static boolean verificaPermessiOperatore(Long idOperatore, Long idSegnalazione){
         GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
@@ -357,6 +398,18 @@ public class ControllerSegnalazioni {
         return datiRimanenti;
     }
 
+    /**
+     *
+     * Converte i filtri in formato stringa provenienti dall'interfaccia grafica nei corrispondenti
+     * tipi del livello Entity, interroga il GestoreSegnalazioni e mappa la lista di oggetti risultante
+     * in una struttura dati primitiva adatta al popolamento della JTable dell'operatore, aggiornando
+     * contestualmente la mappa di binding degli identificativi.
+     *
+     * @param statoStr stringa per filtrare lo stato della segnalazione ("Tutti", "inviata", "in lavorazione", "risolta", "presa in carico")
+     * @param categoriaStr stringa per filtrare la categoria della segnalazione ("Tutte" o nome specifico della categoria dell'enum)
+     * @param areaStr stringa per filtrare la posizione geografica o area di competenza ("Tutte" o area specifica)
+     * @return una lista di array di stringhe contenente i dati testuali delle segnalazioni pronti per essere visualizzati nella GUI
+     */
     public static List<String[]> visualizzaSegnalazioniPerOperatore(String statoStr, String categoriaStr, String areaStr) {
 
         //Traduzione dei parametri dal Boundary ai tipi Entity
@@ -420,6 +473,16 @@ public class ControllerSegnalazioni {
         return righeTabella;
     }
 
+    /**
+     *
+     * Recupera i dettagli completi di una segnalazione partendo dall'indice della riga selezionata nella GUI,
+     * imposta l'identificativo associato come segnalazione corrente del sistema e inserisce tutti i suoi
+     * attributi all'interno di una mappa strutturata per non esporre l'oggetto Entity alla Boundary.
+     *
+     * @param idRow indice della riga della segnalazione corrente nella tabella che permette al controller di risalire all'identificativo reale
+     * @return una map ordinata che effettua il binding tra il nome dell'attributo della segnalazione ed il relativo valore in formato stringa, oppure null se la segnalazione non viene trovata
+     * @throws IllegalArgumentException se l'indice della riga passato come parametro non è presente nella mappa di binding interna
+     */
     public static Map<String, String> getDettagliSegnalazione(Integer idRow) {
 
         //Istanziamo il Façade dello strato Entity per recuperare i dati dal dominio
@@ -460,8 +523,11 @@ public class ControllerSegnalazioni {
         return dettagli;
     }
 
-
+    /*
+    //main usato per testing del flusso principale di gestione di una segnalazione e alcuni scenari alternativi
     public static void main(String[] args) {
+
+
         System.out.println("[ControllerSegnalazioni] MainTest avviato..");
 
         setIdSegnalazioneCorrente(1L);
@@ -512,7 +578,6 @@ public class ControllerSegnalazioni {
         //concludiGestioneSegnalazione(null, null, false);
         //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
 
-
     }
-
+     */
 }
