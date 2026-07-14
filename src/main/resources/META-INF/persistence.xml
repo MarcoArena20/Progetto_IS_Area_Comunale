@@ -23,7 +23,7 @@
                       value="com.mysql.cj.jdbc.Driver"/>
 
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:mysql://localhost:3306/prova_db"/>
+                      value="jdbc:mysql://localhost:3306/test_db"/>
 
             <property name="jakarta.persistence.jdbc.user"
                       value="root"/>
