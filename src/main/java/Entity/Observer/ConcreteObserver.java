@@ -60,10 +60,15 @@ public class ConcreteObserver implements Observer {
      * metodo implementato per fare in modo che l'osservatore dimostri interesse verso il subject
      *
      * @param segnalazione riferimento alla segnalazione su cui effettuare la sottoscrizione
+     * @param esito booleano utilizzato per discriminare l'attach dal detach
      */
 
-    public void nuovaSegnalazione(Segnalazione segnalazione) {
-        segnalazione.attach(getInstance());
+    public void nuovaSegnalazione(Segnalazione segnalazione, boolean esito) {
+        if (esito) {
+            segnalazione.attach(getInstance());
+        } else {
+            segnalazione.detach();
+        }
     }
 
 
