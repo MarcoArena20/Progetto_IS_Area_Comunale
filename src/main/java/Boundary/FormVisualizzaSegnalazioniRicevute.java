@@ -182,8 +182,9 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 model.addRow(riga);
             }
-            tableSegnalazioni.setModel(model);
+
         }
+        tableSegnalazioni.setModel(model);
    }
 
 }
