@@ -2,9 +2,6 @@ import Boundary.FormCreazioneSegnalazione;
 import Boundary.FormModificaSegnalazione;
 import Boundary.FormRegistrazione;
 import Controller.ControllerSegnalazioni;
-import Database.JpaUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +9,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * CASO D'USO: CreazioneSegnalazione
+ * Classe di test per verificare il metodo di creaSegnalazione
+ */
 
 public class ModificaSegnalazioneTest {
 
@@ -34,6 +36,9 @@ public class ModificaSegnalazioneTest {
 
     }
 
+    /**
+     * Test corretto con i soli campi obbligatori
+     */
 
     @Test
     void testCorrettoObbligatori(){
@@ -57,6 +62,10 @@ public class ModificaSegnalazioneTest {
 
     }
 
+    /**
+     * Test corretto con campi obbligatori e opzionali
+     */
+
     @Test
     void testCorrettoOpzionali(){
 
@@ -78,6 +87,11 @@ public class ModificaSegnalazioneTest {
         assertTrue(esito);
 
     }
+
+    /**
+     * Test parametrico al variare del titolo nelle classi di equivalenza non valide
+     * @param titolo titolo della descrizione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Titolo vuoto
@@ -105,6 +119,11 @@ public class ModificaSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test parametrico al variare della descrizione nelle classi di equivalenza non valide
+     * @param descrizione descrizione della segnalazione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Descrizione vuota
@@ -137,6 +156,10 @@ public class ModificaSegnalazioneTest {
 
     }
 
+    /**
+     * Test sulla categoria della segnalazione non valida
+     */
+
     @Test
     void categoriaErrata(){
 
@@ -158,6 +181,10 @@ public class ModificaSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test sulla posizione della segnalazione non valida
+     */
 
 
     @Test
@@ -182,6 +209,10 @@ public class ModificaSegnalazioneTest {
 
     }
 
+    /**
+     * Test sul formato della data non valido
+     */
+
     @Test
     void dataErrata(){
 
@@ -203,6 +234,10 @@ public class ModificaSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test sul formato dell'url dell'immagine non valido
+     */
 
     @Test
     void urlImmagineErrato(){
