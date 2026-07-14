@@ -212,8 +212,8 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
 
-        //attach observer in modo da visualizzare i cambi stato
-        segnalazione.attach(ConcreteObserver.getInstance());
+        //avvisa l'Observer della creazione di una nuova segnalazione in modo da portersi inscrivere
+        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione);
 
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
