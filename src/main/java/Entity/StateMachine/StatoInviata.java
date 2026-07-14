@@ -3,12 +3,26 @@ package Entity.StateMachine;
 import Entity.Enum.StatoType;
 import Entity.Segnalazione;
 
+/**
+ * Stato concreto del subject: rappresenta lo stato iniziale
+ */
+
 public class StatoInviata extends StatoSegnalazione {
 
     //Costruttore
     public StatoInviata() {}
 
     //Metodi
+
+    /**
+     * Metodo invocato per aggiornare lo stato della segnalazione (se legittimo).
+     * Da notare che l'azione di aggiornamento "negativo" non ha effetto in questo stato
+     *
+     * @param segnalazione riferimento alla segnalazione usato per settare il nuovo stato
+     * @param esito booleano usato per distinguere la validità dell'azione
+     * @return true se l'azione è legittima ed è andata a buon fine, false altrimenti
+     */
+
     @Override
     public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoInviata] Invocato aggiornaStato con esito: " + esito);
