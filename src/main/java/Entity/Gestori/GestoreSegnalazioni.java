@@ -221,7 +221,7 @@ public class GestoreSegnalazioni {
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+ segnalazione);
 
         //avvisa l'Observer della creazione di una nuova segnalazione in modo da portersi inscrivere
-        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione);
+        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione, true);
 
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
@@ -238,7 +238,7 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Gestione iniziata correttamente");
 
-        segnalazione.detach();
+        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione, false);
 
         return true;
     }
@@ -269,7 +269,7 @@ public class GestoreSegnalazioni {
         System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+ segnalazione);
 
         //attach observer in modo da visualizzare i cambi stato
-        segnalazione.attach(ConcreteObserver.getInstance());
+        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione, true);
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
 
@@ -288,7 +288,7 @@ public class GestoreSegnalazioni {
 
         System.out.println("[GestoreSegnalazioni] Stato aggiornato correttamente");
 
-        segnalazione.detach();
+        ConcreteObserver.getInstance().nuovaSegnalazione(segnalazione, false);
 
         return esitoAggiornamento;
     }

@@ -6,19 +6,20 @@ import Controller.ControllerSegnalazioni;
 import Controller.ControllerUtenti;
 import Database.GestorePersistenza;
 import Entity.Enum.Ruolo;
+import Entity.Enum.StatoType;
 import Entity.Operatore;
 import Entity.Segnalazione;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * CASO D'USO: aggiungiNotaInterna
@@ -54,17 +55,18 @@ public class CreazioneNotaTest {
 
         TestUtility.puliziaDatabase();
 
-        new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
         new FormRegistrazione().registra("OPERATORE", "Giuliano", "Izzo", "giuliano@gmail.com", "1112121221", "Passw123!");
+        new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
 
-
-        new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
+        boolean esito = new FormCreazioneSegnalazione().creaSegnalazione("Discarica",
                 "È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
                 "RIFIUTI_ABBANDONATI",
-                "Centro Storico: Via dei Tribunali 120", "", "");
+                "Fuorigrotta: Piazzale Tecchio 50", "", "");
+
 
         //Ricavo l'id dell'unica segnalazione inserita
-        ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore(null, null, null);
+        List<String[]> listaStringhe = ControllerSegnalazioni.visualizzaSegnalazioniPerOperatore(StatoType.INVIATA.name(), "RIFIUTI_ABBANDONATI", null);
+
         List<Segnalazione> listaS = new GestorePersistenza().cercaPerCampi(Segnalazione.class, Map.of());
 
         Long idSegnalazioneCorrente = listaS.get(0).getIdSegnalazione();
