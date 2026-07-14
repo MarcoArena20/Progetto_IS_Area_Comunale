@@ -10,17 +10,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-//Façade
+/**
+ * Fornisce un punto di accesso per le operazioni
+ * relative alla gestione delle segnalazioni dell'applicazione.
+ * <p>
+ * La classe permette alle classi del livello Boundary di interagire
+ * con il sottosistema di gestione delle segnalazioni senza conoscere i
+ * dettagli implementativi.
+ *
+ *
+ * @version 1.0
+ */
 public class ControllerSegnalazioni {
 
-    /** Mappa che associa l'indice numerico della riga della JTable (Integer) all'ID reale della segnalazione (Long). */
+    /**
+     *  Mappa che associa l'indice numerico della riga della JTable (Integer) all'ID reale della segnalazione (Long).
+     */
     private static Map<Integer,Long> bindingId;
     private static Long idSegnalazioneCorrente;
 
-    public static Long getIdSegnalazioneCorrente(){
+    /**
+     * Ritorna l'id della segnalazione corrente visualizzata
+     * @return l'id della segnalazione corrente
+     */
+    private static Long getIdSegnalazioneCorrente(){
         return idSegnalazioneCorrente;
     }
 
+    /**
+     * Permette di modificare l'id della segnalazione corrente
+     * @param idSegnalazioneCorrente id della segnalazione corrente
+     */
     public static void setIdSegnalazioneCorrente(Long idSegnalazioneCorrente){
         ControllerSegnalazioni.idSegnalazioneCorrente = idSegnalazioneCorrente;
     }
@@ -73,7 +93,6 @@ public class ControllerSegnalazioni {
      *
      * @return true se la segnalazione è modificabile, false altrimenti
      */
-
     public static boolean verificaModificabilita(Integer idRow){
 
         // Effettuiamo il binding tra idRow e idSegnalazione
@@ -95,7 +114,6 @@ public class ControllerSegnalazioni {
      *              l'indice della riga all'id della segnalazione
      * @return una map che effettua il binding tra attributo della segnalazione e valore
      */
-
     public static Map<String, String> ottieniParametriModificabili(Integer idRow){
 
         // Effettuiamo il binding tra idRow e idSegnalazione
@@ -142,7 +160,6 @@ public class ControllerSegnalazioni {
      * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
      * @return true se la creazione è andata a buon fine, false altrimenti
      */
-
     public static boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         // Prima di effettuare la chiamata al GestoreSegnalazioni dello strato Entity effettuiamo
@@ -178,7 +195,6 @@ public class ControllerSegnalazioni {
      *
      * @return true se la segnalazione è stata presa in carico correttamente, false altrimenti
      */
-
     public static boolean iniziaGestioneSegnalazione () {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -199,7 +215,6 @@ public class ControllerSegnalazioni {
      *
      * @return true se la segnalazione è stata aggiornata correttamente, false altrimenti
      */
-
     public static boolean aggiornaStatoSegnalazione() {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -225,7 +240,6 @@ public class ControllerSegnalazioni {
      * @param esitoGestione specifica se la gestione è stata risolutiva oppure no
      * @return true se la segnalazione è stata conclusa correttamente (ed eventualmente la nota è stata aggiunta), false altrimenti
      */
-
     public static boolean concludiGestioneSegnalazione(String titolo, String descrizione, boolean esitoGestione) {
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
 
@@ -261,7 +275,6 @@ public class ControllerSegnalazioni {
      * @param idSegnalazione id della segnalazione corrente
      * @return true se l'operatore sta gestendo quella segnalazione, false altrimenti
      */
-
     public static boolean verificaPermessiOperatore(Long idOperatore, Long idSegnalazione){
         GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
 
@@ -478,7 +491,7 @@ public class ControllerSegnalazioni {
                 case "in lavorazione" -> new StatoInLavorazione();
                 case "risolta" -> new StatoRisolta();
                 case "presa in carico" -> new StatoPresaInCarico();
-                default -> stato;
+                default -> null;
             };
         }
 
@@ -569,61 +582,4 @@ public class ControllerSegnalazioni {
         return dettagli;
     }
 
-    /*
-    //main usato per testing del flusso principale di gestione di una segnalazione e alcuni scenari alternativi
-    public static void main(String[] args) {
-
-
-        System.out.println("[ControllerSegnalazioni] MainTest avviato..");
-
-        setIdSegnalazioneCorrente(1L);
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
-
-
-        //1. flusso normale
-        System.out.println("[ControllerSegnalazioni] Test flusso principale");
-
-        iniziaGestioneSegnalazione();
-
-        aggiornaStatoSegnalazione();
-
-        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
-
-        //2. dopo aver preso in carico una segnalazione, un altro operatore tenta l'accesso
-        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione non sua");
-
-        iniziaGestioneSegnalazione();
-
-        ControllerUtenti.setIdUtenteCorrente(2L, Ruolo.OPERATORE.name());
-        iniziaGestioneSegnalazione();
-
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
-        concludiGestioneSegnalazione("Problema", "Riscontrato problema nella risoluzione", false);
-
-        //3. tentativo di prendere in carico una segnalazione da parte di un cittadino
-        System.out.println("[ControllerSegnalazioni] Test cittadino prende in carico una segnalazione");
-
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.CITTADINO.name());
-        iniziaGestioneSegnalazione();
-
-
-        //4. tentativo di prendere in carico una segnalazione risolta
-        System.out.println("[ControllerSegnalazioni] Test operatore prende in carico una segnalazione risolta");
-
-        ControllerUtenti.setIdUtenteCorrente(1L, Ruolo.OPERATORE.name());
-        setIdSegnalazioneCorrente(4L);
-        iniziaGestioneSegnalazione();
-
-        //5. tentativo di concludere con esito positivo una segnalazione presa in carico
-        System.out.println("[ControllerSegnalazioni] Test operatore tenta di risolvere con esito positivo una segnalazione presa in carico");
-
-        setIdSegnalazioneCorrente(1L);
-        iniziaGestioneSegnalazione();
-        concludiGestioneSegnalazione("Risolta", "Segnalazione risolta con successo", true);
-
-        //concludiGestioneSegnalazione(null, null, false);
-        //Riga inserita per far tornare il db allo stato iniziale senza modifiche ulteriori
-
-    }
-     */
 }

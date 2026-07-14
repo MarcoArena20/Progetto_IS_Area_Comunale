@@ -113,7 +113,7 @@ public class FormRegistrazione {
      *
      */
     private boolean controlloFormatoDatiRegistrazione (String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password)throws IllegalArgumentException{
-        boolean controlloFormatoRegistrazione=false;
+        boolean controlloFormatoRegistrazione;
         try {
             controlloFormatoRegistrazione = CheckDatiFormAccessoRegistrazione.checkDatiFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
             return  controlloFormatoRegistrazione;
@@ -165,7 +165,7 @@ public class FormRegistrazione {
     public boolean registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
 
         printFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
-        boolean esitoFormatoRegistrazione = false;
+        boolean esitoFormatoRegistrazione;
         boolean esitoRegistrazione = false;
 
         //check formato

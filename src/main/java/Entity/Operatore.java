@@ -6,32 +6,48 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ *
+ * Enitity che specializza UtenteAutenticato aggiungendo l'id
+ */
+
 @Entity
 public class Operatore extends UtenteAutenticato {
 
-    //Attributi
-    /*
-    protected String nome;
-    protected String cognome;
-    protected String email;
-    protected String recapitoTelefonico;
-    protected String passwordHash;
-    */
+    /**
+     * Id univoco generatore dal Database
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOperatore;
 
-    //Costruttore
+    /**
+     * Costruttore di default utilizzato dal database
+     */
     public Operatore() {}
 
+    /**
+     * Coatruttore dell'oggetto Operatore
+     * @param nome nome dell'operatore
+     * @param cognome cognome dell'operatore
+     * @param email email dell'operatore
+     * @param recapitoTelefonico recapitoTelefonico dell'operatore
+     * @param passwordHash hash della password dell'operatore
+     */
     public Operatore(String nome, String cognome, String email, String recapitoTelefonico, String passwordHash) {
         super(nome, cognome, email, recapitoTelefonico, passwordHash);
     }
 
-    //Getter
+    /**
+     * Getter dell'id
+     * @return id del cittadino
+     */
     public Long getIdOperatore() { return idOperatore; }
 
-    //Metodi
+    /**
+     * Getter del ruolo
+     * @return stringa del ruolo
+     */
     @Override
     public String getRuolo() {
         return Ruolo.OPERATORE.name();

@@ -13,7 +13,7 @@ public class StatoPresaInCarico extends StatoSegnalazione{
     public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoPresaInCarico] Invocato aggiornaStato con esito: " + esito);
 
-        if (esito == true) {
+        if (esito) {
             //Avanzo di stato..
             System.out.println("[StatoPresaInCarico] Avanzamento di stato..");
             segnalazione.setStato(new StatoInLavorazione());

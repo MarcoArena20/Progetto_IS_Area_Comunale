@@ -122,6 +122,14 @@ public class GestoreSegnalazioni {
         );
     }
 
+    /**
+     * Invoca il gestore perstistenza per ottenere una lista di segnalaizoni filtrate per stato, categoria ed area
+     * @param stato stato della segnalazione
+     * @param categoria categoria della segnalazione
+     * @param area area geografica della segnalazione
+     * @return lista di segnalazioni ottenute dal gestorePersistenza
+     */
+
     public List<Segnalazione> cercaSegnalazioni(StatoSegnalazione stato, Categoria categoria, String area) {
 
         java.util.Map<String, Object> filtri = new java.util.HashMap<>();

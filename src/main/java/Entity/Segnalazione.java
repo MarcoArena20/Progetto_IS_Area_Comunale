@@ -1,7 +1,6 @@
 package Entity;
 
 import Entity.Enum.Categoria;
-import Entity.Observer.ConcreteObserver;
 import Entity.Observer.ObserverSegnalazione;
 import Entity.StateMachine.ConverterStato;
 import Entity.StateMachine.StatoInviata;
@@ -9,35 +8,77 @@ import Entity.StateMachine.StatoSegnalazione;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
+/**
+ * Entity che estende il comportamento del subject del pattern Observer ed
+ * implementa gli attributi della segnalazione
+ */
 @Entity
 public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il subject che notifica i cambiamenti di stato(push model)
 
-    //Attributi
+    /**
+     * Id univoco geenerato dal database
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSegnalazione;
 
+    /**
+     * Riferimento al cittadino come Foreign Key di segnalazione
+     */
     @ManyToOne
     @JoinColumn(name = "idCittadino")
     private Cittadino cittadino;
 
+    /**
+     * titolo della segnalazione
+     */
     private String titolo;
+
+    /**
+     * descrizione della segnalazione
+     */
     private String descrizione;
 
+    /**
+     * Categoria enumerativa della segnalazione
+     */
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
+    /**
+     * posizione della Segnalazione
+     */
     private String posizione;
 
+    /**
+     * Stato della segnalazione convertito in StatoType
+     */
     @Convert(converter = ConverterStato.class)
     private StatoSegnalazione stato;
+
+    /**
+     * Data (opzionale) della segnalazione
+     */
     private LocalDateTime data;
+
+    /**
+     * Url dell'immagine (opzionale) della seganalazione
+     */
     private String urlImmagine;
 
-    //Costruttori
+    /**
+     * Costruttore di default per il database
+     */
     public Segnalazione(){}
 
+    /**
+     * Costruttore avente i parametri obbligatori di una segnalazione
+     * @param cittadino cittadino che ha creato la segnalazione
+     * @param titolo titolo della segnalazione
+     * @param descrizione descrizione della segnalazione
+     * @param categoria categoria della segnalazione
+     * @param posizione posizione della segnalazione
+     */
     public Segnalazione(Cittadino cittadino, String titolo, String descrizione, Categoria categoria, String posizione){
 
         this.cittadino = cittadino;
@@ -70,12 +111,17 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
     public String getUrlImmagine() { return urlImmagine; }
     public void setUrlImmagine(String urlImmagine) { this.urlImmagine = urlImmagine; }
 
+    /**
+     * Metodo per la gestione dell'aggiornamento dello stato della segnalazione
+     * @param avanzamento avanzamento all'interno dello state diagram
+     * @return true se l'aggiornamento è andato a buon fine, false altrimenti
+     */
     public boolean aggiornaStato(boolean avanzamento) {
 
        // 1. aggiorna stato
         boolean esito = this.stato.aggiornaStato(this, avanzamento);
 
-        if (esito == false) {
+        if (!esito) {
             System.err.println("[Segnalazione "+this.idSegnalazione+"] Errore nell'aggiornamento dello stato!");
         }
 
@@ -83,7 +129,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             //2. notifico osservatore
             esito = notifyObserver(this, this.stato);
 
-            if (esito == false) {
+            if (!esito) {
                 System.err.println("[Segnalazione " + this.idSegnalazione + "] Osservatori assenti!");
             }
         }
@@ -161,30 +207,4 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
                 '}';
     }
 
-
-    /*
-    public static void main(String[] args) {
-        System.out.println("[Segnalazione] MainTest avviato..");
-
-        Segnalazione s = new Segnalazione(null, "Discarica","È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.",
-                                           Categoria.RIFIUTI_ABBANDONATI, "Viale delle mimose");
-        /*
-        Titolo: Discarica
-        Descrizione: È stata riscontrata la presenza di ingenti rifiuti abbandonati in prossimità dell'ingresso della farmacia, con conseguenti esalazioni maleodoranti.
-        Categoria: Rifiuti abbandonati
-        Posizione: Viale delle mimose
-
-
-        s.attach(ConcreteObserver.getInstance());
-
-        System.out.println(s.toString());
-
-        s.aggiornaStato(true);
-
-        s.aggiornaStato(true);
-
-        s.aggiornaStato(false);
-
-    }
-    */
 }

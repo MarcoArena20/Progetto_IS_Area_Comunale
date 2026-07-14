@@ -15,9 +15,15 @@ import java.util.Map;
 
 public class GestoreUtenti {
 
-    //Attributi
+    /**
+     * attributo che si riferisce al gestorePersistenza in modo da poter salvare le segnalazioni create, modificate o aggiornate
+     * su database
+     */
     private final GestorePersistenza gestorePersistenza;
 
+    /**
+     * Costruttore per creare ed inizializzare il gestore
+     */
     public GestoreUtenti() {
 
         this.gestorePersistenza = new GestorePersistenza();
@@ -41,7 +47,6 @@ public class GestoreUtenti {
         }
     }
 
-    //Metodi
     /**
      * Registra un nuovo utente nel sistema.
      * Prima della registrazione viene verificato che non esista già
