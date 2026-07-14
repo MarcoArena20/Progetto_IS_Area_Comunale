@@ -50,16 +50,4 @@ public class StatoInviata extends StatoSegnalazione {
         return StatoType.INVIATA.name();
     }
 
-
-    public static void main(String[] args) {
-        System.out.println("[StatoInviata] MainTest avviato..");
-
-        StatoInviata statoTest = new StatoInviata();
-
-        System.out.println("[StatoInviata] getStato: "+ statoTest.getStatoToString());
-        System.out.println("[StatoInviata] toString: "+ statoTest);
-
-
-    }
-
 }

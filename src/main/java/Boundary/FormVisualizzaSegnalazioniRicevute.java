@@ -186,11 +186,5 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
         }
    }
 
-    public static void main(String[] args){
-        FormVisualizzaSegnalazioniRicevute form = new FormVisualizzaSegnalazioniRicevute();
-        form.apriVisualizzaFrame();
-    }
-
-
 }
 
