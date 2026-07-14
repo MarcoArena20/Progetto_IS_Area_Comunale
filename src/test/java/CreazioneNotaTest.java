@@ -11,6 +11,8 @@ import Entity.Segnalazione;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.Map;
@@ -131,12 +133,14 @@ public class CreazioneNotaTest {
     }
 
     /**
-     * TC: ID2
+     * TC: ID2-ID3-ID4
      */
 
-    @Test
-    public void titoloLungo() {
-        form.setTitoloNota("La Segnalazione è stata risolta");
+    @ParameterizedTest
+    @ValueSource(strings = {"La Segnalazione è stata risolta",
+                            "Ok", "Ris@lta"})
+    public void titoloErrato(String titolo) {
+        form.setTitoloNota(titolo);
         form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
 
         boolean esito;
@@ -158,67 +162,16 @@ public class CreazioneNotaTest {
     }
 
     /**
-     * TC: ID3
+     * TC: ID5-ID6-ID7
      */
 
-    @Test
-    public void titoloCorto() {
-        form.setTitoloNota("Ok");
-        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
-
-        boolean esito;
-
-        try {
-
-            form.concludiGestione();
-            esito = true;
-
-        } catch (IllegalArgumentException exception) {
-
-            esito = false;
-
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertFalse(esito);
-    }
-
-    /**
-     * TC: ID4
-     */
-
-    @Test
-    public void titoloSpeciale() {
-        form.setTitoloNota("Ris@lta");
-        form.setDescrizioneNota("È stata gestita la presenza dei rifiuti prelevandoli e smaltendoli in apposita sede");
-
-        boolean esito;
-
-        try {
-
-            form.concludiGestione();
-            esito = true;
-
-        } catch (IllegalArgumentException exception) {
-
-            esito = false;
-
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertFalse(esito);
-    }
-
-    /**
-     * TC: ID5
-     */
-
-    @Test
-    public void descrizioneLunga() {
+    @ParameterizedTest
+    @ValueSource(strings = {"La segnalazione è stata ricevuta, verificata e inoltrata agli enti competenti. " +
+            "Sono state predisposte misure cautelari per la risoluzione del problema; saranno obbligatori altri interventi di controllo",
+            "Ok", "Segnalazione gestita! correttamente#"})
+    public void descrizioneErrata(String descrizione) {
         form.setTitoloNota("Check parziale");
-        form.setDescrizioneNota("La segnalazione è stata ricevuta, verificata e inoltrata agli enti competenti. Sono state predisposte misure cautelari per la risoluzione del problema; saranno obbligatori altri interventi di controllo");
+        form.setDescrizioneNota(descrizione);
 
         boolean esito;
 
@@ -238,57 +191,4 @@ public class CreazioneNotaTest {
         assertFalse(esito);
     }
 
-    /**
-     * TC: ID6
-     */
-
-    @Test
-    public void descrizioneCorta() {
-        form.setTitoloNota("Risolta");
-        form.setDescrizioneNota("Ok");
-
-        boolean esito;
-
-        try {
-
-            form.concludiGestione();
-            esito = true;
-
-        } catch (IllegalArgumentException exception) {
-
-            esito = false;
-
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertFalse(esito);
-    }
-
-    /**
-     * TC: ID7
-     */
-
-    @Test
-    public void descrizioneSpeciale() {
-        form.setTitoloNota("Risolta");
-        form.setDescrizioneNota("Segnalazione gestita! correttamente#");
-
-        boolean esito;
-
-        try {
-
-            form.concludiGestione();
-            esito = true;
-
-        } catch (IllegalArgumentException exception) {
-
-            esito = false;
-
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertFalse(esito);
-    }
 }
