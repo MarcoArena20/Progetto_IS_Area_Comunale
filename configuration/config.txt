@@ -1,2 +1,2 @@
-idUtente:45
-ruolo:Cittadino
+idUtente:23
+ruolo:CITTADINO
