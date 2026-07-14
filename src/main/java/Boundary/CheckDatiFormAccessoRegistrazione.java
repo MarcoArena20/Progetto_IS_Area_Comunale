@@ -77,7 +77,7 @@ public class CheckDatiFormAccessoRegistrazione {
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
         if (!validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: ?, !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
@@ -94,7 +94,7 @@ public class CheckDatiFormAccessoRegistrazione {
         }
 
         if (!ValidatorePassword.validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: ?, !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
