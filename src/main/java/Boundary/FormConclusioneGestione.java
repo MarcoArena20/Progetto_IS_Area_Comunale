@@ -266,16 +266,6 @@ public class FormConclusioneGestione {
 
         conclusioneFrame = frame;
 
-        /*
-        conclusioneFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                new FormVisualizzaDettaglioSegnalazioneRicevuta(idRow).apriDettaglioFrame();
-            }
-        });
-
-         */
-
         return frame;
     }
 
@@ -406,7 +396,4 @@ public class FormConclusioneGestione {
         return true;
     }
 
-    public static void main(String[] args){
-        new FormConclusioneGestione(1).apriConclusioneFrame();
-    }
 }

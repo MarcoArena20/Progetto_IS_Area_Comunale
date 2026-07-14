@@ -30,7 +30,6 @@ public class GestioneOperatoreEntry {
     }
 
     public GestioneOperatoreEntry(Operatore operatore, Segnalazione segnalazione, boolean attiva, String titolo, String descrizione) {
-        this.idGestione = idGestione;
         this.operatore = operatore;
         this.segnalazione = segnalazione;
         this.attiva = attiva;

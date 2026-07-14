@@ -13,7 +13,7 @@ public class StatoInviata extends StatoSegnalazione {
     public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
         System.out.println("[StatoInviata] Invocato aggiornaStato con esito: " + esito);
 
-        if (esito == true) {
+        if (esito) {
             //Avanzo di stato..
             System.out.println("[StatoInviata] Avanzamento di stato..");
 

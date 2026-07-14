@@ -12,7 +12,10 @@ import java.util.Set;
 
 /**
  *
- * Rappresenta una classe di utilità per la gestione dei campi di una segnalazione
+ * Fornisce metodi statici per la validazione degli attributi della classe Segnalazione
+ * <p>
+ * @author Marco Arena
+ * @version 1.0
  *
  */
 
