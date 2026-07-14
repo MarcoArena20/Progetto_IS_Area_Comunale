@@ -11,8 +11,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import Entity.Gestori.GestoreUtenti;
 
-//Façade
-
 /**
  * Fornisce un punto di accesso per le operazioni
  * relative alla gestione degli utenti dell'applicazione.
@@ -25,18 +23,6 @@ import Entity.Gestori.GestoreUtenti;
  * @version 1.0
  */
 public class ControllerUtenti {
-
-    /**
-     * Uniforma il formato dell'indirizzo email convertendolo
-     * in caratteri minuscoli in modo da offrire all'entity un
-     * formato prestabilito.
-     *
-     * @param email indirizzo email da convertire
-     * @return indirizzo email convertito in minuscolo
-     */
-    private static String uniformaEmail(String email){
-        return email.toLowerCase();
-    }
 
     /**
      * Uniforma il formato del ruolo convertendolo nella
@@ -154,6 +140,10 @@ public class ControllerUtenti {
             return esitoAccesso;
         }
 
+    /**
+     * Permette di ottenere l'id dell'utente correttamente autenticato
+     * @return l'id dell'utente corrente
+     */
     public static Long getIdUtenteCorrente(){
         Path path = Path.of("configuration/config.txt");
         try {
