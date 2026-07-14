@@ -14,7 +14,7 @@ public class AccessoTest {
 
     @BeforeEach
     void setUp() {
-        CreazioneSegnalazioneTest.puliziaDatabase();
+        TestUtility.puliziaDatabase();
         formAccesso = new FormAccesso();
         formRegistrazione = new FormRegistrazione();
     }

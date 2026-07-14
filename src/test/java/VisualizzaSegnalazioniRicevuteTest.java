@@ -13,7 +13,7 @@ public class VisualizzaSegnalazioniRicevuteTest {
     @BeforeAll
     static void initDB() {
         // Puliamo il DB e inseriamo i dati per i test
-        CreazioneSegnalazioneTest.puliziaDatabase();
+        TestUtility.puliziaDatabase();
         new FormRegistrazione().registra("OPERATORE", "Mario", "Rossi", "operatore@comune.it", "3331112222", "Password123!");
         new FormRegistrazione().registra("CITTADINO", "Luigi", "Verdi", "luigi@gmail.com", "3331430979", "Password234!");
 

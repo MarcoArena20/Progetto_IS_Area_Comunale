@@ -4,7 +4,6 @@ import Database.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,34 +11,21 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * CASO D'USO: CreazioneSegnalazione
+ * Classe di test per verificare il metodo di creaSegnalazione
+ */
+
 public class CreazioneSegnalazioneTest {
 
     @BeforeAll
      static void setUp(){
 
-        puliziaDatabase();
+        TestUtility.puliziaDatabase();
 
         // Creaiamo un utente
         new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
 
-    }
-
-    static void puliziaDatabase(){
-
-        // Andiamo a ripulire le tabelle di cittadino e segnalazione di test in modo da conoscere lo stato iniziale
-
-        EntityManager em = JpaUtil.getInstance().getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        tx.begin();
-        em.createQuery("DELETE FROM AggiornamentoStatoEntry").executeUpdate();
-        em.createQuery("DELETE FROM GestioneOperatoreEntry").executeUpdate();
-        em.createQuery("DELETE FROM Segnalazione").executeUpdate();
-        em.createQuery("DELETE FROM Cittadino").executeUpdate();
-        em.createQuery("DELETE FROM Operatore").executeUpdate();
-        tx.commit();
-
-        em.close();
     }
 
     // Testiamo la creazione della segnalazione andando ad invocare il metodo di creaSegnalazione del controller

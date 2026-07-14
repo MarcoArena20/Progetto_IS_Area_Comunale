@@ -22,7 +22,7 @@ public class RegistrazioneTest {
     @ParameterizedTest
     @ValueSource(strings = {"Operatore", "Cittadino"})
     void testRuolo(String ruolo) {
-        CreazioneSegnalazioneTest.puliziaDatabase();
+        TestUtility.puliziaDatabase();
         boolean esito;
         esito = formRegistrazione.registra(ruolo, "Mario", "Rossi", "mario.rossi1@comune.it", "1234567890", "MarioRossi-03");
         assertTrue(esito);

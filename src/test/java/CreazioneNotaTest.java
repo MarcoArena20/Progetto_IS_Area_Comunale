@@ -50,7 +50,7 @@ public class CreazioneNotaTest {
     @BeforeAll
     public static void setUp() {
 
-        CreazioneSegnalazioneTest.puliziaDatabase();
+        TestUtility.puliziaDatabase();
 
         new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
         new FormRegistrazione().registra("OPERATORE", "Giuliano", "Izzo", "giuliano@gmail.com", "1112121221", "Passw123!");
