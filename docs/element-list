@@ -1,0 +1,9 @@
+Boundary
+Controller
+Database
+Entity
+Entity.EntryDB
+Entity.Enum
+Entity.Gestori
+Entity.Observer
+Entity.StateMachine

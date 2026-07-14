@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Interfaccia grafica (Boundary) per la visualizzazione dettagliata di una singola segnalazione inviata.
- *
+ * <p>
  * La classe si occupa di mostrare l'estratto completo di una segnalazione, suddiviso in:
  * Dati generali (organizzati in una tabella a riga singola invertita)
  * Cronologia degli stati attraversati dalla segnalazione
@@ -33,8 +33,8 @@ public class FormVisualizzaDettaglioSegnalazioneInviata {
     private JTextArea textAreaDescrizione;
     private JTextArea textAreaImage;
     private JButton INDIETROButton;
-    private DefaultTableModel modelInvertito;
-    private DefaultTableModel modelStati;
+    private final DefaultTableModel modelInvertito;
+    private final DefaultTableModel modelStati;
 
     /**
      * Costruisce il form inizializzando i componenti grafici, configurando i modelli delle tabelle
@@ -105,9 +105,8 @@ public class FormVisualizzaDettaglioSegnalazioneInviata {
      * Inizializza, popola e rende visibile la finestra principale del dettaglio della segnalazione.
      *
      * @param riga l'indice della riga selezionata nel form precedente, corrispondente alla segnalazione
-     * @return l'istanza del JFrame configurato e mostrato a schermo
      */
-    public JFrame apriFormVisualizzaDettaglioSegnalazione(int riga){
+    public void apriFormVisualizzaDettaglioSegnalazione(int riga){
 
         frame = new JFrame("Visualizza dettaglio segnalazione");
         frame.setContentPane(contentPanel);
@@ -122,7 +121,6 @@ public class FormVisualizzaDettaglioSegnalazioneInviata {
 
         Map<String, List<String[]>> mappDettagli = visualizzaDettaglioSegnalazione(riga);
         aggiornaTabella(mappDettagli);
-        return frame;
     }
 
     /**

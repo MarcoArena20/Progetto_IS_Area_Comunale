@@ -16,7 +16,7 @@ import Entity.Gestori.GestoreUtenti;
 /**
  * Fornisce un punto di accesso per le operazioni
  * relative alla gestione degli utenti dell'applicazione.
- *
+ * <p>
  * La classe permette alle classi del livello Boundary di interagire
  * con il sottosistema di gestione degli utenti senza conoscere i
  * dettagli implementativi.
@@ -65,7 +65,7 @@ public class ControllerUtenti {
 
     /**
      * Calcola l'hash SHA-256 della password fornita.
-     *
+     * <p>
      * La password viene convertita in una sequenza di byte utilizzando
      * la codifica UTF-8 e successivamente trasformata in una stringa
      * esadecimale rappresentante l'hash generato in modo da non far viaggiare in chiaro la suddetta.
@@ -87,7 +87,7 @@ public class ControllerUtenti {
         }
     /**
      * Registra un nuovo utente nel sistema.
-     *
+     * <p>
      * Il metodo converte il ruolo ricevuto e delega
      * al gestore degli utenti il salvataggio dei dati.
      *
@@ -111,7 +111,7 @@ public class ControllerUtenti {
                 String idUtente = gestoreUtenti.registraUtente(ruolo, nome, cognome, email, recapitoTelefonico, passwordHash);
                 if (idUtente != null) {
                     esitoRegistrazione = true;
-                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Utente Già registrato!");
@@ -139,9 +139,10 @@ public class ControllerUtenti {
             try{
                 Ruolo ruolo = stringaToRuolo(ruoloStringa);
                 String passwordHash =hashPassword(password.trim());
-
-                if (gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash)!=null){
+                String idUtente = gestoreUtenti.accessoUtente(ruolo, email.trim(), passwordHash);
+                if (idUtente!=null){
                     esitoAccesso=true;
+                    setIdUtenteCorrente(Long.parseLong(idUtente), ruoloStringa);
                 }
             }
             catch (IllegalArgumentException ex){
@@ -210,17 +211,18 @@ public class ControllerUtenti {
 
     }
 
+    /**
+     * Aggiorna le informazioni relative all'utente corrente
+     * nella configurazione locale dell'applicazione.
+     *<p>
+     * Il metodo salva l'identificativo dell'utente e il relativo ruolo
+     * nel file di configurazione utilizzato dall'applicazione.
+     *
+     * @param idUtenteCorrente identificativo dell'utente corrente
+     * @param ruolo ruolo associato all'utente corrente
+     */
+
     public static void setIdUtenteCorrente(Long idUtenteCorrente, String ruolo){
-        /**
-         * Aggiorna le informazioni relative all'utente corrente
-         * nella configurazione locale dell'applicazione.
-         *
-         * Il metodo salva l'identificativo dell'utente e il relativo ruolo
-         * nel file di configurazione utilizzato dall'applicazione.
-         *
-         * @param idUtenteCorrente identificativo dell'utente corrente
-         * @param ruolo ruolo associato all'utente corrente
-         */
 
         Path path = Path.of("configuration/config.txt");
 

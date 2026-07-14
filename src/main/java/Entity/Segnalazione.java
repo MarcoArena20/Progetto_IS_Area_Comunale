@@ -89,7 +89,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
         }
 
         System.out.println("[Segnalazione "+this.idSegnalazione+"] Avanzamento stato: "+avanzamento+"..\n" +
-                this.toString()
+                this
         );
 
         return esito;
@@ -129,7 +129,7 @@ public class Segnalazione extends ObserverSegnalazione { //La segnalazione è il
             url = getUrlImmagine();
         }
         else{
-            url = new String("Immagine non presente");
+            url = "Immagine non presente";
         }
 
         return new Dettaglio(getInfoAnteprima(), getTitolo(), getDescrizione(), url);

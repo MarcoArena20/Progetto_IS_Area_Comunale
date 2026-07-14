@@ -25,7 +25,7 @@ public class GestoreAggiornamentoStato {
      * ed eventualmente effettuare query
      */
 
-    private GestorePersistenza gestorePersistenza;
+    private final GestorePersistenza gestorePersistenza;
 
     //Costruttore
 

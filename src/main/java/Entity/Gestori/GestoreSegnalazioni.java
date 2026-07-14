@@ -28,7 +28,7 @@ public class GestoreSegnalazioni {
      * su database
      */
 
-    private GestorePersistenza gestorePersistenza;
+    private final GestorePersistenza gestorePersistenza;
 
     /**
      * Costruttore per creare ed inizializzare il gestore
@@ -168,7 +168,7 @@ public class GestoreSegnalazioni {
             return false;
         }
 
-        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+ segnalazione);
 
 
         StatoSegnalazione statoSegnalazione = segnalazione.getStato();
@@ -177,7 +177,7 @@ public class GestoreSegnalazioni {
                 && !statoSegnalazione.getStatoToString().equals(StatoType.RISOLTA.name())) {
 
             //Impossibile aggiungere nota
-            System.err.println("[GestoreSegnalazioni] Nota non aggiungibile..\n"+segnalazione.toString());
+            System.err.println("[GestoreSegnalazioni] Nota non aggiungibile..\n"+ segnalazione);
             return false;
         } else {
             GestoreAggiornamentoStato gestoreAggiornamentoStato = new GestoreAggiornamentoStato();
@@ -210,7 +210,7 @@ public class GestoreSegnalazioni {
             return false;
         }
 
-        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+ segnalazione);
 
         //attach observer in modo da visualizzare i cambi stato
         segnalazione.attach(ConcreteObserver.getInstance());
@@ -258,7 +258,7 @@ public class GestoreSegnalazioni {
             return false;
         }
 
-        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+segnalazione.toString());
+        System.out.println("[GestoreSegnalazioni] Trovata segnalazione:\n"+ segnalazione);
 
         //attach observer in modo da visualizzare i cambi stato
         segnalazione.attach(ConcreteObserver.getInstance());
@@ -324,16 +324,16 @@ public class GestoreSegnalazioni {
             if(aggiornamento.getStato() instanceof StatoRisolta || aggiornamento.getStato() instanceof StatoInviata){
 
                 GestioneOperatoreEntry gestione = gestioni.get(index);
+                String[] nota;
                 if(gestione.getTitolo() != null){
 
-                    String[] nota = {gestione.getTitolo(), gestione.getDescrizione()};
-                    mappaRisultati.put(aggiornamento, nota);
+                    nota = new String[]{gestione.getTitolo(), gestione.getDescrizione()};
                 }
                 else{
 
-                    String[] nota = {"", ""};
-                    mappaRisultati.put(aggiornamento, nota);
+                    nota = new String[]{"", ""};
                 }
+                mappaRisultati.put(aggiornamento, nota);
 
                 index++;
 

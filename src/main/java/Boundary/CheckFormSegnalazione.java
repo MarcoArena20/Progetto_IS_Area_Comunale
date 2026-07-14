@@ -64,13 +64,7 @@ public class CheckFormSegnalazione {
 
         // Il titolo deve avere lunghezza compresa tra 5 e 30 e può contenere solo caratteri
 
-        if (titolo.length() < 5 || titolo.length() > 30 || !titolo.matches("^[\\p{L} ]+$")){
-
-            return false;
-
-        }
-
-        return true;
+        return titolo.length() >= 5 && titolo.length() <= 30 && titolo.matches("^[\\p{L} ]+$");
 
     }
 
@@ -83,13 +77,7 @@ public class CheckFormSegnalazione {
 
     public static boolean checkDescrizione(String descrizione){
 
-        if (descrizione.length() < 50 || descrizione.length() > 200 || !descrizione.matches("^[\\p{L}\\p{N} .,;:']+$")) {
-
-            return false;
-
-        }
-
-        return true;
+        return descrizione.length() >= 50 && descrizione.length() <= 200 && descrizione.matches("^[\\p{L}\\p{N} .,;:']+$");
 
     }
 
@@ -238,35 +226,36 @@ public class CheckFormSegnalazione {
                                                                                             " ARREDO_URBANO_DANNEGGIATO}");
 
         if(!CheckFormSegnalazione.checkPosizione(posizione))
-            throw new IllegalArgumentException("La posizione deve appartenere all'insieme {\"Centro Storico: Via dei Tribunali 120\",\n" +
-                    "                \"Centro Storico: Spaccanapoli 35\",\n" +
-                    "                \"Centro Storico: Via San Gregorio Armeno 18\",\n" +
-                    "                \"Centro Storico: Via Benedetto Croce 42\",\n" +
-                    "                \"Centro Storico: Piazza Bellini 6\",\n" +
-                    "\n" +
-                    "                \"Chiaia: Via dei Mille 40\",\n" +
-                    "                \"Chiaia: Via Chiaia 75\",\n" +
-                    "                \"Chiaia: Via Carlo Poerio 21\",\n" +
-                    "                \"Chiaia: Riviera di Chiaia 180\",\n" +
-                    "                \"Chiaia: Via Cavallerizza a Chiaia 52\",\n" +
-                    "\n" +
-                    "                \"Vomero: Via Luca Giordano 85\",\n" +
-                    "                \"Vomero: Via Scarlatti 110\",\n" +
-                    "                \"Vomero: Piazza Vanvitelli 15\",\n" +
-                    "                \"Vomero: Via Cimarosa 44\",\n" +
-                    "                \"Vomero: Via Aniello Falcone 210\",\n" +
-                    "\n" +
-                    "                \"Fuorigrotta: Viale Augusto 110\",\n" +
-                    "                \"Fuorigrotta: Via Giulio Cesare 145\",\n" +
-                    "                \"Fuorigrotta: Via Leopardi 95\",\n" +
-                    "                \"Fuorigrotta: Via Consalvo 78\",\n" +
-                    "                \"Fuorigrotta: Piazzale Tecchio 50\",\n" +
-                    "\n" +
-                    "                \"Bagnoli: Via Coroglio 57\",\n" +
-                    "                \"Bagnoli: Via Nuova Bagnoli 65\",\n" +
-                    "                \"Bagnoli: Via Diocleziano 320\",\n" +
-                    "                \"Bagnoli: Via Eurialo 40\",\n" +
-                    "                \"Bagnoli: Via Miseno 12\"}");
+            throw new IllegalArgumentException("""
+                    La posizione deve appartenere all'insieme {"Centro Storico: Via dei Tribunali 120",
+                                    "Centro Storico: Spaccanapoli 35",
+                                    "Centro Storico: Via San Gregorio Armeno 18",
+                                    "Centro Storico: Via Benedetto Croce 42",
+                                    "Centro Storico: Piazza Bellini 6",
+                    
+                                    "Chiaia: Via dei Mille 40",
+                                    "Chiaia: Via Chiaia 75",
+                                    "Chiaia: Via Carlo Poerio 21",
+                                    "Chiaia: Riviera di Chiaia 180",
+                                    "Chiaia: Via Cavallerizza a Chiaia 52",
+                    
+                                    "Vomero: Via Luca Giordano 85",
+                                    "Vomero: Via Scarlatti 110",
+                                    "Vomero: Piazza Vanvitelli 15",
+                                    "Vomero: Via Cimarosa 44",
+                                    "Vomero: Via Aniello Falcone 210",
+                    
+                                    "Fuorigrotta: Viale Augusto 110",
+                                    "Fuorigrotta: Via Giulio Cesare 145",
+                                    "Fuorigrotta: Via Leopardi 95",
+                                    "Fuorigrotta: Via Consalvo 78",
+                                    "Fuorigrotta: Piazzale Tecchio 50",
+                    
+                                    "Bagnoli: Via Coroglio 57",
+                                    "Bagnoli: Via Nuova Bagnoli 65",
+                                    "Bagnoli: Via Diocleziano 320",
+                                    "Bagnoli: Via Eurialo 40",
+                                    "Bagnoli: Via Miseno 12"}""");
 
         if(!CheckFormSegnalazione.checkData(data))
             throw new IllegalArgumentException("La data deve avere formattazione dd/mm/yyyy HH:MM");

@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Interfaccia grafica (Boundary) che mostra l'elenco di tutte le segnalazioni inviate dal cittadino.
- *
+ * <p>
  * Permette di visualizzare le segnalazioni all'interno di una tabella non modificabile e fornisce
  * le funzionalità per selezionare una riga e visualizzarne il dettaglio, modificarla (se lo stato lo consente)
  * o tornare alla schermata dell'area personale.
@@ -30,7 +30,6 @@ public class FormVisualizzaSegnalazioniInviate {
     private JTable tabellaSegnalazioni;
     private JButton modificaSegnalazioneButton;
     private JButton INDIETROButton;
-    private DefaultTableModel tableModel;
 
     /**
      * Costruisce il form configurando la tabella, agganciando il modello dei dati,
@@ -40,7 +39,8 @@ public class FormVisualizzaSegnalazioniInviate {
 
         //definizione delle colonne della tabella
         String[] colonneIniziali = {"Categoria", "Data", "Posizione", "Stato"};
-        this.tableModel = new DefaultTableModel(colonneIniziali, 0) {
+        // Rende la tabella non modificabile al doppio click
+        DefaultTableModel tableModel = new DefaultTableModel(colonneIniziali, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Rende la tabella non modificabile al doppio click
@@ -115,7 +115,6 @@ public class FormVisualizzaSegnalazioniInviate {
                             "Attenzione",
                             JOptionPane.WARNING_MESSAGE
                     );
-                    return;
                 }
                 else{
                     Map<String, String> parametri = ControllerSegnalazioni.ottieniParametriModificabili(rigaSelezionata);
@@ -149,10 +148,8 @@ public class FormVisualizzaSegnalazioniInviate {
     /**
      * Inizializza, imposta le dimensioni minime e rende visibile la finestra principale
      * contenente l'elenco delle segnalazioni.
-     *
-     * @return l'istanza del JFrame configurato e visualizzato a schermo
      */
-    public JFrame apriFormVisualizzaSegnalazioni(){
+    public void apriFormVisualizzaSegnalazioni(){
 
         visualizzaFrame = new JFrame("Visualizza segnalazione");
         visualizzaFrame.setContentPane(contentPanel);
@@ -164,7 +161,6 @@ public class FormVisualizzaSegnalazioniInviate {
         visualizzaFrame.setLocationRelativeTo(null);
         visualizzaFrame.setVisible(true);
 
-        return visualizzaFrame;
     }
 
     /**
@@ -173,9 +169,8 @@ public class FormVisualizzaSegnalazioniInviate {
      * @return una List di array di stringhe, dove ogni array rappresenta i dati di una singola segnalazione
      */
     private List<String[]> visualizzaSegnalazioni(){
-        List<String[]> righe = ControllerSegnalazioni.caricaSegnalazioni();
 
-        return righe;
+        return ControllerSegnalazioni.caricaSegnalazioni();
     }
 
 }

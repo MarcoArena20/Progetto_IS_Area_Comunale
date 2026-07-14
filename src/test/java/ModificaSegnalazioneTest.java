@@ -18,7 +18,7 @@ public class ModificaSegnalazioneTest {
     @BeforeAll
     static void setUp(){
 
-        CreazioneSegnalazioneTest.puliziaDatabase();
+        TestUtility.puliziaDatabase();
 
         // La prima cosa da fare è creare un utente ed una segnalazione
 

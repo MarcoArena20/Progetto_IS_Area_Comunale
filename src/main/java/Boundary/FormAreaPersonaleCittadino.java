@@ -44,10 +44,8 @@ public class FormAreaPersonaleCittadino {
 
     /**
      * Inizializza e rende visibile la finestra principale
-     *
-     * @return l'istanza del JFrame configurato e visualizzato a schermo
      */
-    public JFrame apriAreaPersonaleCittadino(){
+    public void apriAreaPersonaleCittadino(){
 
         areaPersonale = new JFrame("CreazioneFrame");
         areaPersonale.setContentPane(contentPanel);
@@ -57,8 +55,6 @@ public class FormAreaPersonaleCittadino {
         areaPersonale.pack();
         areaPersonale.setLocationRelativeTo(null);
         areaPersonale.setVisible(true);
-
-        return areaPersonale;
 
     }
 }

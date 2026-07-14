@@ -29,7 +29,7 @@ public class FormAccesso {
     /**
      * Inizializza la finestra di accesso associando gli ascoltatori
      * agli elementi dell'interfaccia grafica.
-     *
+     * <p>
      * Il pulsante di accesso acquisisce le credenziali inserite
      * dall'utente e avvia la procedura di autenticazione.
      * Il pulsante di ritorno consente invece di tornare al menu principale.
@@ -76,7 +76,7 @@ public class FormAccesso {
 
     /**
      * Visualizza sulla console le credenziali inserite nel form di accesso.
-     *
+     * <p>
      *  Questo metodo è utilizzato esclusivamente a scopo di debug e verifica
      *  dei dati acquisiti dall'interfaccia grafica.
      *
@@ -104,7 +104,7 @@ public class FormAccesso {
      *         non rispetta i vincoli di validazione
      */
     private boolean controlloFormatoDatiAccesso (String ruoloStringa, String email, String password) throws IllegalArgumentException {
-        boolean controlloFormatoAccesso = false;
+        boolean controlloFormatoAccesso;
         try {
             controlloFormatoAccesso = CheckDatiFormAccessoRegistrazione.checkDatiFormAccesso(ruoloStringa, email, password);
             return controlloFormatoAccesso;
@@ -135,7 +135,7 @@ public class FormAccesso {
 
     /**
      * Avvia la procedura di autenticazione dell'utente.
-     *
+     * <p>
      * Il metodo verifica innanzitutto la validità del formato delle
      * credenziali inserite; se il controllo ha esito positivo,
      * delega al controller la verifica dell'accesso.
@@ -154,7 +154,7 @@ public class FormAccesso {
      */
     public boolean accedi(String ruoloStringa, String email, String password) throws IllegalArgumentException{
 
-        boolean esitoFormatoAccesso=false;
+        boolean esitoFormatoAccesso;
         boolean esitoAccesso = false;
         printFormAccesso(ruoloStringa, email, password);
 

@@ -4,7 +4,6 @@ import Database.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,37 +11,31 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * CASO D'USO: CreazioneSegnalazione
+ * Classe di test per verificare il metodo di creaSegnalazione
+ */
+
 public class CreazioneSegnalazioneTest {
+
+    /**
+     * Inizializza lo stato del database per permettere un corretto funzionamento dei test
+     */
 
     @BeforeAll
      static void setUp(){
 
-        puliziaDatabase();
+        TestUtility.puliziaDatabase();
 
         // Creaiamo un utente
         new FormRegistrazione().registra("CITTADINO", "Marco", "Arena", "marcoaren04@gmail.com", "3331430979", "Aldone04!");
 
     }
 
-    static void puliziaDatabase(){
+    /**
+     * Test corretto con i soli campi obbligatori
+     */
 
-        // Andiamo a ripulire le tabelle di cittadino e segnalazione di test in modo da conoscere lo stato iniziale
-
-        EntityManager em = JpaUtil.getInstance().getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        tx.begin();
-        em.createQuery("DELETE FROM AggiornamentoStatoEntry").executeUpdate();
-        em.createQuery("DELETE FROM GestioneOperatoreEntry").executeUpdate();
-        em.createQuery("DELETE FROM Segnalazione").executeUpdate();
-        em.createQuery("DELETE FROM Cittadino").executeUpdate();
-        em.createQuery("DELETE FROM Operatore").executeUpdate();
-        tx.commit();
-
-        em.close();
-    }
-
-    // Testiamo la creazione della segnalazione andando ad invocare il metodo di creaSegnalazione del controller
     @Test
     void testCorrettoObbligatori(){
 
@@ -65,6 +58,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test corretto con campi obbligatori e opzionali
+     */
+
     @Test
     void testCorrettoOpzionali(){
 
@@ -86,6 +83,11 @@ public class CreazioneSegnalazioneTest {
         assertTrue(esito);
 
     }
+
+    /**
+     * Test parametrico al variare del titolo nelle classi di equivalenza non valide
+     * @param titolo titolo della descrizione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Titolo vuoto
@@ -113,6 +115,11 @@ public class CreazioneSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test parametrico al variare della descrizione nelle classi di equivalenza non valide
+     * @param descrizione descrizione della segnalazione
+     */
 
     @ParameterizedTest
     @ValueSource(strings = {"", // Descrizione vuota
@@ -145,6 +152,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sulla categoria della segnalazione non valida
+     */
+
     @Test
     void categoriaErrata(){
 
@@ -167,6 +178,9 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sulla posizione della segnalazione non valida
+     */
 
     @Test
     void posizioneErrata(){
@@ -190,6 +204,10 @@ public class CreazioneSegnalazioneTest {
 
     }
 
+    /**
+     * Test sul formato della data non valido
+     */
+
     @Test
     void dataErrata(){
 
@@ -211,6 +229,10 @@ public class CreazioneSegnalazioneTest {
         assertFalse(esito);
 
     }
+
+    /**
+     * Test sul formato dell'url dell'immagine non valido
+     */
 
     @Test
     void urlImmagineErrato(){
