@@ -55,5 +55,15 @@ public class ConcreteObserver implements Observer {
         return gestoreAggiornamento.aggiornaStato(segnalazione, newStato);
     }
 
+    /**
+     * metodo implementato per fare in modo che l'osservatore dimostri interesse verso il subject
+     *
+     * @param segnalazione riferimento alla segnalazione su cui effettuare la sottoscrizione
+     */
+
+    public void nuovaSegnalazione(Segnalazione segnalazione) {
+        segnalazione.attach(getInstance());
+    }
+
 
 }
