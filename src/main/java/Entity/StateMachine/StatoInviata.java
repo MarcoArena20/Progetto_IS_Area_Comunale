@@ -43,7 +43,7 @@ public class StatoInviata extends StatoSegnalazione {
         StatoInviata statoTest = new StatoInviata();
 
         System.out.println("[StatoInviata] getStato: "+ statoTest.getStatoToString());
-        System.out.println("[StatoInviata] toString: "+ statoTest.toString());
+        System.out.println("[StatoInviata] toString: "+ statoTest);
 
 
     }

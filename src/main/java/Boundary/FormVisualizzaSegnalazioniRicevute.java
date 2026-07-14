@@ -115,7 +115,7 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
                 // Istanziazione e apertura del form di dettaglio parametrizzato con l'ID
                 FormVisualizzaDettaglioSegnalazioneRicevuta formDettaglio =
-                        new FormVisualizzaDettaglioSegnalazioneRicevuta((int) rigaSelezionata);
+                        new FormVisualizzaDettaglioSegnalazioneRicevuta(rigaSelezionata);
                 formDettaglio.apriDettaglioFrame();
                 visualizzaFrame.dispose();
             }
@@ -125,11 +125,9 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
     /**
      *
      * Imposta le proprietà del frame di visualizzazione e lo rende visibile all'utente.
-     *
-     * @return il frame appena configurato e mostrato
      */
 
-    public JFrame apriVisualizzaFrame() {
+    public void apriVisualizzaFrame() {
         JFrame frame = new JFrame();
         frame.setTitle("Pannello Operatore - Visualizza Segnalazioni Ricevute");
         frame.setContentPane(contentPanel);
@@ -143,7 +141,6 @@ public class FormVisualizzaSegnalazioniRicevute extends JFrame {
 
         visualizzaFrame = frame;
 
-        return frame;
     }
 
     /**

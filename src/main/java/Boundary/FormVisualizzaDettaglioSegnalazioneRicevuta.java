@@ -2,8 +2,6 @@ package Boundary;
 
 import Controller.ControllerSegnalazioni;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Map;
@@ -120,10 +118,8 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
     /**
      * Imposta le proprietà del frame di dettaglio, associa un listener per la riapertura della
      * schermata principale alla sua chiusura e rende visibile l'interfaccia.
-     *
-     * @return il frame grafico di dettaglio appena configurato
      */
-    public JFrame apriDettaglioFrame() {
+    public void apriDettaglioFrame() {
         JFrame frame = new JFrame();
         frame.setTitle("Dettaglio Segnalazione");
         frame.setContentPane(contentPanel);
@@ -145,7 +141,6 @@ public class FormVisualizzaDettaglioSegnalazioneRicevuta extends JFrame {
         // Salvataggio del frame nella variabile interna
         dettaglioFrame = frame;
 
-        return frame;
     }
 
     /**

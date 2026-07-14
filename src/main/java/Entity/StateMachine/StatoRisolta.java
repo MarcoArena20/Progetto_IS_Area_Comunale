@@ -11,7 +11,7 @@ public class StatoRisolta extends StatoSegnalazione {
     //Metodi
     @Override
     public boolean aggiornaStato(Segnalazione segnalazione, boolean esito) {
-        System.out.println("[StatoRisolta] Impossibile modificare lo stato\n" + this.toString());
+        System.out.println("[StatoRisolta] Impossibile modificare lo stato\n" + this);
         return false;
     }
 

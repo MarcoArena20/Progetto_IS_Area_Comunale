@@ -34,10 +34,8 @@ public class FormAreaPersonaleOperatore {
 
     /**
      * Inizializza e rende visibile la finestra principale
-     *
-     * @return l'istanza del JFrame configurato e visualizzato a schermo
      */
-    public JFrame apriAreaPersonaleOperatore(){
+    public void apriAreaPersonaleOperatore(){
 
         frame = new JFrame("Area Personale Operatore");
         frame.setContentPane(contentPanel);
@@ -49,6 +47,5 @@ public class FormAreaPersonaleOperatore {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        return frame;
     }
 }

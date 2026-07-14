@@ -5,11 +5,11 @@ import static Boundary.ValidatorePassword.validaPassword;
 /**
  * Fornisce metodi statici per la validazione dei dati inseriti
  * nei form di registrazione e di accesso dell'applicazione.
- *
+ * <p>
  * La classe verifica che i dati rispettino i vincoli di formato
  * previsti, come il ruolo selezionato, il nome, il cognome,
  * l'indirizzo email, il recapito telefonico e la password.
- *
+ * <p>
  * In caso di dati non validi viene sollevata un'eccezione
  * IllegalArgumentException contenente un messaggio
  * descrittivo dell'errore riscontrato.
@@ -80,8 +80,8 @@ public class CheckDatiFormAccessoRegistrazione {
             throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
-        // Se tutti i controlli passano senza lanciare eccezioni
         return true;
+
     }
     /**
      * Verifica che tutti i dati inseriti nel form di accesso
@@ -108,7 +108,7 @@ public class CheckDatiFormAccessoRegistrazione {
             throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
         }
 
-        // Se tutti i controlli passano senza lanciare eccezioni
         return true;
+
     }
 }

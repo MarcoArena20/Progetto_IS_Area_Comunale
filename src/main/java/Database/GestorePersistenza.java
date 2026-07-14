@@ -40,17 +40,13 @@ public class GestorePersistenza {
 
     public <T> T trovaPerId(Class<T> classe, Long id) {
 
-        EntityManager em = JpaUtil.getInstance().getEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getInstance().getEntityManager()) {
             /*
              * find cerca nel database una riga della tabella associata
              * alla classe indicata, usando l'id come chiave primaria.
              */
             return em.find(classe, id);
 
-        } finally {
-            em.close();
         }
     }
 
@@ -66,9 +62,7 @@ public class GestorePersistenza {
 
     public <T> List<T> cercaPerCampi(Class<T> classe, Map<String, Object> campi) {
 
-        EntityManager em = JpaUtil.getInstance().getEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getInstance().getEntityManager()) {
             StringBuilder jpql = new StringBuilder();
 
             jpql.append("SELECT e FROM ")
@@ -97,7 +91,7 @@ public class GestorePersistenza {
                     jpql.append("e.")
                             .append(campoReale)
                             .append(like ? " LIKE :" : " = :")
-                                    .append(nomeParametro);
+                            .append(nomeParametro);
 
                     contatore++;
                 }
@@ -129,8 +123,6 @@ public class GestorePersistenza {
 
             return query.getResultList();
 
-        } finally {
-            em.close();
         }
     }
 

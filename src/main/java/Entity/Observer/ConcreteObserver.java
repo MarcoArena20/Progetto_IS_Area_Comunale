@@ -27,10 +27,9 @@ public class ConcreteObserver implements Observer {
         System.out.println("[Observer] Contatto db..");
 
         GestoreAggiornamentoStato gestoreAggiornamento = new GestoreAggiornamentoStato();
-        boolean esito = gestoreAggiornamento.aggiornaStato(segnalazione, newStato);
 
 
-        return esito;
+        return gestoreAggiornamento.aggiornaStato(segnalazione, newStato);
     }
 
 

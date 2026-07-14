@@ -10,8 +10,6 @@ public class MainFrame {
     private JPanel mainPanel;
     private JButton accediButton;
     private JButton registratiButton;
-    private JFrame accediFrame;
-    private JFrame registraFrame;
 
     public MainFrame(){
 
@@ -36,7 +34,7 @@ public class MainFrame {
     }
 
     // Metodo di costruzione della JFrame
-    public JFrame apriMainFrame(){
+    public void apriMainFrame(){
 
         JFrame frame = new JFrame();
         frame.setTitle("MainFrame");
@@ -50,8 +48,6 @@ public class MainFrame {
 
         mainFrame = frame;
 
-        return frame;
-
     }
 
     private void SchermataAccesso(){
@@ -59,7 +55,7 @@ public class MainFrame {
         mainFrame.dispose();
 
         // Metodo per la visualizzazione del form di accesso
-        accediFrame = new FormAccesso().apriFormAccesso();
+        JFrame accediFrame = new FormAccesso().apriFormAccesso();
         accediFrame.toFront();
         accediFrame.requestFocus();
 
@@ -67,7 +63,7 @@ public class MainFrame {
 
     private void SchermataRegistrazione(){
 
-        registraFrame = new FormRegistrazione().apriFormRegistrazione();
+        JFrame registraFrame = new FormRegistrazione().apriFormRegistrazione();
         registraFrame.toFront();
         registraFrame.requestFocus();
 

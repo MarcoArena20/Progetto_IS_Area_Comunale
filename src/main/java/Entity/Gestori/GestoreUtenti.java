@@ -87,7 +87,7 @@ public class GestoreUtenti {
     /**
      * Effettua la ricerca di un utente e verifica le credenziali
      * fornite per consentire l'accesso al sistema.
-     *
+     * <p>
      * La ricerca viene effettuata in base al ruolo selezionato,
      * distinguendo tra utenti di tipo {@link Cittadino} e {@link Operatore}.
      *

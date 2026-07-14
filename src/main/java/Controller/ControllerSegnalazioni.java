@@ -39,7 +39,7 @@ public class ControllerSegnalazioni {
      * @param urlImmagine url dell'allegato della segnalazione (campo opzionale)
      * @return true se la creazione è andata a buon fine, false altrimenti
      */
-    public static final boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public static boolean creaSegnalazione(String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         // Prima di effettuare la chiamata al GestoreSegnalazioni dello strato Entity effettuiamo
         // il typecasting di categoria e data
@@ -59,9 +59,8 @@ public class ControllerSegnalazioni {
         Long idCittadino = ControllerUtenti.getIdUtenteCorrente();
 
         GestoreSegnalazioni gest = new GestoreSegnalazioni();
-        boolean esito = gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
 
-        return esito;
+        return gest.inserisciSegnalazione(idCittadino, titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
 
     }
 
@@ -75,7 +74,7 @@ public class ControllerSegnalazioni {
      * @return true se la segnalazione è modificabile, false altrimenti
      */
 
-    public static final boolean verificaModificabilita(Integer idRow){
+    public static boolean verificaModificabilita(Integer idRow){
 
         // Effettuiamo il binding tra idRow e idSegnalazione
         Long idSegnalazione = bindingId.get(idRow);
@@ -97,7 +96,7 @@ public class ControllerSegnalazioni {
      * @return una map che effettua il binding tra attributo della segnalazione e valore
      */
 
-    public static final Map<String, String> ottieniParametriModificabili(Integer idRow){
+    public static Map<String, String> ottieniParametriModificabili(Integer idRow){
 
         // Effettuiamo il binding tra idRow e idSegnalazione
         Long idSegnalazione = bindingId.get(idRow);
@@ -144,7 +143,7 @@ public class ControllerSegnalazioni {
      * @return true se la creazione è andata a buon fine, false altrimenti
      */
 
-    public static final boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
+    public static boolean modificaSegnalazione(Integer idRow, String titolo, String descrizione, String categoria, String posizione, String data, String urlImmagine){
 
         // Prima di effettuare la chiamata al GestoreSegnalazioni dello strato Entity effettuiamo
         // il typecasting di categoria e data
@@ -167,8 +166,7 @@ public class ControllerSegnalazioni {
         // Effettuiamo il binding tra idRow e idSegnalazione
         Long idSegnalazione = bindingId.get(idRow);
 
-        boolean esito = gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
-        return esito;
+        return gest.modificaSegnalazione(idSegnalazione,titolo, descrizione, categoriaEnum, posizione, localData, urlImmagine);
 
     }
 
@@ -273,17 +271,17 @@ public class ControllerSegnalazioni {
     /**
      * CASO D'USO: visualizzaSegnlazioniInviate
      * Questo metodo svolge il ruolo di "adapter" tra:
-     *
+     * <p>
      * - il livello applicativo, che lavora con oggetti del dominio
      *   come Segnalazione;
-     *
+     * <p>
      * - la GUI, che invece non dovrebbe conoscere direttamente
      *   le Entity del sistema.
-     *
+     * <p>
      * In altre parole, il metodo adatta una lista di oggetti
      * Segnalazione.InfoAnteprima in una lista di array di String, cioè in un formato
      * semplice e già pronto per essere visualizzato in una JTable.
-     *
+     * <p>
      * Invoca il GestoreSegnalazioni per recuperare una lista di anteprime
      * di ogni segnalazione associata al CITTADINO corrente
      *
@@ -318,7 +316,7 @@ public class ControllerSegnalazioni {
             String[] riga = new String[]{
                     anteprima.categoria().toString(),
                     (anteprima.data() != null)? anteprima.data().format(formatter): "",
-                    anteprima.posizione().toString(),
+                    anteprima.posizione(),
                     anteprima.stato().getStatoToString(),
             };
 
@@ -333,17 +331,17 @@ public class ControllerSegnalazioni {
     /**
      * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
      * Questo metodo svolge il ruolo di "adapter" tra:
-     *
+     * <p>
      * - il livello applicativo, che lavora con oggetti del dominio
      *   come Segnalazione;
-     *
+     * <p>
      * - la GUI, che invece non dovrebbe conoscere direttamente
      *   le Entity del sistema.
-     *
+     * <p>
      * In altre parole, il metodo adatta una lista di oggetti
      * GestoreSegnalazioni.dettaglioCompleto in una lista di array di String, cioè in un formato
      * semplice e già pronto per essere visualizzato in una JTable.
-     *
+     * <p>
      * Invoca il GestoreSegnalazioni per caricare i dettagli informativi di una determinata segnalazione.
      *
      * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
@@ -380,17 +378,17 @@ public class ControllerSegnalazioni {
     /**
      * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
      * Questo metodo svolge il ruolo di "adapter" tra:
-     *
+     * <p>
      * - il livello applicativo, che lavora con oggetti del dominio
      *   come Segnalazione;
-     *
+     * <p>
      * - la GUI, che invece non dovrebbe conoscere direttamente
      *   le Entity del sistema.
-     *
+     * <p>
      * In altre parole, il metodo adatta una lista di oggetti
      * GestoreSegnalazioni.dettaglioCompleto in una lista di array di String, cioè in un formato
      * semplice e già pronto per essere visualizzato in una JTable.
-     *
+     * <p>
      * Invoca il GestoreSegnalazioni per recuperare lo storico cronologico complessivo dei cambi di stato subiti dalla segnalazione selezionata.
      *
      * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
@@ -426,13 +424,13 @@ public class ControllerSegnalazioni {
     /**
      * CASO D'USO: visualizzaDettaglioSegnlazioneInviata
      * Questo metodo svolge il ruolo di "adapter" tra:
-     *
+     * <p>
      * - il livello applicativo, che lavora con oggetti del dominio
      *   come Segnalazione;
-     *
+     * <p>
      * - la GUI, che invece non dovrebbe conoscere direttamente
      *   le Entity del sistema.
-     *
+     * <p>
      * Invoca il GestoreSegnalazioni per recuperare le informazioni relative alla descrizione testuale estesa e al link dell'immagineallegata di una segnalazione.
      *
      * @param indiceRiga l'indice della riga selezionata nella tabella della GUI
@@ -447,12 +445,10 @@ public class ControllerSegnalazioni {
         GestoreSegnalazioni.dettaglioCompleto dettaglioCompleto =
                 gestore.visualizzaDettaglioSegnalazione(idSegnalazione);
 
-        String[] datiRimanenti = new String[]{
-                dettaglioCompleto.dettaglio().descrizone().toString(),
+        return new String[]{
+                dettaglioCompleto.dettaglio().descrizone(),
                 dettaglioCompleto.dettaglio().urlImmagine()
         };
-
-        return datiRimanenti;
     }
 
     /**
@@ -477,20 +473,13 @@ public class ControllerSegnalazioni {
 
         StatoSegnalazione stato = null;
         if (statoStr != null && !statoStr.equals("Tutti")) {
-            switch (statoStr.toLowerCase()) {
-                case "inviata":
-                    stato = new StatoInviata();
-                    break;
-                case "in lavorazione":
-                    stato = new StatoInLavorazione();
-                    break;
-                case "risolta":
-                    stato = new StatoRisolta();
-                    break;
-                case "presa in carico":
-                    stato = new StatoPresaInCarico();
-                    break;
-            }
+            stato = switch (statoStr.toLowerCase()) {
+                case "inviata" -> new StatoInviata();
+                case "in lavorazione" -> new StatoInLavorazione();
+                case "risolta" -> new StatoRisolta();
+                case "presa in carico" -> new StatoPresaInCarico();
+                default -> stato;
+            };
         }
 
         String posizione = (areaStr != null && !areaStr.equals("Tutte")) ? areaStr : null;
