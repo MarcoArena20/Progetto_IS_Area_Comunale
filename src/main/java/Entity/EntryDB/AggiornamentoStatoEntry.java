@@ -5,23 +5,46 @@ import Entity.*;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+
+/**
+ * Classe utilizzata per memorizzare nel database gli aggiornamenti di stato di una segnalazione, in modo da poterne
+ * ricostruire l'andamento temporale
+ */
+
 @Entity
 @Table(name = "AggiornamentoStato")
 public class AggiornamentoStatoEntry {
 
     //Attributi
+
+    /**
+     * Primary Key della entity
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAggiornamento;
 
     private LocalDateTime data;
 
+    /**
+     * Riferimento alla segnalazione corrispondente, mappato nel database come Foreign Key
+     */
+
     @ManyToOne
     @JoinColumn(name = "idSegnalazione")
     private Segnalazione segnalazione;
 
+    /**
+     * Nuovo stato della segnalazione
+     */
+
     @Convert(converter = ConverterStato.class)
     private StatoSegnalazione stato;
+
+    /**
+     * Riferimento all'operatore che ha aggiornato lo stato, mappato nel database come Foreign Key
+     */
 
     @ManyToOne
     @JoinColumn(name = "idOperatore")

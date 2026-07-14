@@ -3,25 +3,60 @@ package Entity.EntryDB;
 import jakarta.persistence.*;
 import Entity.*;
 
+/**
+ * Classe utilizzata per memorizzare nel database le gestioni delle segnalazioni effettuate da parte degli operatori,
+ * in modo da poter riconoscere gli operatori attualmente in gestione e le scorse gestioni con eventuale nota associata
+ */
+
 @Entity
 @Table(name = "GestioneOperatore")
 public class GestioneOperatoreEntry {
 
     //Attributi
+
+    /**
+     * Primary Key della entity
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idGestione;
+
+    /**
+     * Riferimento all'operatore, mappato nel database come Foreign Key
+     */
 
     @ManyToOne
     @JoinColumn(name = "idOperatore")
     private Operatore operatore;
 
+    /**
+     * Riferimento alla segnalazione, mappato nel database come Foreign Key
+     */
+
     @ManyToOne
     @JoinColumn(name = "idSegnalazione")
     private Segnalazione segnalazione;
 
+    /**
+     * Flag booleano che indica se la gestione è attiva o si è conclusa; utilizzato per effettuare controlli di permessi
+     * negli aggiornamenti di stato delle segnalazioni
+     */
+
     private boolean attiva;
+
+    /**
+     * Titolo dell'eventuale nota aggiunta a conclusione della gestione; ha valore null nel caso in cui la gestione è
+     * ancora attiva o si è conclusa senza aggiungere alcuna nota
+     */
+
     private String titolo;
+
+    /**
+     * Descrizione dell'eventuale nota aggiunta a conclusione della gestione; ha valore null nel caso in cui la gestione è
+     * ancora attiva o si è conclusa senza aggiungere alcuna nota
+     */
+
     private String descrizione;
 
     //Costruttore
@@ -30,7 +65,6 @@ public class GestioneOperatoreEntry {
     }
 
     public GestioneOperatoreEntry(Operatore operatore, Segnalazione segnalazione, boolean attiva, String titolo, String descrizione) {
-        this.idGestione = idGestione;
         this.operatore = operatore;
         this.segnalazione = segnalazione;
         this.attiva = attiva;
