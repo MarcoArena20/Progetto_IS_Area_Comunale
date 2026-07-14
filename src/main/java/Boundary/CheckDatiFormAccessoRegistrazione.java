@@ -77,24 +77,13 @@ public class CheckDatiFormAccessoRegistrazione {
 
         // Controllo dei criteri di sicurezza della password (maiuscole, minuscole, numeri e speciali)
         if (!validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti: lunghezza compresa tra 8 e 25 caratteri, deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: ?, !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni
         return true;
     }
-    /**
-     * Verifica che tutti i dati inseriti nel form di accesso
-     * rispettino i vincoli previsti dall'applicazione.
-     * In particolare vengono controllati:
-     *
-     * @param ruoloStringa il ruolo selezionato
-     * @param email l'indirizzo email
-     * @param password la password
-     * @return {@code true} se tutti i dati rispettano i criteri di validazione
-     * @throws IllegalArgumentException se almeno uno dei dati non rispetta
-     *          i vincoli previsti
-     */
+
     public static boolean checkDatiFormAccesso(String ruoloStringa, String email, String password) throws IllegalArgumentException{
         // Controllo del ruolo selezionato: Cittadino || Operatore Comunale
         if (!"CITTADINO".equalsIgnoreCase(ruoloStringa) && !"OPERATORE".equalsIgnoreCase(ruoloStringa)) {
@@ -105,7 +94,7 @@ public class CheckDatiFormAccessoRegistrazione {
         }
 
         if (!ValidatorePassword.validaPassword(password)) {
-            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: !, -, @, %.");
+            throw new IllegalArgumentException("La password non soddisfa i requisiti minimi: deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale tra i seguenti: ?, !, -, @, %.");
         }
 
         // Se tutti i controlli passano senza lanciare eccezioni

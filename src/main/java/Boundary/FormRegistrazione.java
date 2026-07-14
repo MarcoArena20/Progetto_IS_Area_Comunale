@@ -137,6 +137,7 @@ public class FormRegistrazione {
         registrazioneFrame.pack();
         registrazioneFrame.setLocationRelativeTo(null);
         registrazioneFrame.setVisible(true);
+        registrazioneFrame.setMinimumSize(new java.awt.Dimension(500, 400));
 
 
         return registrazioneFrame;
@@ -164,7 +165,6 @@ public class FormRegistrazione {
      */
     public boolean registra(String ruoloStringa, String nome, String cognome, String email, String recapitoTelefonico, String password) throws IllegalArgumentException {
 
-        printFormRegistrazione(ruoloStringa, nome, cognome, email, recapitoTelefonico, password);
         boolean esitoFormatoRegistrazione = false;
         boolean esitoRegistrazione = false;
 
