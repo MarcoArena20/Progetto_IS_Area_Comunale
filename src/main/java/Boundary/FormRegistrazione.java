@@ -137,6 +137,7 @@ public class FormRegistrazione {
         registrazioneFrame.pack();
         registrazioneFrame.setLocationRelativeTo(null);
         registrazioneFrame.setVisible(true);
+        registrazioneFrame.setMinimumSize(new java.awt.Dimension(500, 400));
 
 
         return registrazioneFrame;

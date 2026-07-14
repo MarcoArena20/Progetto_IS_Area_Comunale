@@ -123,7 +123,7 @@ public class FormAccesso {
         accessoFrame = new JFrame();
         accessoFrame.setTitle("Accesso");
         accessoFrame.setContentPane(contentPanel);
-
+        accessoFrame.setMinimumSize(new java.awt.Dimension(450, 300));
         accessoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         accessoFrame.setResizable(true);
         accessoFrame.pack();
